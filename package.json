@@ -14,13 +14,16 @@
     "react-dom": "^17.0.2",
     "react-scripts": "5.0.0",
     "typescript": "^4.5.4",
+    "typescript-rest": "^3.0.4",
     "web-vitals": "^2.1.2"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "code-node": "nodemon ./src/code-node/*.ts --exec ts-node src/code-node/app.ts",
+    "db-node": "nodemon ./src/db-node/*.ts --exec ts-node src/db-node/app.ts"
   },
   "eslintConfig": {
     "extends": [
@@ -39,5 +42,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15",
+    "truffle": "^5.4.24"
   }
 }
