@@ -1,0 +1,54 @@
+Type: AWS::Redshift::Cluster
+Properties: 
+  AllowVersionUpgrade: Boolean
+  AquaConfigurationStatus: String
+  AutomatedSnapshotRetentionPeriod: Integer
+  AvailabilityZone: String
+  AvailabilityZoneRelocation: Boolean
+  AvailabilityZoneRelocationStatus: String
+  Classic: Boolean
+  ClusterIdentifier: String
+  ClusterParameterGroupName: String
+  ClusterSecurityGroups: 
+    - String
+  ClusterSubnetGroupName: String
+  ClusterType: String
+  ClusterVersion: String
+  DBName: String
+  DeferMaintenance: Boolean
+  DeferMaintenanceDuration: Integer
+  DeferMaintenanceEndTime: String
+  DeferMaintenanceStartTime: String
+  DestinationRegion: String
+  ElasticIp: String
+  Encrypted: Boolean
+  EnhancedVpcRouting: Boolean
+  HsmClientCertificateIdentifier: String
+  HsmConfigurationIdentifier: String
+  IamRoles: 
+    - String
+  KmsKeyId: String
+  LoggingProperties: 
+    LoggingProperties
+  MaintenanceTrackName: String
+  ManualSnapshotRetentionPeriod: Integer
+  MasterUsername: String
+  MasterUserPassword: String
+  NodeType: String
+  NumberOfNodes: Integer
+  OwnerAccount: String
+  Port: Integer
+  PreferredMaintenanceWindow: String
+  PubliclyAccessible: Boolean
+  ResourceAction: String
+  RevisionTarget: String
+  RotateEncryptionKey: Boolean
+  SnapshotClusterIdentifier: String
+  SnapshotCopyGrantName: String
+  SnapshotCopyManual: Boolean
+  SnapshotCopyRetentionPeriod: Integer
+  SnapshotIdentifier: String
+  Tags: 
+    - Tag
+  VpcSecurityGroupIds: 
+    - String
