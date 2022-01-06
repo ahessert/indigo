@@ -1,8 +1,15 @@
-import {Server} from "typescript-rest";
+import { Server } from "typescript-rest";
 import express, {Router, Request, Response, Application} from "express";
-import axios, { AxiosResponse } from 'axios';
 
-const CODE_NODE: string = "http://localhost:3000/download_code"
+import { RedshiftHandler } from "./redshiftHandler"
+import { ModelResults } from "./interfaces";
+
+const redshiftHandler = new RedshiftHandler()
+
+interface GetDataQuery {
+  modelName: string;
+  paymentReceipt: string;
+}
 
 const HelloWorld = (req: Request, res: Response) => {
   return res.status(200).json({
@@ -10,12 +17,7 @@ const HelloWorld = (req: Request, res: Response) => {
   });
 }
 
-interface GetDataQuery {
-    modelName: string;
-    paymentReceipt: string;
-}
-
-const GetData = (req: Request<unknown, unknown, unknown, GetDataQuery>, res: Response) => {
+const GetData = async (req: Request<unknown, unknown, unknown, GetDataQuery>, res: Response) => {
   console.log("Recieved request")
   console.log(req.query)
 
@@ -23,18 +25,18 @@ const GetData = (req: Request<unknown, unknown, unknown, GetDataQuery>, res: Res
   const paymentReciept: String = req.query['paymentReceipt']
 
   if (!PollAvailableModels().includes(modelName)) {
-    return res.status(500).json({
+    return res.status(400).json({
         Error: `modelName '${modelName}' not found`
     });
   }
 
   if (!validPayment(paymentReciept)) {
-    return res.status(500).json({
+    return res.status(400).json({
         Error: `Invalid payment reciept '${paymentReciept}'`
     });
   }
 
-  const modelData : String[] = getDataFromModel(modelName)
+  const modelData : ModelResults = await getDataFromModel(modelName)
   return res.status(200).json({
         modelData: modelData
     });
@@ -48,8 +50,9 @@ const validPayment = (paymentReceipt: String) : Boolean => {
     return paymentReceipt === "paid"
 }
 
-const getDataFromModel = (modelName: String) : String[] => {
-    return ["Row one test", "Row two test"]
+const getDataFromModel = async (modelName: String) : Promise<ModelResults> => {
+  const modelData : ModelResults = await redshiftHandler.selectTable(modelName);
+  return modelData;
 }
 
 const router = Router();
