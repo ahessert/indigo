@@ -1,0 +1,61 @@
+{
+  "name": "open-source-analytics",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@emotion/react": "^11.7.1",
+    "@emotion/styled": "^11.6.0",
+    "@material-ui/core": "^4.12.3",
+    "@material-ui/icons": "^4.11.2",
+    "@metamask/detect-provider": "^1.2.0",
+    "@mui/material": "^5.3.1",
+    "@testing-library/jest-dom": "^5.16.1",
+    "@testing-library/react": "^12.1.2",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^27.0.3",
+    "@types/node": "^16.11.13",
+    "@types/react": "^17.0.37",
+    "@types/react-dom": "^17.0.11",
+    "aws-sdk": "^2.1050.0",
+    "dotenv": "^14.3.2",
+    "ethers": "^5.5.3",
+    "hardhat": "^2.8.3",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "5.0.0",
+    "typescript": "^4.5.4",
+    "typescript-rest": "^3.0.4",
+    "web-vitals": "^2.1.4",
+    "web3modal": "^1.9.5"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "code-node": "nodemon ./src/code-node/*.ts --exec ts-node src/code-node/app.ts",
+    "db-node": "nodemon ./src/db-node/*.ts --exec ts-node src/db-node/app.ts"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15",
+    "truffle": "^5.4.24"
+  }
+}
