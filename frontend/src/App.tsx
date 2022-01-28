@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import WalletButton from './WalletButton';
+import WalletButton from './components/WalletButton';
 
 function App() {
   // todo check if chain is correct and redirect if not

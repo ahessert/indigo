@@ -1,6 +1,5 @@
 import React from 'react';
-import './App.css';
-import useMetamask from './hooks/useMetamask';
+import useMetamask from '../hooks/useMetamask';
 import { Button, Typography } from '@material-ui/core';
 import { AccountBalanceWallet } from '@material-ui/icons';
 
