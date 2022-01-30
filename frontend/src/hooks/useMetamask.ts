@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { ethers } from 'ethers';
 declare let window: any;
 
@@ -9,7 +9,7 @@ function useMetamask() {
 
   async function connect() {
     await window.ethereum.request({ method: 'eth_requestAccounts' });
-    const provider = new ethers.providers.Web3Provider(window.ethereum, 'any')
+    const provider = new ethers.providers.Web3Provider(window.ethereum, 'any');
     const signer = provider.getSigner();
 
     setUserAddress(await signer.getAddress());
@@ -17,16 +17,15 @@ function useMetamask() {
     setSigner(signer);
   }
 
-
   async function disconnect() {
     // Prompt user for account connections
-		const signer = await provider.getSigner();
+    const signer = await provider.getSigner();
     console.log('Account:', await signer.getAddress());
     console.log(await signer.getBalance());
     console.log(await provider.getNetwork());
-	}
+  }
 
-	return {provider, signer, connect, disconnect, userAddress};
+  return { provider, signer, connect, disconnect, userAddress };
 }
 
 export default useMetamask;

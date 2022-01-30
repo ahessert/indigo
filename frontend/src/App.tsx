@@ -1,18 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import WalletButton from './components/WalletButton';
+import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import Routes from './routes';
+import Page from './components/Page';
 
-function App() {
-  // todo check if chain is correct and redirect if not
+import 'react-lazy-load-image-component/src/effects/blur.css';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import 'react-image-lightbox/style.css';
+import 'aos/dist/aos.css';
 
+const App = () => {
   return (
-    <div className='App'>
-      <img src={logo} className='App-logo' alt='logo' />
-      <h2>Web3 Functions</h2>
-      <WalletButton/>
-    </div>
+    <Page>
+      <BrowserRouter>
+        <Routes />
+      </BrowserRouter>
+    </Page>
   );
-}
+};
 
 export default App;

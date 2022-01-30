@@ -1,7 +1,6 @@
 import React from 'react';
 import useMetamask from '../hooks/useMetamask';
-import { Button, Typography } from '@material-ui/core';
-import { AccountBalanceWallet } from '@material-ui/icons';
+import { Button } from '@mui/material';
 
 function WalletButton() {
   const { connect, disconnect, provider } = useMetamask();
@@ -9,14 +8,22 @@ function WalletButton() {
   return (
     <>
       {provider ? (
-        <Button onClick={disconnect}>
+        <Button
+          variant="contained"
+          color="primary"
+          size="large"
+          onClick={disconnect}
+        >
           Connected to
-          <Typography>12342</Typography>
         </Button>
       ) : (
-        <Button onClick={connect}>
-          <AccountBalanceWallet />
-          Connect
+        <Button
+          variant="outlined"
+          color="primary"
+          size="large"
+          onClick={connect}
+        >
+          Connect Wallet
         </Button>
       )}
     </>
