@@ -3,13 +3,15 @@ import AWS from "aws-sdk";
 import { ModelResults } from "./interfaces";
 
 const redshiftClusterID = 'redshift-cluster-1'
+const redshiftUser = 'andrewhessert'
 const redshiftDB = 'dev'
+const awsRegion = 'us-east-1'
 
 export class RedshiftHandler {
     private redshiftClient : AWS.RedshiftData;
   
     constructor() {
-      this.redshiftClient = new AWS.RedshiftData();
+      this.redshiftClient = new AWS.RedshiftData({region: awsRegion});
     };
     
     selectTable = async (tableName: String) => {
@@ -17,12 +19,13 @@ export class RedshiftHandler {
         console.log(query)
         const executionObject : AWS.RedshiftData.ExecuteStatementInput = {
             ClusterIdentifier: redshiftClusterID,
+            DbUser: redshiftUser,
             Database: redshiftDB,
             Sql: query
         }
         const redshiftResponse = await this.redshiftClient.executeStatement(executionObject, 
-            (err) => {
-                if (err) {console.log(err)}
+            (err, data) => {
+            if (err) { console.log(err) }
         }).promise()
 
         const nonNullExecutionId = redshiftResponse.Id!

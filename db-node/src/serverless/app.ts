@@ -73,7 +73,16 @@ function lambdaResponse(status: number, body: {}): LambdaResponse {
 }
 
 const PollAvailableModels = () : String[] => {
-    return ["blocks"]
+    return [
+      "blocks", 
+      "users", 
+      "venue", 
+      "category", 
+      "date", 
+      "event", 
+      "listing", 
+      "sales"
+    ]
 }
 
 const validPayment = (paymentReceipt: String) : Boolean => {
