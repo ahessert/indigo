@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "module": "CommonJS",
+    "target": "ES2019",
+    "noImplicitAny": true,
+    "preserveConstEnums": true,
+    "outDir": "./build",
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "sourceMap": true,
+    "watch": true,
+    "rootDir": "src"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
+}

@@ -3,33 +3,26 @@ import AWS from "aws-sdk";
 import { ModelResults } from "./interfaces";
 
 const redshiftClusterID = 'redshift-cluster-1'
-const redshiftUser = 'andrewhessert'
 const redshiftDB = 'dev'
-const awsRegion = 'us-east-1'
 
 export class RedshiftHandler {
     private redshiftClient : AWS.RedshiftData;
   
     constructor() {
-      this.redshiftClient = new AWS.RedshiftData({region: awsRegion});
+      this.redshiftClient = new AWS.RedshiftData();
     };
     
     selectTable = async (tableName: String) => {
-        const query : string = `SELECT * FROM ${tableName}`
+        const query : string = `SELECT * FROM ${tableName} LIMIT 50`
         console.log(query)
         const executionObject : AWS.RedshiftData.ExecuteStatementInput = {
             ClusterIdentifier: redshiftClusterID,
-            DbUser: redshiftUser,
             Database: redshiftDB,
             Sql: query
         }
         const redshiftResponse = await this.redshiftClient.executeStatement(executionObject, 
-            (err, data) => {
-            if (err) {
-                console.log(err)
-            } else {
-                
-            }
+            (err) => {
+                if (err) {console.log(err)}
         }).promise()
 
         const nonNullExecutionId = redshiftResponse.Id!
