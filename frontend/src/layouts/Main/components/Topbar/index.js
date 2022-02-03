@@ -6,20 +6,20 @@ import { alpha, useTheme } from '@mui/material/styles';
 import MenuIcon from '@mui/icons-material/Menu';
 // import ThemeModeToggler from 'components/ThemeModeToggler';
 
-import { SingleNavItem, MultiNavItem } from './components';
+import { SingleNavItem } from './components';
 import { WalletButton } from 'components';
 
 const Topbar = ({ onSidebarOpen, pages, colorInvert = false }) => {
   const theme = useTheme();
   const { mode } = theme.palette;
-  const { explore, market, developers } = pages;
+  const { market, developers } = pages;
 
   return (
     <Box
       display={'flex'}
       justifyContent={'space-between'}
       alignItems={'center'}
-      marginY="10px"
+      marginTop="10px"
     >
       <Box
         display={'flex'}
@@ -29,7 +29,7 @@ const Topbar = ({ onSidebarOpen, pages, colorInvert = false }) => {
           display={'flex'}
           component="a"
           href="/"
-          title="theFront"
+          title="Indigo"
           width="100px"
         >
           <Box
@@ -47,12 +47,6 @@ const Topbar = ({ onSidebarOpen, pages, colorInvert = false }) => {
           sx={{ display: { xs: 'none', md: 'flex' }, gap: '30px' }}
           alignItems={'center'}
         >
-          <MultiNavItem
-            title={'Explore'}
-            id={'explore-pages'}
-            items={explore}
-            colorInvert={colorInvert}
-          />
           <SingleNavItem
             id={'market-page'}
             items={market}
@@ -65,7 +59,7 @@ const Topbar = ({ onSidebarOpen, pages, colorInvert = false }) => {
           />
         </Box>
       </Box>
-      <Box sx={{display: {xs:'none', md:'block'}}}>
+      <Box sx={{ display: { xs: 'none', md: 'block' } }}>
         <WalletButton />
       </Box>
       <Box sx={{ display: { xs: 'block', md: 'none' } }} alignItems={'center'}>

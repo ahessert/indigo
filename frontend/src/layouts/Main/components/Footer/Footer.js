@@ -42,6 +42,21 @@ const Footer = () => {
           width={1}
           flexDirection={{ xs: 'column', sm: 'row' }}
         >
+          <Box display="flex" flexWrap={'wrap'} alignItems={'center'}>
+            {links.map(({ title, uri }, index) => (
+              <Box marginTop={1} marginRight={2} key={`${title}-${index}`}>
+                <Link
+                  underline="none"
+                  component="a"
+                  href={uri}
+                  color="text.primary"
+                  variant={'subtitle2'}
+                >
+                  {title}
+                </Link>
+              </Box>
+            ))}
+          </Box>
           <Box
             display={'flex'}
             component="a"
@@ -58,21 +73,6 @@ const Footer = () => {
               width={1}
             />
           </Box>
-          <Box display="flex" flexWrap={'wrap'} alignItems={'center'}>
-            {links.map(({ title, uri }, index) => (
-              <Box marginTop={1} marginRight={2} key={`${title}-${index}`}>
-                <Link
-                  underline="none"
-                  component="a"
-                  href={uri}
-                  color="text.primary"
-                  variant={'subtitle2'}
-                >
-                  {title}
-                </Link>
-              </Box>
-            ))}
-          </Box>
         </Box>
       </Grid>
       <Grid item xs={12}>
@@ -82,7 +82,7 @@ const Footer = () => {
           color="text.secondary"
           gutterBottom
         >
-          &copy; Indigo. 2021, All rights reserved
+          &copy; 2022 Indigo Labs. All rights reserved
         </Typography>
       </Grid>
     </Grid>

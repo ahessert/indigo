@@ -27,7 +27,7 @@ const Hero = () => {
                 fontWeight: 700,
               }}
             >
-              Indigo App Title
+              Indigo Placeholder
             </Typography>
           </Box>
           <Box marginBottom={3}>

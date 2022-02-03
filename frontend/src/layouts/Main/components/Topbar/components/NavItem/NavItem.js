@@ -94,7 +94,7 @@ const MultiNavItem = ({ title, id, items, colorInvert = false }) => {
           '.MuiPaper-root': {
             maxWidth: items.length > 12 ? 350 : 250,
             padding: 2,
-            marginTop: 2,
+            marginTop: 4,
             borderTopRightRadius: 0,
             borderTopLeftRadius: 0,
             borderBottomRightRadius: 8,

@@ -5,195 +5,231 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
+import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
+import Button from '@mui/material/Button';
+import PropTypes from 'prop-types';
 
 const mock = [
   {
-    color: colors.blue[500],
-    title: 'Web design',
-    jobTitle: 'Web designer internship',
-    type: 'Full time',
-    location: 'Milan, Italy',
+    title: 'Near Defi dApp Data',
+    dapps: ['sushiswap'],
+    author: 'Nick Fury',
+    description:
+      'locavore tbh health goth street art tumblr 3 wolf moon single-origin coffee vexillologist +1 skateboard taxidermy copper mug master cleanse hexagon kitsch.',
+    price: 7,
   },
   {
-    color: colors.purple[500],
-    title: 'Business analytics',
-    jobTitle: 'Senior business analysts',
-    type: 'Full time',
-    location: 'Rome, Italy',
+    title: 'Near + Sushi Volume',
+    dapps: ['sushiswap', 'near'],
+    author: 'Jack Black',
+    description:
+      'locavore tbh health goth street art tumblr 3 wolf moon single-origin coffee vexillologist +1 skateboard taxidermy copper mug master cleanse hexagon kitsch.',
+    price: 7,
   },
   {
-    color: colors.amber[500],
-    title: 'photography',
-    jobTitle: 'Mid-level photographer',
-    type: 'Remote',
-    location: 'Yerevan, Armenia',
+    title: 'Aurora + Curve',
+    dapps: ['sushiswap', 'near', 'curve'],
+    author: 'Nick Fury',
+    description:
+      'locavore tbh health goth street art tumblr 3 wolf moon single-origin coffee vexillologist +1 skateboard taxidermy copper mug master cleanse hexagon kitsch.',
+    price: 7,
   },
   {
-    color: colors.indigo[500],
-    title: 'Video creating',
-    jobTitle: 'Senior video creator',
-    type: 'Part time',
-    location: 'Paris, France',
+    title: 'Aurora + Curve',
+    dapps: ['sushiswap', 'twitter', 'curve', 'chainlink'],
+    author: 'Nick Fury',
+    description:
+      'locavore tbh health goth street art tumblr 3 wolf moon single-origin coffee vexillologist +1 skateboard taxidermy copper mug master cleanse hexagon kitsch.',
+    price: 7,
   },
   {
-    color: colors.pink[500],
-    title: 'Health & fitness',
-    jobTitle: 'Expert fitness consultant',
-    type: 'Remote',
-    location: 'Yerevan, Armenia',
+    title: 'Near Defi dApp Data',
+    dapps: ['twitter', 'chainlink', 'near'],
+    author: 'Nick Fury',
+    description:
+      'locavore tbh health goth street art tumblr 3 wolf moon single-origin coffee vexillologist +1 skateboard taxidermy copper mug master cleanse hexagon kitsch.',
+    price: 7,
   },
   {
-    color: colors.green[500],
-    title: 'marketing',
-    jobTitle: 'Senior digital marketing specialist',
-    type: 'Full time',
-    location: 'Milan, Italy',
-  },
-  {
-    color: colors.deepOrange[500],
-    title: 'Finances & sales',
-    jobTitle: 'Senior sales manager',
-    type: 'Part Time',
-    location: 'Paris, France',
-  },
-  {
-    color: colors.red[500],
-    title: 'Graphic design',
-    jobTitle: 'Junior Graphic designer',
-    type: 'Remote',
-    location: 'Milan, Italy',
-  },
-  {
-    color: colors.purple[500],
-    title: 'Business analytics',
-    jobTitle: 'Senior business analysts',
-    type: 'Full time',
-    location: 'Rome, Italy',
+    title: 'Near + Sushi Volume',
+    dapps: ['near', 'ethereum'],
+    author: 'Nick Fury',
+    description:
+      'locavore tbh health goth street art tumblr 3 wolf moon single-origin coffee vexillologist +1 skateboard taxidermy copper mug master cleanse hexagon kitsch.',
+    price: 7,
   },
 ];
-const Jobs = () => {
-  const theme = useTheme();
 
+const randomColors = [
+  colors.purple[500],
+  colors.red[500],
+  colors.green[500],
+  colors.indigo[500],
+  colors.pink[500],
+  colors.amber[500],
+  colors.blue[500],
+];
+
+const imageMappings = {
+  near: 'near.svg',
+  sushiswap: 'sushiswap.svg',
+  curve: 'curve.svg',
+  aurora: 'aurora.png',
+  twitter: 'twitter.svg',
+  chainlink: 'chainlink.svg',
+  terra: 'terra.svg',
+  ethereum: 'eth.svg',
+};
+
+function getLogo(dapp) {
+  const path = imageMappings[dapp] ?? 'default.jpeg';
+  return `./logo/${path}`;
+}
+
+const VerticalCard = ({ item, i }) => {
+  const theme = useTheme();
+  const imageHeight = '250px';
+
+  function createCardMedia(dapps) {
+    const [size, wrap] = dapps.length === 2 ? [150, 'nowrap'] : [130, 'wrap'];
+    let component = (
+      <CardMedia src={getLogo(dapps[0])} component="img" height="100%" />
+    );
+
+    if (dapps.length > 1) {
+      component = (
+        <>
+          {dapps.map((dapp, index) => (
+            <Box
+              sx={{
+                zIndex: '1',
+                display: 'flex',
+                justifyContent: 'center',
+                width: size,
+                height: size,
+              }}
+              key={`${dapp}-${index}`}
+            >
+              <img
+                src={getLogo(dapp)}
+                style={{
+                  height: '100%',
+                  filter:
+                    'drop-shadow(1px 1px 0 black) drop-shadow(-1px -1px 0 black)',
+                }}
+              />
+            </Box>
+          ))}
+        </>
+      );
+    }
+    return (
+      <Box
+        height={imageHeight}
+        sx={{
+          borderRadius: '10px',
+          display: 'flex',
+          flexWrap: wrap,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        {component}
+      </Box>
+    );
+  }
+
+  return (
+    <Grid item xs={12} sm={6} md={4} key={'d'}>
+      <Box
+        display={'block'}
+        width={1}
+        height={1}
+        sx={{
+          textDecoration: 'none',
+          transition: 'all .2s ease-in-out',
+          '&:hover': {
+            transform: `translateY(-${theme.spacing(1 / 2)})`,
+          },
+        }}
+      >
+        <Box
+          component={Card}
+          width={1}
+          height={1}
+          data-aos={'fade-up'}
+          data-aos-delay={1 * 100}
+          data-aos-offset={100}
+          data-aos-duration={600}
+          flexDirection={'column'}
+          display={'flex'}
+          sx={{
+            '&:hover': {
+              borderRight: `${theme.spacing(1 / 2)} solid ${randomColors[i]}`,
+            },
+          }}
+        >
+          {createCardMedia(item.dapps)}
+          <CardContent
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+            }}
+          >
+            <Typography variant={'h4'} sx={{ fontWeight: 'bold' }}>
+              {item.title}
+            </Typography>
+            <Typography variant={'h6'} sx={{ fontWeight: 500 }}>
+              Author: {item.author}
+            </Typography>
+            <Box
+              display={'flex'}
+              alignItems={'center'}
+              marginTop={2}
+              marginBottom={3}
+            >
+              <Typography variant={'subtitle2'} color="text.secondary">
+                {item.description}
+              </Typography>
+            </Box>
+            <Button variant={'contained'} size="large" fullWidth>
+              Payload: {item.price} $INDG
+            </Button>
+          </CardContent>
+        </Box>
+      </Box>
+    </Grid>
+  );
+};
+
+const Jobs = ({ data }) => {
+  console.log(data);
   return (
     <Box>
       <Grid container spacing={4}>
         {mock.map((item, i) => (
-          <Grid item xs={12} sm={6} md={4} key={i}>
-            <Box
-              display={'block'}
-              width={1}
-              height={1}
-              sx={{
-                textDecoration: 'none',
-                transition: 'all .2s ease-in-out',
-                '&:hover': {
-                  transform: `translateY(-${theme.spacing(1 / 2)})`,
-                },
-              }}
-            >
-              <Box
-                component={Card}
-                width={1}
-                height={1}
-                data-aos={'fade-up'}
-                data-aos-delay={i * 100}
-                data-aos-offset={100}
-                data-aos-duration={600}
-                flexDirection={'column'}
-                display={'flex'}
-                sx={{
-                  '&:hover': {
-                    borderRight: `${theme.spacing(1 / 2)} solid ${item.color}`,
-                  },
-                }}
-              >
-                <CardContent
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'flex-start',
-                  }}
-                >
-                  <Box
-                    padding={1 / 2}
-                    marginBottom={2}
-                    bgcolor={item.color}
-                    borderRadius={2}
-                  >
-                    <Typography
-                      variant={'caption'}
-                      align={'center'}
-                      sx={{ color: theme.palette.common.white }}
-                    >
-                      {item.title}
-                    </Typography>
-                  </Box>
-                  <Typography
-                    variant={'h6'}
-                    gutterBottom
-                    sx={{ fontWeight: 500 }}
-                  >
-                    {item.jobTitle}
-                  </Typography>
-                  <Box display={'flex'} alignItems={'center'} marginY={1}>
-                    <Box
-                      component={'svg'}
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      width={16}
-                      height={16}
-                      marginRight={1}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                      />
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                      />
-                    </Box>
-                    <Typography variant={'subtitle2'} color="text.secondary">
-                      {item.location}
-                    </Typography>
-                  </Box>
-                  <Box display={'flex'} alignItems={'center'}>
-                    <Box
-                      component={'svg'}
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      width={16}
-                      height={16}
-                      marginRight={1}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </Box>
-                    <Typography variant={'subtitle2'} color="text.secondary">
-                      {item.type}
-                    </Typography>
-                  </Box>
-                </CardContent>
-              </Box>
-            </Box>
-          </Grid>
+          <VerticalCard item={item} i={i} key={item.title + i} />
         ))}
       </Grid>
     </Box>
   );
+};
+
+VerticalCard.propTypes = {
+  item: PropTypes.shape({
+    dapps: PropTypes.arrayOf(PropTypes.string).isRequired,
+    title: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    description: PropTypes.string.isRequired,
+    author: PropTypes.string.isRequired,
+  }),
+  i: PropTypes.number.isRequired,
+};
+
+Jobs.propTypes = {
+  data: PropTypes.object,
 };
 
 export default Jobs;
