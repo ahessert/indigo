@@ -83,7 +83,11 @@ const VerticalCard = ({ item }) => {
   function createCardMedia(dapps) {
     const [size, wrap] = dapps.length === 2 ? [150, 'nowrap'] : [130, 'wrap'];
     let component = (
-      <CardMedia src={getLogo(dapps[0])} component="img" height="100%" />
+      <CardMedia
+        src={getLogo(dapps[0])}
+        component="img"
+        sx={{ width: '80%' }}
+      />
     );
 
     if (dapps.length > 1) {
@@ -156,7 +160,9 @@ const VerticalCard = ({ item }) => {
           sx={{
             background: 'linear-gradient(#1E0067, #4900FF)',
             '&:hover': {
-              borderRight: `${theme.spacing(1 / 2)} solid ${theme.palette.secondary.main}`,
+              borderRight: `${theme.spacing(1 / 2)} solid ${
+                theme.palette.secondary.main
+              }`,
             },
           }}
         >

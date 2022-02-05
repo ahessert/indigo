@@ -59,7 +59,7 @@ const Main = ({ children, colorInvert = false }) => {
       />
       <main
         style={{
-          background: `linear-gradient(black 20%, ${theme.palette.background.paper})`,
+          background: `linear-gradient(black 30%, ${theme.palette.background.paper})`,
         }}
       >
         {children}
