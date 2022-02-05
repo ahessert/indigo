@@ -1,13 +1,14 @@
 import React from 'react';
-import Main from 'layouts/Main';
+import Layout from 'layout';
 import Container from 'components/Container';
-import { Jobs, SearchBar } from 'components';
+import { HeroImage, Jobs, SearchBar } from 'components';
 import { Typography, Box } from '@mui/material';
 
 const JobListing = () => {
   return (
-    <Main>
-      <Container>
+    <Layout>
+      <HeroImage/>
+      <Container style={{position:'relative'}}>
         <Box
           display="flex"
           justifyContent="space-between"
@@ -25,7 +26,7 @@ const JobListing = () => {
           <Jobs />
         </Box>
       </Container>
-    </Main>
+    </Layout>
   );
 };
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import { useTheme } from '@mui/material/styles';
-import { colors } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -61,16 +60,6 @@ const mock = [
   },
 ];
 
-const randomColors = [
-  colors.purple[500],
-  colors.red[500],
-  colors.green[500],
-  colors.indigo[500],
-  colors.pink[500],
-  colors.amber[500],
-  colors.blue[500],
-];
-
 const imageMappings = {
   near: 'near.svg',
   sushiswap: 'sushiswap.svg',
@@ -87,7 +76,7 @@ function getLogo(dapp) {
   return `./logo/${path}`;
 }
 
-const VerticalCard = ({ item, i }) => {
+const VerticalCard = ({ item }) => {
   const theme = useTheme();
   const imageHeight = '250px';
 
@@ -165,8 +154,9 @@ const VerticalCard = ({ item, i }) => {
           flexDirection={'column'}
           display={'flex'}
           sx={{
+            background: 'linear-gradient(#1E0067, #4900FF)',
             '&:hover': {
-              borderRight: `${theme.spacing(1 / 2)} solid ${randomColors[i]}`,
+              borderRight: `${theme.spacing(1 / 2)} solid ${theme.palette.secondary.main}`,
             },
           }}
         >

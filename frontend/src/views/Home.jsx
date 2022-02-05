@@ -1,7 +1,7 @@
 import React from 'react';
 import { alpha, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Main from 'layouts/Main';
+import Layout from 'layout';
 import Container from 'components/Container';
 import {
   Hero,
@@ -12,7 +12,7 @@ const MobileApp = () => {
   const theme = useTheme();
 
   return (
-    <Main>
+    <Layout>
       <Box
         position={'relative'}
         sx={{
@@ -69,7 +69,7 @@ const MobileApp = () => {
           </Box>
         </Box>
       </Container>
-    </Main>
+    </Layout>
   );
 };
 

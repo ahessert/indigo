@@ -4,6 +4,8 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { alpha, useTheme } from '@mui/material/styles';
 import MenuIcon from '@mui/icons-material/Menu';
+import IndigoLogo from 'svg/illustrations/IndigoLogo';
+import IndigoIcon from 'svg/illustrations/IndigoIcon';
 // import ThemeModeToggler from 'components/ThemeModeToggler';
 
 import { SingleNavItem } from './components';
@@ -11,7 +13,6 @@ import { WalletButton } from 'components';
 
 const Topbar = ({ onSidebarOpen, pages, colorInvert = false }) => {
   const theme = useTheme();
-  const { mode } = theme.palette;
   const { market, developers } = pages;
 
   return (
@@ -24,24 +25,25 @@ const Topbar = ({ onSidebarOpen, pages, colorInvert = false }) => {
       <Box
         display={'flex'}
         justifyContent={{ xs: 'space-between', md: 'flex-start' }}
+        alignItems="center"
+        sx={{ gap: '30px' }}
       >
         <Box
           display={'flex'}
+          alignItems="flex-start"
+          justifyContent="space-between"
           component="a"
           href="/"
           title="Indigo"
-          width="100px"
+          width="185px"
+          marginTop="10px"
         >
-          <Box
-            component={'img'}
-            src={
-              mode === 'light' && !colorInvert
-                ? './indigo_logo.png'
-                : './indigo_logo.png'
-            }
-            height='70px'
-            width='70px'
-          />
+          <Box width={{ xs: '50px' }}>
+            <IndigoIcon />
+          </Box>
+          <Box width={{ xs: '120px' }}>
+            <IndigoLogo />
+          </Box>
         </Box>
         <Box
           sx={{ display: { xs: 'none', md: 'flex' }, gap: '30px' }}
@@ -61,6 +63,9 @@ const Topbar = ({ onSidebarOpen, pages, colorInvert = false }) => {
       </Box>
       <Box sx={{ display: { xs: 'none', md: 'block' } }}>
         <WalletButton />
+        <Button variant="contained" color="secondary">
+          Mint NFT Model
+        </Button>
       </Box>
       <Box sx={{ display: { xs: 'block', md: 'none' } }} alignItems={'center'}>
         <Button

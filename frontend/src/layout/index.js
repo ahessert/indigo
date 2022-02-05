@@ -6,14 +6,11 @@ import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import AppBar from '@mui/material/AppBar';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
-
-import Container from 'components/Container';
-
+import pages from './navigation';
 import { Topbar, Sidebar, Footer } from './components';
+import { Container } from 'components';
 
-import pages from '../navigation';
-
-const Main = ({ children, colorInvert = false, bgcolor = 'transparent' }) => {
+const Main = ({ children, colorInvert = false }) => {
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.up('md'), {
     defaultMatches: true,
@@ -39,12 +36,12 @@ const Main = ({ children, colorInvert = false, bgcolor = 'transparent' }) => {
   return (
     <Box>
       <AppBar
-        position={'sticky'}
+        position={'absolute'}
         sx={{
           top: 0,
-          backgroundColor: trigger ? theme.palette.background.paper : bgcolor,
+          background: `linear-gradient(${theme.palette.background.paper}, rgba(0,0,0,0))`,
         }}
-        elevation={trigger ? 1 : 0}
+        elevation={0}
       >
         <Container paddingY={1}>
           <Topbar
@@ -60,7 +57,11 @@ const Main = ({ children, colorInvert = false, bgcolor = 'transparent' }) => {
         variant="temporary"
         pages={pages}
       />
-      <main>
+      <main
+        style={{
+          background: `linear-gradient(black 20%, ${theme.palette.background.paper})`,
+        }}
+      >
         {children}
         <Divider />
       </main>
