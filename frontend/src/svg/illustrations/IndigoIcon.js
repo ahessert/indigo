@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 // import { useTheme } from '@mui/material/styles';
 
-const IndigoLogo = ({ style }) => {
+const IndigoIcon = ({ style }) => {
   // const theme = useTheme();
 
   return (
@@ -12,7 +12,7 @@ const IndigoLogo = ({ style }) => {
       viewBox="0 0 77 77"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      {...style}
+      style={style}
     >
       <path
         fillRule="evenodd"
@@ -24,8 +24,8 @@ const IndigoLogo = ({ style }) => {
   );
 };
 
-IndigoLogo.propTypes = {
-  style: PropTypes.Object,
+IndigoIcon.propTypes = {
+  style: PropTypes.object,
 };
 
-export default IndigoLogo;
+export default IndigoIcon;

@@ -8,9 +8,9 @@ import AppBar from '@mui/material/AppBar';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import pages from './navigation';
 import { Topbar, Sidebar, Footer } from './components';
-import { Container } from 'components';
+import { Container, HeroImage } from 'components';
 
-const Main = ({ children, colorInvert = false }) => {
+const Main = ({ children, colorInvert = false, hideHero }) => {
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.up('md'), {
     defaultMatches: true,
@@ -57,9 +57,10 @@ const Main = ({ children, colorInvert = false }) => {
         variant="temporary"
         pages={pages}
       />
+      <HeroImage hidden={hideHero}/>
       <main
         style={{
-          background: `linear-gradient(black 30%, ${theme.palette.background.paper})`,
+          background: `linear-gradient(${theme.palette.common.black}, ${theme.palette.background.paper})`,
         }}
       >
         {children}
@@ -76,6 +77,7 @@ Main.propTypes = {
   children: PropTypes.node,
   colorInvert: PropTypes.bool,
   bgcolor: PropTypes.string,
+  hideHero: PropTypes.bool
 };
 
 export default Main;

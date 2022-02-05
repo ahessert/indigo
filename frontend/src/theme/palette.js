@@ -49,8 +49,8 @@ export const dark = {
     contrastText: '#fff',
   },
   secondary: {
-    main: '#FF008A',
-    light: '##FF85C6',
+    main: '#F433AB',
+    light: '#FF85C6',
     dark: '#cc006d',
     contrastText: 'rgba(0, 0, 0, 0.87)',
   },
