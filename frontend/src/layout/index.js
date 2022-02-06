@@ -10,7 +10,7 @@ import pages from './navigation';
 import { Topbar, Sidebar, Footer } from './components';
 import { Container, HeroImage } from 'components';
 
-const Main = ({ children, colorInvert = false, hideHero }) => {
+const Main = ({ children, colorInvert = false, isLanding = false }) => {
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.up('md'), {
     defaultMatches: true,
@@ -48,6 +48,7 @@ const Main = ({ children, colorInvert = false, hideHero }) => {
             onSidebarOpen={handleSidebarOpen}
             pages={pages}
             colorInvert={trigger ? false : colorInvert}
+            isLanding={isLanding}
           />
         </Container>
       </AppBar>
@@ -57,7 +58,7 @@ const Main = ({ children, colorInvert = false, hideHero }) => {
         variant="temporary"
         pages={pages}
       />
-      <HeroImage hidden={hideHero}/>
+      <HeroImage hidden={isLanding} />
       <main
         style={{
           background: `linear-gradient(${theme.palette.common.black}, ${theme.palette.background.paper})`,
@@ -77,7 +78,7 @@ Main.propTypes = {
   children: PropTypes.node,
   colorInvert: PropTypes.bool,
   bgcolor: PropTypes.string,
-  hideHero: PropTypes.bool
+  isLanding: PropTypes.bool,
 };
 
 export default Main;

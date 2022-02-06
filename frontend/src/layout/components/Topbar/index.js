@@ -11,7 +11,12 @@ import IndigoIcon from 'svg/illustrations/IndigoIcon';
 import { SingleNavItem } from './components';
 import { WalletButton } from 'components';
 
-const Topbar = ({ onSidebarOpen, pages, colorInvert = false }) => {
+const Topbar = ({
+  onSidebarOpen,
+  pages,
+  colorInvert = false,
+  isLanding = false,
+}) => {
   const theme = useTheme();
   const { market, developers } = pages;
 
@@ -61,27 +66,36 @@ const Topbar = ({ onSidebarOpen, pages, colorInvert = false }) => {
           />
         </Box>
       </Box>
-      <Box sx={{ display: { xs: 'none', md: 'block' } }}>
-        <WalletButton />
-        <Button variant="contained" color="secondary">
-          Mint NFT Model
-        </Button>
-      </Box>
-      <Box sx={{ display: { xs: 'block', md: 'none' } }} alignItems={'center'}>
-        <Button
-          onClick={() => onSidebarOpen()}
-          aria-label="Menu"
-          variant={'outlined'}
-          sx={{
-            borderRadius: 2,
-            minWidth: 'auto',
-            padding: 1,
-            borderColor: alpha(theme.palette.divider, 0.2),
-          }}
-        >
-          <MenuIcon />
-        </Button>
-      </Box>
+      {isLanding ? (
+        <Button variant="contained"> Enter App</Button>
+      ) : (
+        <>
+          <Box sx={{ display: { xs: 'none', md: 'flex' }, gap:'15px'}}>
+            <WalletButton />
+            <Button variant="contained" color="secondary">
+              Mint NFT Model
+            </Button>
+          </Box>
+          <Box
+            sx={{ display: { xs: 'block', md: 'none' } }}
+            alignItems={'center'}
+          >
+            <Button
+              onClick={() => onSidebarOpen()}
+              aria-label="Menu"
+              variant={'outlined'}
+              sx={{
+                borderRadius: 2,
+                minWidth: 'auto',
+                padding: 1,
+                borderColor: alpha(theme.palette.divider, 0.2),
+              }}
+            >
+              <MenuIcon />
+            </Button>
+          </Box>
+        </>
+      )}
     </Box>
   );
 };
@@ -90,6 +104,7 @@ Topbar.propTypes = {
   onSidebarOpen: PropTypes.func,
   pages: PropTypes.object,
   colorInvert: PropTypes.bool,
+  isLanding: PropTypes.bool,
 };
 
 export default Topbar;

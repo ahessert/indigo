@@ -9,7 +9,7 @@ const Home = () => {
   const theme = useTheme();
 
   return (
-    <Layout hideHero>
+    <Layout isLanding>
       <Box sx={{ position: 'relative' }}>
         <div className="meteor m1"/>
         <div className="meteor m2"/>
@@ -49,11 +49,11 @@ const Home = () => {
                 zIndex: 1,
                 top: 0,
                 left: 0,
-                height: '70%',
+                height: '80%',
                 backgroundSize: '18px 18px',
                 backgroundImage: `radial-gradient(${alpha(
                   theme.palette.primary.dark,
-                  0.4,
+                  0.6,
                 )} 20%, transparent 20%)`,
                 opacity: 0.2,
               },
