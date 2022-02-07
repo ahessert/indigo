@@ -62,7 +62,7 @@ export const dark = {
   background: {
     paper: '#270480',
     default: '#270480',
-    level2: '##3C06C6',
-    level1: '##7E4EF9',
+    level2: '#3C06C6',
+    level1: '#7E4EF9',
   },
 };
