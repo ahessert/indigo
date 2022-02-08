@@ -61,7 +61,7 @@ export class DynamoHandler {
     const params : AWS.DynamoDB.Types.UpdateItemInput = {
         TableName: this.dynamoTable,
         Key: this._format_keys(keys),
-        UpdateExpression: `SET ${  updateParams.map( x => x.attributeName + ' = ' + ':' + x.attributeName).join(', ') }`,
+        UpdateExpression: `SET ${  updateParams.map( x => x.attributeName + ' = :' + x.attributeName).join(', ') }`,
         ExpressionAttributeValues: Object.fromEntries(updateParams.map(x => [':' + x.attributeName, x.attributeValue]) )
     }
     

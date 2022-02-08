@@ -1,5 +1,4 @@
 import { DynamoHandler } from '../helpers/dynamoHandler';
-import { EventProcessor } from '../interfaces';
 import { IndigoContract } from '../helpers/contractService';
 import { MintModelProcessor } from './newModel';
 
@@ -8,19 +7,17 @@ const indigo = new IndigoContract();
 
 enum ContractEvent {
     MintModel="MintModel",
-    // New events to handle
-}
-const EventProcessors : Record<ContractEvent,EventProcessor> = {
-    MintModel: MintModelProcessor
 }
 
 const EventPoll = class {
     eventToPoll: ContractEvent;
-    eventProcessor : EventProcessor;
+    eventProcessor : typeof MintModelProcessor;
+    pollTrackingKey : string;
 
     constructor(contractEvent: ContractEvent) {
         this.eventToPoll = contractEvent;
-        this.eventProcessor = EventProcessors[contractEvent]
+        this.eventProcessor = MintModelProcessor;
+        this.pollTrackingKey = `LastBlockQueried:${contractEvent}`
     }
 
     private _getContractFilter() {
@@ -32,7 +29,7 @@ const EventPoll = class {
     }
 
     private _getLastBlockQueried = async () : Promise<number> => {
-        const key = {primaryKey: this.eventProcessor.pollProgressPK}
+        const key = {primaryKey: this.pollTrackingKey}
         const response = await dynamo.getDynamoRecord(key)
         
         if (!response.Item) {
@@ -48,7 +45,7 @@ const EventPoll = class {
 
     private _updateLastBlockQueried = async (blockNumbers : number[]) => {
         const lastBlock = Math.max(...blockNumbers)
-        const key = {primaryKey: this.eventProcessor.pollProgressPK};
+        const key = {primaryKey: this.pollTrackingKey};
         const updateParams = {
             attributeName: "blockNumber",
             attributeValue: {"N": `${lastBlock}`}
@@ -64,11 +61,11 @@ const EventPoll = class {
         const lastBlockQueried = await this._getLastBlockQueried()
         const query = indigo.contract.queryFilter(eventFilter,lastBlockQueried)
         
-        await query.then((data) => {
+        await query.then(async (data) => {
             console.log(`Found ${data.length} ${this.eventToPoll} events`)
             for (let i = 0; i < data.length; i++) {
-                const newModel = this.eventProcessor.formatEvent(data[i].args!, data[i].blockNumber)
-                this.eventProcessor.processEvent(newModel)
+                const eventProcessor = new this.eventProcessor(data[i].args!, data[i].blockNumber)
+                await eventProcessor.processEvent()
                 blockNumbers.push(data[i].blockNumber)
             }
         })
@@ -83,6 +80,5 @@ const pollContractEvents = async () => {
     await indigo.setUpComplete;
     await eventPoll.run();
 }
-
 
 pollContractEvents()

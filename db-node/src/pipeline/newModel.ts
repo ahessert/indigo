@@ -1,7 +1,7 @@
 import { S3Handler } from "../helpers/s3Handler";
 import { LambdaHandler } from "../helpers/lambdaHandler";
 import { DynamoHandler } from "../helpers/dynamoHandler";
-import { DataModel, EventProcessor } from "../interfaces"
+import { DataModel } from "../interfaces"
 
 
 const DBT_S3_DIR = 'dbt'
@@ -12,54 +12,20 @@ const lamba = new LambdaHandler();
 const dynamo = new DynamoHandler();
 
 
-export const MintModelProcessor : EventProcessor = class {
-    static pollProgressPK = "LastBlockQueried:MintModelPoll";
+export class MintModelProcessor {
+    newModel: DataModel;
 
-    static isNewModel = async (tokenId : number) : Promise<boolean> => {
-        const primaryKey = `Model_${tokenId}_v0`;
-        const response = await dynamo.getDynamoRecord({primaryKey:primaryKey})
-        if (response.Item) {
-            return false
-        }
-        return true
-    }
+    constructor (event_args : ReadonlyArray<any>, blockNumber : number) {
+        const [
+            modelNameHash, 
+            authorHash, 
+            modelName, 
+            tokenId, 
+            cloneUrl, 
+            ipFee
+        ] = [...event_args]
 
-    static modelAttributes = (newModel: DataModel) : 
-        AWS.DynamoDB.Types.PutItemInputAttributeMap => {
-        return {
-            'PK': {
-                S: `Model_${newModel.tokenId}_v0`
-            },
-            'authorHash': {
-                S: newModel.author
-            },
-            'modelName': {
-                S: newModel.modelName
-            },
-            'cloneUrl': {
-                S: newModel.cloneUrl
-            },
-            'ipFee': {
-                N: String(newModel.ipFee)
-            },
-            'blockNumber': {
-                N: String(newModel.blockNumber)
-            },
-            'createdAt': {
-                S: Date.now().toString()
-            }
-          }
-        }
-
-    static saveNewModel = async (newModel: DataModel) => {
-        dynamo.createDynamoRecord(this.modelAttributes(newModel))
-    }
-
-    static formatEvent = (
-        [modelNameHash, authorHash, modelName, tokenId, cloneUrl, ipFee] : ReadonlyArray<any>,
-        blockNumber : number
-    ) : DataModel => {
-        return {
+        this.newModel = {
             modelName: modelName,
             author: authorHash,
             tokenId: tokenId,
@@ -69,20 +35,58 @@ export const MintModelProcessor : EventProcessor = class {
         }
     }
 
-    static processEvent = async (newModel: DataModel) => {
-        console.log(`Process ${newModel.modelName}`
-        + ` by ${ newModel.author} at ${newModel.cloneUrl}` 
-        + ` on block ${newModel.blockNumber}`);
+    private _isNewModel = async (tokenId : number) : Promise<boolean> => {
+        const primaryKey = `Model_${tokenId}_v0`;
+        const response = await dynamo.getDynamoRecord({primaryKey:primaryKey})
+        if (response.Item) {
+            return false
+        }
+        return true
+    }
 
-        if (! await this.isNewModel(newModel.tokenId) ) {
+    private _modelAttributes = () : AWS.DynamoDB.Types.PutItemInputAttributeMap => {
+        return {
+            'PK': {
+                S: `Model_${this.newModel.tokenId}_v0`
+            },
+            'authorHash': {
+                S: this.newModel.author
+            },
+            'modelName': {
+                S: this.newModel.modelName
+            },
+            'cloneUrl': {
+                S: this.newModel.cloneUrl
+            },
+            'ipFee': {
+                N: String(this.newModel.ipFee)
+            },
+            'blockNumber': {
+                N: String(this.newModel.blockNumber)
+            },
+            'createdAt': {
+                S: Date.now().toString()
+            }
+        }
+    }
+
+    private _saveNewModel = async () => {
+        dynamo.createDynamoRecord(this._modelAttributes())
+    }
+
+    processEvent = async () => {
+        console.log(`Process ${this.newModel.modelName}`
+        + ` by ${this.newModel.author} at ${this.newModel.cloneUrl}` 
+        + ` on block ${this.newModel.blockNumber}`);
+
+        if (! await this._isNewModel(this.newModel.tokenId) ) {
             console.log("Model already processed. No updates necessary.")
             return
         }
 
-        await Dbt.sendToDBT(newModel)
-        await this.saveNewModel(newModel)
+        await Dbt.sendToDBT(this.newModel)
+        await this._saveNewModel()
     }
-
 }
 
 class Dbt {

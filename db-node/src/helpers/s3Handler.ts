@@ -1,5 +1,4 @@
 import AWS from "aws-sdk";
-import { AWSError } from "aws-sdk/lib/error";
 
 const INDIGO_BUCKET = 'indigo-db-node';
 const AWS_REGION = 'us-east-1';

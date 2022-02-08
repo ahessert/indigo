@@ -12,9 +12,3 @@ export interface DataModel extends EventData {
     author: string;
     ipFee: number;
 }
-
-export interface EventProcessor {
-    pollProgressPK: string;
-    formatEvent([...args]: ReadonlyArray<any>, blockNumber : number) : EventData;
-    processEvent(event: EventData) : void;
-}
