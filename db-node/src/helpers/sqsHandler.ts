@@ -1,6 +1,6 @@
 import  AWS from "aws-sdk";
 
-const SQS_QUEUE_URL = "https://sqs.us-east-1.amazonaws.com/754091198799/Indigo-MySqsQueue-ZM8J5GAXF8PY"
+const SQS_QUEUE_URL = "https://sqs.us-east-1.amazonaws.com/754091198799/Indigo"
 const SQS_REGION = 'us-east-1'
 
 export class SqsHandler {
@@ -9,40 +9,6 @@ export class SqsHandler {
     constructor() {
         this.sqs = new AWS.SQS({region: SQS_REGION})
     }
-    
-    sendNewModelMessage = async (
-        tokenId: number, 
-        cloneURL: string, 
-        tokenURI: string,
-        blockNumber: number,
-        ) : Promise<void> => {
-
-        const params : AWS.SQS.SendMessageRequest = {
-            DelaySeconds: 0,
-            MessageAttributes: {
-                name: {
-                    DataType: "String",
-                    StringValue: "NewModel",
-                },
-                tokenId: {
-                    DataType: "Number",
-                    StringValue: `${tokenId}`,
-                },
-                cloneURL: {
-                    DataType: "String",
-                    StringValue: cloneURL,
-                },
-                blockNumber: {
-                    DataType: "Number",
-                    StringValue: `${blockNumber}`,
-                }
-            },
-            MessageBody: tokenURI,
-            QueueUrl: SQS_QUEUE_URL
-        };
-        
-        this.sendMessage(params);
-    };
 
     sendLastBlockMessage(blockNumber: number) {
         const messageName : string = "lastBlock"
@@ -63,6 +29,7 @@ export class SqsHandler {
             QueueUrl: SQS_QUEUE_URL
         };
         
+        console.log(`Checked up to block ${blockNumber}`)
         this.sendMessage(params);
     }
 

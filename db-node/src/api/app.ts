@@ -3,8 +3,8 @@ import {
   APIGatewayProxyResult,
 } from "aws-lambda";
 
-import { RedshiftHandler } from "./redshiftHandler"
-import { ModelResults } from "./interfaces";
+import { RedshiftHandler } from "../helpers/redshiftHandler"
+import { ModelResults } from "../interfaces";
 
 const redshiftHandler = new RedshiftHandler()
 

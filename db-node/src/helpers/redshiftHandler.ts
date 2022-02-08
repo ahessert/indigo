@@ -1,6 +1,6 @@
 import AWS from "aws-sdk";
 
-import { ModelResults } from "./interfaces";
+import { ModelResults } from "../interfaces";
 
 const redshiftClusterID = 'redshift-cluster-1'
 const redshiftUser = 'andrewhessert'
