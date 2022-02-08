@@ -13,7 +13,13 @@ contract Models is ERC721URIStorage {
     mapping (string => address) internal _modelOwners;
     mapping (string => uint64) internal _modelFees;
 
-    event MintModel(string indexed _modelName, address indexed _author, uint256 tokenId, string _cloneUrl);
+    event MintModel(
+        string indexed modelNameHash,
+        address indexed author, 
+        string modelName,
+        uint256 tokenId, 
+        string cloneUrl,
+        uint64 ipFee);
 
     constructor() ERC721("IndigoNFTs", "INFT") {}
 
@@ -62,7 +68,7 @@ contract Models is ERC721URIStorage {
         _modelFees[name] = ipFee;
 
         _setTokenURI(tokenId, _formatMetaData(name, cloneUrl, ipFee));
-        emit MintModel(name, msg.sender, tokenId, cloneUrl);
+        emit MintModel(name, msg.sender, name, tokenId, cloneUrl, ipFee);
     }
 
 }
