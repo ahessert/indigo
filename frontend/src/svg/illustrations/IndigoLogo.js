@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 // import { useTheme } from '@mui/material/styles';
 
-const IndigoLogo = ({style}) => {
+const IndigoLogo = ({ style }) => {
   // const theme = useTheme();
 
   return (
@@ -53,8 +53,7 @@ const IndigoLogo = ({style}) => {
 };
 
 IndigoLogo.propTypes = {
-  style: PropTypes.Object,
+  style: PropTypes.object,
 };
-
 
 export default IndigoLogo;

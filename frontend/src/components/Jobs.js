@@ -1,6 +1,5 @@
 import React from 'react';
 import { useTheme } from '@mui/material/styles';
-import { colors } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -9,6 +8,7 @@ import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import PropTypes from 'prop-types';
+import Ellipses from 'svg/illustrations/Ellipses';
 
 const mock = [
   {
@@ -29,7 +29,7 @@ const mock = [
   },
   {
     title: 'Aurora + Curve',
-    dapps: ['sushiswap', 'near', 'curve'],
+    dapps: ['sushiswap', 'nxar', 'curve'],
     author: 'Nick Fury',
     description:
       'locavore tbh health goth street art tumblr 3 wolf moon single-origin coffee vexillologist +1 skateboard taxidermy copper mug master cleanse hexagon kitsch.',
@@ -45,7 +45,7 @@ const mock = [
   },
   {
     title: 'Near Defi dApp Data',
-    dapps: ['twitter', 'chainlink', 'near'],
+    dapps: ['twitter', 'chainlink', 'near', 'terra', 'curve'],
     author: 'Nick Fury',
     description:
       'locavore tbh health goth street art tumblr 3 wolf moon single-origin coffee vexillologist +1 skateboard taxidermy copper mug master cleanse hexagon kitsch.',
@@ -61,16 +61,6 @@ const mock = [
   },
 ];
 
-const randomColors = [
-  colors.purple[500],
-  colors.red[500],
-  colors.green[500],
-  colors.indigo[500],
-  colors.pink[500],
-  colors.amber[500],
-  colors.blue[500],
-];
-
 const imageMappings = {
   near: 'near.svg',
   sushiswap: 'sushiswap.svg',
@@ -83,46 +73,57 @@ const imageMappings = {
 };
 
 function getLogo(dapp) {
-  const path = imageMappings[dapp] ?? 'default.jpeg';
-  return `./logo/${path}`;
+  const path = imageMappings[dapp];
+  return path ? `./logo/${path}` : undefined;
 }
 
-const VerticalCard = ({ item, i }) => {
+const VerticalCard = ({ item }) => {
   const theme = useTheme();
   const imageHeight = '250px';
 
   function createCardMedia(dapps) {
     const [size, wrap] = dapps.length === 2 ? [150, 'nowrap'] : [130, 'wrap'];
+    let ellipses = dapps.length > 4;
     let component = (
-      <CardMedia src={getLogo(dapps[0])} component="img" height="100%" />
+      <CardMedia
+        src={getLogo(dapps[0])}
+        component="img"
+        sx={{ width: '80%' }}
+      />
     );
 
+    // display logic for icons
     if (dapps.length > 1) {
-      component = (
-        <>
-          {dapps.map((dapp, index) => (
-            <Box
-              sx={{
-                zIndex: '1',
-                display: 'flex',
-                justifyContent: 'center',
-                width: size,
-                height: size,
+      let displayCount = 0;
+      const icons = dapps.map((dapp, index) => {
+        if (!getLogo(dapp) || displayCount >= 4) {
+          ellipses = true;
+          return;
+        }
+        displayCount += 1;
+        return (
+          <Box
+            sx={{
+              zIndex: '1',
+              display: 'flex',
+              justifyContent: 'center',
+              width: size,
+              height: size,
+            }}
+            key={`${dapp}-${index}`}
+          >
+            <img
+              src={getLogo(dapp)}
+              style={{
+                height: '100%',
+                filter:
+                  'drop-shadow(1px 1px 0 black) drop-shadow(-1px -1px 0 black)',
               }}
-              key={`${dapp}-${index}`}
-            >
-              <img
-                src={getLogo(dapp)}
-                style={{
-                  height: '100%',
-                  filter:
-                    'drop-shadow(1px 1px 0 black) drop-shadow(-1px -1px 0 black)',
-                }}
-              />
-            </Box>
-          ))}
-        </>
-      );
+            />
+          </Box>
+        );
+      });
+      component = <>{icons}</>;
     }
     return (
       <Box
@@ -133,9 +134,24 @@ const VerticalCard = ({ item, i }) => {
           flexWrap: wrap,
           justifyContent: 'center',
           alignItems: 'center',
+          position: 'relative',
         }}
       >
         {component}
+        {ellipses && (
+          <Box
+            sx={{
+              display: { xs: 'none', sm: 'block' },
+              position: 'absolute',
+              bottom: '0px',
+              right: '30px',
+              zIndex: '2',
+              width: '60px',
+            }}
+          >
+            <Ellipses />
+          </Box>
+        )}
       </Box>
     );
   }
@@ -165,8 +181,11 @@ const VerticalCard = ({ item, i }) => {
           flexDirection={'column'}
           display={'flex'}
           sx={{
+            background: 'linear-gradient(#1E0067, #4900FF)',
             '&:hover': {
-              borderRight: `${theme.spacing(1 / 2)} solid ${randomColors[i]}`,
+              borderRight: `${theme.spacing(1 / 2)} solid ${
+                theme.palette.secondary.main
+              }`,
             },
           }}
         >
@@ -194,8 +213,15 @@ const VerticalCard = ({ item, i }) => {
                 {item.description}
               </Typography>
             </Box>
-            <Button variant={'contained'} size="large" fullWidth>
-              Payload: {item.price} $INDG
+            <Button
+              variant={'outlined'}
+              size="large"
+              color="secondary"
+              fullWidth
+            >
+              <Typography variant={'h6'} fontWeight='bold'>
+                Payload: {item.price} $INDG
+              </Typography>
             </Button>
           </CardContent>
         </Box>

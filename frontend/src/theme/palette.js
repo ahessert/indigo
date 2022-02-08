@@ -27,6 +27,7 @@ export const light = {
     default: '#ffffff',
     level2: '#f5f5f5',
     level1: '#ffffff',
+    gradient: 'green'
   },
 };
 
@@ -48,9 +49,9 @@ export const dark = {
     contrastText: '#fff',
   },
   secondary: {
-    light: '#FFEA41',
-    main: '#FFE102',
-    dark: '#DBBE01',
+    main: '#F433AB',
+    light: '#FF85C6',
+    dark: '#cc006d',
     contrastText: 'rgba(0, 0, 0, 0.87)',
   },
   text: {
@@ -59,9 +60,9 @@ export const dark = {
   },
   divider: 'rgba(255, 255, 255, 0.12)',
   background: {
-    paper: '#222B45',
-    default: '#222B45',
-    level2: '#333',
-    level1: '#2D3748',
+    paper: '#270480',
+    default: '#270480',
+    level2: '#3C06C6',
+    level1: '#7E4EF9',
   },
 };

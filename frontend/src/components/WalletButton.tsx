@@ -18,7 +18,7 @@ function WalletButton() {
         </Button>
       ) : (
         <Button
-          variant="outlined"
+          variant="contained"
           color="primary"
           size="large"
           onClick={connect}
