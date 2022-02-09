@@ -4,8 +4,8 @@ const pages = {
     href: '/market'
   },
   developers: {
-    title: 'Developers',
-    href: '/developers'
+    title: 'Developer',
+    href: '/developer'
   }
 };
 

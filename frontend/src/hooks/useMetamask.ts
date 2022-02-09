@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ethers } from 'ethers';
+import { CHAIN_ID, CHAIN_ID_0x } from 'utils/constants';
 declare let window: any;
 
 function useMetamask() {
@@ -9,11 +10,25 @@ function useMetamask() {
 
   async function connect() {
     await window.ethereum.request({ method: 'eth_requestAccounts' });
-    const provider = new ethers.providers.Web3Provider(window.ethereum, 'any');
-    const signer = provider.getSigner();
+    const newProvider = new ethers.providers.Web3Provider(
+      window.ethereum,
+      'any',
+    );
+    const signer = newProvider.getSigner();
+
+    newProvider.on('network', async (newNetwork) => {
+      // trigger network change if not on Near network
+      if (newNetwork.chainId !== CHAIN_ID) {
+        await window.ethereum.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: CHAIN_ID_0x }],
+        });
+        window.location.reload();
+      }
+    });
 
     setUserAddress(await signer.getAddress());
-    setProvider(provider);
+    setProvider(newProvider);
     setSigner(signer);
   }
 

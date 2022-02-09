@@ -144,9 +144,9 @@ const VerticalCard = ({ item }) => {
               display: { xs: 'none', sm: 'block' },
               position: 'absolute',
               bottom: '0px',
-              right: '30px',
+              right: '45px',
               zIndex: '2',
-              width: '60px',
+              width: '30px',
             }}
           >
             <Ellipses />

@@ -6,6 +6,8 @@ import { alpha, useTheme } from '@mui/material/styles';
 import MenuIcon from '@mui/icons-material/Menu';
 import IndigoLogo from 'svg/illustrations/IndigoLogo';
 import IndigoIcon from 'svg/illustrations/IndigoIcon';
+import { useNavigate } from 'react-router-dom';
+
 // import ThemeModeToggler from 'components/ThemeModeToggler';
 
 import { SingleNavItem } from './components';
@@ -19,6 +21,7 @@ const Topbar = ({
 }) => {
   const theme = useTheme();
   const { market, developers } = pages;
+  const navigate = useNavigate();
 
   return (
     <Box
@@ -70,9 +73,13 @@ const Topbar = ({
         <Button variant="contained"> Enter App</Button>
       ) : (
         <>
-          <Box sx={{ display: { xs: 'none', md: 'flex' }, gap:'15px'}}>
+          <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: '15px' }}>
             <WalletButton />
-            <Button variant="contained" color="secondary">
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => navigate('/developer')}
+            >
               Mint NFT Model
             </Button>
           </Box>

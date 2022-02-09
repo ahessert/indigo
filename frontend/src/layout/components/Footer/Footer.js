@@ -4,10 +4,12 @@ import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
+import IndigoLogo from 'svg/illustrations/IndigoLogo';
 
 const Footer = () => {
   const theme = useTheme();
   const { mode } = theme.palette;
+  console.log(mode);
 
   const links = [
     {
@@ -44,7 +46,7 @@ const Footer = () => {
         >
           <Box display="flex" flexWrap={'wrap'} alignItems={'center'}>
             {links.map(({ title, uri }, index) => (
-              <Box marginTop={1} marginRight={2} key={`${title}-${index}`}>
+              <Box marginRight={2} key={`${title}-${index}`}>
                 <Link
                   underline="none"
                   component="a"
@@ -57,32 +59,17 @@ const Footer = () => {
               </Box>
             ))}
           </Box>
-          <Box
-            display={'flex'}
-            component="a"
-            href="/"
-            title="theFront"
-            width={80}
-          >
-            <Box
-              component={'img'}
-              src={
-                mode === 'light' ? './indigo_light.png' : './indigo_dark.png'
-              }
-              height={1}
-              width={1}
-            />
+          <Box component="a" href="/" title="Indigo" width={80}>
+            <IndigoLogo />
           </Box>
         </Box>
-      </Grid>
-      <Grid item xs={12}>
         <Typography
+          display={{ xs: 'none', md: 'block' }}
           align={'center'}
           variant={'subtitle2'}
           color="text.secondary"
-          gutterBottom
         >
-          &copy; 2022 Indigo Labs. All rights reserved
+          &copy; 2022 Indigo
         </Typography>
       </Grid>
     </Grid>

@@ -27,8 +27,9 @@ function useContract() {
 
   async function getModelData(
     modelName: string,
-    address?: string
+    address?: string,
   ): Promise<any> {
+    console.log(modelName, address);
     // call contract with some data
 
     // get response
@@ -49,9 +50,9 @@ function useContract() {
 
   async function mintModelNFT(
     modelData: { modelName: string; githubUrl: string },
-    address?: string
+    address?: string,
   ): Promise<boolean> {
-		// validate?
+    // validate?
     const from = address ?? userAddress;
     return await indigoContract.mintModelNFT(from, modelData);
   }
@@ -62,7 +63,7 @@ function useContract() {
     getModelData,
     getModelDetails,
     mintFreeTrialCoins,
-		mintModelNFT,
+    mintModelNFT,
   };
 }
 

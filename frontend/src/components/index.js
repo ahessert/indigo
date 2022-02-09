@@ -1,6 +1,6 @@
 import About from './About';
 import Container from './Container';
-import Graph from './Graph';
+import Table from './Table';
 import Hero from './Hero';
 import HeroImage from './HeroImage';
 import Jobs from './Jobs';
@@ -12,7 +12,7 @@ import WalletButton from './WalletButton';
 export {
   About,
   Container,
-  Graph,
+  Table,
   Hero,
   HeroImage,
   Jobs,

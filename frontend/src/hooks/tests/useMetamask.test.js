@@ -1,8 +1,7 @@
-/**
- * @jest-environment jsdom
- */
 import useMetamask from '../useMetamask';
 import { renderHook} from '@testing-library/react-hooks';
+import ethers from 'ethers';
+import ganache from 'ganache-cli';
 
 describe('Contract Tests', () => {
   let hook;

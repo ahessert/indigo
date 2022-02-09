@@ -1,9 +1,10 @@
 import React from 'react';
 import useMetamask from '../hooks/useMetamask';
 import { Button } from '@mui/material';
+import shortenAddress from 'utils/shortenAddress';
 
 function WalletButton() {
-  const { connect, disconnect, provider } = useMetamask();
+  const { connect, disconnect, provider, userAddress } = useMetamask();
 
   return (
     <>
@@ -14,7 +15,7 @@ function WalletButton() {
           size="large"
           onClick={disconnect}
         >
-          Connected to
+          Connected to {shortenAddress(userAddress)}
         </Button>
       ) : (
         <Button
