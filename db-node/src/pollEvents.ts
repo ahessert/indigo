@@ -81,15 +81,13 @@ export const pollContractEvents = async () => {
     await eventPoll.run();
 }
 
-pollContractEvents()
-
-// export const invokeDBTLambdaTest = async (event: any) => {
-//     try {
-//         console.log(event)
-//         console.log(event.event)
-//         console.log(event.body)
-//     } catch (err) {
-//         console.log("CAUGHT ERROR: err")
-//         throw err
-//     }
-// }
+export const invokeDBTLambdaTest = async (event: any) => {
+    try {
+        console.log(event)
+        console.log(event.event)
+        console.log(event.body)
+    } catch (err) {
+        console.log("CAUGHT ERROR: err")
+        throw err
+    }
+}
