@@ -12,7 +12,7 @@
     "codeStyle:fix": "npm run prettier:fix && npm run eslint:fix",
     "clear-all": "rimraf ./build ./node_modules",
     "db-node": "nodemon ./src/*.ts --exec ts-node ./src/app.ts",
-    "watch-contract": "ts-node ./src/pipeline/pollEvents.ts"
+    "watch-contract": "ts-node ./src/pollEvents.ts"
   },
   "eslintConfig": {
     "extends": [

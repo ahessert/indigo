@@ -11,10 +11,10 @@ Globals:
     Timeout: 3
 
 Parameters:
-  TableName:
+  DynamoTableName:
     Type: String
     Description: The name of the DynamoDB table backing the application
-    Default: 'CoopHostTable'
+    Default: 'Indigo'
 
 Resources:
   # IndigoDWH:
@@ -23,7 +23,15 @@ Resources:
   #     TableName: !Ref TABLENAME
   #     AttributeDefinitions:
   #       - AttributeName: PK
-  #         AttributeType: SK
+  #         AttributeType: S
+  # IndigoDynamoTable:
+  #   Type: AWS::DynamoDB::Table
+  #   Properties:
+  #     TableName: !Ref DynamoTableName
+  #     BillingMode: PAY_PER_REQUEST
+  #     AttributeDefinitions:
+  #       AttributeName: PK
+  #       AttributeType: S
   HelloWorldFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -39,7 +47,7 @@ Resources:
   GetDataFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: build/api
+      CodeUri: build
       Handler: app.getDataHandler
       Runtime: nodejs12.x
       Timeout: 30
@@ -50,6 +58,26 @@ Resources:
             Path: /api/get-data
             Method: get
       Policies: arn:aws:iam::aws:policy/AmazonRedshiftFullAccess
+  PollContractEvents:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: build
+      Handler: pollEvents.pollContractEvents
+      Runtime: nodejs12.x
+      Policies: [arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess, arn:aws:iam::aws:policy/AmazonS3FullAccess]
+      Events: 
+        CWSchedule:
+          Type: Schedule
+          Properties:
+            Schedule: 'rate(1 minute)'
+            Name: PollEventsSchedule
+            Enabled: true
+  DBT:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: build
+      Handler: pollEvents.invokeDBTLambdaTest
+      Runtime: nodejs12.x
 
 
 Outputs:

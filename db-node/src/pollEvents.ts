@@ -1,6 +1,6 @@
-import { DynamoHandler } from '../helpers/dynamoHandler';
-import { IndigoContract } from '../helpers/contractService';
-import { MintModelProcessor } from './newModel';
+import { DynamoHandler } from './helpers/dynamoHandler';
+import { IndigoContract } from './helpers/contractHandler';
+import { MintModelProcessor } from './pipeline/newModel';
 
 const dynamo = new DynamoHandler();
 const indigo = new IndigoContract();
@@ -74,7 +74,7 @@ const EventPoll = class {
     }
 }
 
-const pollContractEvents = async () => {
+export const pollContractEvents = async () => {
     const contractEvent = ContractEvent["MintModel"];
     const eventPoll = new EventPoll(contractEvent);
     await indigo.setUpComplete;
@@ -82,3 +82,14 @@ const pollContractEvents = async () => {
 }
 
 pollContractEvents()
+
+// export const invokeDBTLambdaTest = async (event: any) => {
+//     try {
+//         console.log(event)
+//         console.log(event.event)
+//         console.log(event.body)
+//     } catch (err) {
+//         console.log("CAUGHT ERROR: err")
+//         throw err
+//     }
+// }

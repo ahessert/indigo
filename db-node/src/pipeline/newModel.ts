@@ -108,7 +108,7 @@ class Dbt {
     }
 
     static sendToDBT = async (dataModel: DataModel) => {
-        const packageList = await this.updatePackages(dataModel.cloneUrl);
+        const packageList = await Dbt.updatePackages(dataModel.cloneUrl);
         console.log(packageList)
         lamba.invokeDBT(dataModel.modelName, packageList);
     }
