@@ -9,6 +9,10 @@ Description: >
 Globals:
   Function:
     Timeout: 3
+    Environment:
+      Variables:
+        DBT_LAMBDA_ARN: !Ref DBT
+        CONTRACT_ADDRESS: '0xdae7bb93969323a663177b952ee58a8493d072de'
 
 Parameters:
   DynamoTableName:

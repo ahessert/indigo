@@ -1,7 +1,5 @@
 import AWS from "aws-sdk";
-
-const INDIGO_BUCKET = 'indigo-db-node';
-const AWS_REGION = 'us-east-1';
+import { INDIGO_BUCKET, AWS_REGION } from '../environment'
 
 export class S3Handler {
   s3 : AWS.S3;

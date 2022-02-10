@@ -1,7 +1,6 @@
 import AWS from "aws-sdk";
+import { DYNAMO_TABLE, AWS_REGION } from "../environment"
 
-const dynamoTable = 'Indigo'
-const AWS_REGION = 'us-east-1'
 
 interface DynamoKeys {
     primaryKey: string, 
@@ -15,7 +14,7 @@ interface DynamoAttributeUpdate {
 
 export class DynamoHandler {
   ddb : AWS.DynamoDB;
-  dynamoTable : string = dynamoTable;
+  dynamoTable : string = DYNAMO_TABLE;
 
   constructor() {
     this.ddb = new AWS.DynamoDB({region: AWS_REGION});

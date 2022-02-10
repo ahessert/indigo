@@ -1,7 +1,6 @@
 import  AWS from "aws-sdk";
 
-const DBT_LAMBDA = "DBT"
-const AWS_REGION = 'us-east-1'
+import { AWS_REGION, DBT_LAMBDA_ARN } from '../environment';
 
 export class LambdaHandler {
     lambda: AWS.Lambda;
@@ -18,7 +17,7 @@ export class LambdaHandler {
         };
         
         const params = {
-            FunctionName: DBT_LAMBDA,
+            FunctionName: DBT_LAMBDA_ARN,
             InvokeArgs: payload
         }
 

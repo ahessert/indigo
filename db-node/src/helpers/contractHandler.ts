@@ -1,7 +1,6 @@
 import { Contract, providers } from 'ethers';
+import { ALCHEMY_API_KEY, CONTRACT_ADDRESS } from '../environment';
 
-const ALCHEMY_API_KEY : string = "8OYhDuflJekreW0vanJqrjbOjit3CS3M";
-const indigoAddress : string = '0xdae7bb93969323a663177b952ee58a8493d072de';
 const indigoUnsignedAbi = [
     // Event to listen for
     "event MintModel(string indexed modelNameHash, " 
@@ -19,7 +18,7 @@ export const IndigoContract = class {
 
     constructor() {
         this.provider = new providers.AlchemyProvider("ropsten", ALCHEMY_API_KEY); // Using Ropsten ETH testnet
-        this.contract = new Contract(indigoAddress, indigoUnsignedAbi, this.provider);
+        this.contract = new Contract(CONTRACT_ADDRESS, indigoUnsignedAbi, this.provider);
         this.setUpComplete = this._setBlock();
     }
 

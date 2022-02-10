@@ -1,16 +1,12 @@
 import { S3Handler } from "../helpers/s3Handler";
 import { LambdaHandler } from "../helpers/lambdaHandler";
 import { DynamoHandler } from "../helpers/dynamoHandler";
-import { DataModel } from "../interfaces"
-
-
-const DBT_S3_DIR = 'dbt'
-const PACKAGES_FILE = 'packages.json'
+import { DataModel } from "../interfaces";
+import { DBT_S3_DIR, DBT_PACKAGES_FILE } from "../environment";
 
 const s3 = new S3Handler();
 const lamba = new LambdaHandler();
 const dynamo = new DynamoHandler();
-
 
 export class MintModelProcessor {
     newModel: DataModel;
@@ -92,7 +88,7 @@ export class MintModelProcessor {
 class Dbt {
     static updatePackages = async (cloneUrl : string) : Promise<string[]> => {
         let dbtPackages : {packages: string[]} = {packages: []};
-        const packagesFile = await s3.getIfExists(`${DBT_S3_DIR}/${PACKAGES_FILE}`);
+        const packagesFile = await s3.getIfExists(`${DBT_S3_DIR}/${DBT_PACKAGES_FILE}`);
         
         if (packagesFile) {
             dbtPackages = JSON.parse(packagesFile.Body.toString());
@@ -103,7 +99,7 @@ class Dbt {
         }
         
         dbtPackages.packages.push(cloneUrl)
-        await s3.createS3(`${DBT_S3_DIR}/${PACKAGES_FILE}`, JSON.stringify(dbtPackages))
+        await s3.createS3(`${DBT_S3_DIR}/${DBT_PACKAGES_FILE}`, JSON.stringify(dbtPackages))
         return dbtPackages.packages
     }
 
