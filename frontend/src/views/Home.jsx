@@ -11,11 +11,12 @@ const Home = () => {
   return (
     <Layout isLanding>
       <Box sx={{ position: 'relative' }}>
-        <div className="meteor m1"/>
-        <div className="meteor m2"/>
-        <div className="meteor m3"/>
-        <div className="meteor m4"/>
+        <div className="meteor m1" />
+        <div className="meteor m2" />
+        <div className="meteor m3" />
+        <div className="meteor m4" />
 
+        <HeroImage height="70vh" />
         <Box
           sx={{
             position: 'absolute',
@@ -31,7 +32,6 @@ const Home = () => {
             WEB3 DATA
           </Typography>
         </Box>
-        <HeroImage height="80vh" />
       </Box>
       <Box
         sx={{

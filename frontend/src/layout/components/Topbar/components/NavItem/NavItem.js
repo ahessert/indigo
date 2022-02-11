@@ -7,8 +7,10 @@ import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { useNavigate } from 'react-router';
 
 const SingleNavItem = ({ id, items, colorInvert = false }) => {
+  const navigate = useNavigate();
   const item = items;
   const linkColor = colorInvert ? 'common.white' : 'text.primary';
 
@@ -18,7 +20,7 @@ const SingleNavItem = ({ id, items, colorInvert = false }) => {
       alignItems={'center'}
       aria-describedby={id}
       sx={{ cursor: 'pointer' }}
-      href={item.href}
+      onClick={()=>navigate(item.href)}
     >
       <Typography fontWeight={400} color={linkColor} component="a" href={items.href} sx={{textDecoration:'none'}}>
         {item.title}

@@ -1,7 +1,7 @@
 import React from 'react';
 import Layout from 'layout';
 import Container from 'components/Container';
-import { SearchBar} from 'components';
+import { SearchBar } from 'components';
 import { Typography, Box } from '@mui/material';
 
 const Developer = () => {
@@ -23,7 +23,7 @@ const Developer = () => {
                   '0 0 32px rgb(192 219 255 / 48%), 0 0 8px rgb(65 120 255 / 24%)',
               }}
             >
-							Developer
+              Developer
             </Typography>
           </Box>
           <SearchBar />

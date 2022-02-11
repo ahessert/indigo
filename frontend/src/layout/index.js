@@ -10,7 +10,7 @@ import pages from './navigation';
 import { Topbar, Sidebar, Footer } from './components';
 import { Container, HeroImage } from 'components';
 
-const Main = ({ children, colorInvert = false, isLanding = false }) => {
+const Main = ({ children, colorInvert = false, isLanding = false, noGradient = false }) => {
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.up('md'), {
     defaultMatches: true,
@@ -61,7 +61,9 @@ const Main = ({ children, colorInvert = false, isLanding = false }) => {
       <HeroImage hidden={isLanding} />
       <main
         style={{
-          background: `linear-gradient(${theme.palette.common.black}, ${theme.palette.background.paper})`,
+          background: noGradient
+            ? theme.palette.background.paper
+            : `linear-gradient(${theme.palette.common.black}, ${theme.palette.background.paper})`,
         }}
       >
         {children}
@@ -79,6 +81,7 @@ Main.propTypes = {
   colorInvert: PropTypes.bool,
   bgcolor: PropTypes.string,
   isLanding: PropTypes.bool,
+  noGradient: PropTypes.bool,
 };
 
 export default Main;

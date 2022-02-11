@@ -4,6 +4,8 @@ import Home from './views/Home';
 import Market from './views/Market';
 import DisplayData from './views/DisplayData';
 import Developer from './views/Developer';
+import ModelPreview from './views/ModelPreview';
+
 
 const Routes = () => {
   return (
@@ -11,6 +13,7 @@ const Routes = () => {
       <Route path="/" element={<Home  />} />
       <Route path="/developer" element={<Developer/>} />
       <Route path="/market" element={<Market/>} />
+      <Route path="/market/:id" element={<ModelPreview/>} />
       <Route path="/data" element={<DisplayData/>} />
       <Route path="*" element={<Navigate replace to="/" />} />
     </ReactRoutes>
