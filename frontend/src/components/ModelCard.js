@@ -24,27 +24,21 @@ const imageMappings = {
 
 function getLogo(dapp) {
   const path = imageMappings[dapp];
-  return path ? `./logo/${path}` : undefined;
+  return path ? `/logo/${path}` : undefined;
 }
 
-const ModelCardMedia = ({ dapps }) => {
+const ModelCardMedia = ({ dapps, itemsShown = 4 }) => {
   const [size, wrap] = dapps.length === 2 ? [150, 'nowrap'] : [130, 'wrap'];
-  const imageHeight = '250px';
   let ellipses = dapps.length > 4;
   let displayCount = 0;
-	
+
   if (dapps.length === 1) {
-    return (
-      <CardMedia
-        src={getLogo(dapps[0])}
-        component="img"
-      />
-    );
+    return <CardMedia src={getLogo(dapps[0])} component="img" />;
   }
 
   return (
     <Box
-      height={imageHeight}
+      height={{xs:'200px', sm: '250px'}}
       sx={{
         borderRadius: '10px',
         display: 'flex',
@@ -52,10 +46,11 @@ const ModelCardMedia = ({ dapps }) => {
         justifyContent: 'center',
         alignItems: 'center',
         position: 'relative',
+        minWidth: '300px',
       }}
     >
       {dapps.map((dapp, index) => {
-        if (!getLogo(dapp) || displayCount >= 4) {
+        if (!getLogo(dapp) || displayCount >= itemsShown) {
           ellipses = true;
           return;
         }
@@ -85,9 +80,8 @@ const ModelCardMedia = ({ dapps }) => {
       {ellipses && (
         <Box
           sx={{
-            display: { xs: 'none', sm: 'block' },
             position: 'absolute',
-            bottom: '0px',
+            bottom: {xs: '10%', sm:'0px'},
             right: '45px',
             zIndex: '2',
             width: '30px',
@@ -100,8 +94,55 @@ const ModelCardMedia = ({ dapps }) => {
   );
 };
 
-const ModelCard = ({ item }) => {
+const ModelCardContent = ({ item, hasLink = true }) => {
   const navigate = useNavigate();
+  const { title, author, description, id, price } = item;
+  return (
+    <CardContent
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+      }}
+    >
+      <Typography variant={'h4'} sx={{ fontWeight: 'bold' }}>
+        {title}
+      </Typography>
+      <Typography variant={'h6'} sx={{ fontWeight: 500 }}>
+        Author: {author}
+      </Typography>
+      <Box
+        display={'flex'}
+        alignItems={'center'}
+        marginTop={2}
+        marginBottom={3}
+      >
+        <Typography variant={'subtitle2'} color="text.secondary">
+          {description}
+        </Typography>
+      </Box>
+      {hasLink ? (
+        <Button
+          variant={'outlined'}
+          size="large"
+          color="secondary"
+          onClick={() => navigate(`/market/${id}`)}
+          fullWidth
+        >
+          <Typography variant={'h6'} fontWeight="bold">
+            Payload: {price} $INDG
+          </Typography>
+        </Button>
+      ) : (
+        <Typography variant={'h6'} color="secondary" fontWeight="bold">
+          Access: {price} $INDG
+        </Typography>
+      )}
+    </CardContent>
+  );
+};
+
+const ModelCard = ({ item }) => {
   const theme = useTheme();
 
   return (
@@ -109,6 +150,7 @@ const ModelCard = ({ item }) => {
       <Box
         display={'block'}
         width={1}
+        minWidth={{xs:'550px', sm:'0'}}
         height={1}
         sx={{
           textDecoration: 'none',
@@ -138,41 +180,7 @@ const ModelCard = ({ item }) => {
           }}
         >
           <ModelCardMedia dapps={item.dapps} />
-          <CardContent
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'flex-start',
-            }}
-          >
-            <Typography variant={'h4'} sx={{ fontWeight: 'bold' }}>
-              {item.title}
-            </Typography>
-            <Typography variant={'h6'} sx={{ fontWeight: 500 }}>
-              Author: {item.author}
-            </Typography>
-            <Box
-              display={'flex'}
-              alignItems={'center'}
-              marginTop={2}
-              marginBottom={3}
-            >
-              <Typography variant={'subtitle2'} color="text.secondary">
-                {item.description}
-              </Typography>
-            </Box>
-            <Button
-              variant={'outlined'}
-              size="large"
-              color="secondary"
-              onClick={() => navigate(`/market/${item.id}`)}
-              fullWidth
-            >
-              <Typography variant={'h6'} fontWeight="bold">
-                Payload: {item.price} $INDG
-              </Typography>
-            </Button>
-          </CardContent>
+          <ModelCardContent item={item} />
         </Box>
       </Box>
     </Grid>
@@ -187,11 +195,24 @@ ModelCard.propTypes = {
     price: PropTypes.number.isRequired,
     description: PropTypes.string.isRequired,
     author: PropTypes.string.isRequired,
-  }),
+  }).isRequired,
 };
 
 ModelCardMedia.propTypes = {
   dapps: PropTypes.arrayOf(PropTypes.string).isRequired,
+  itemsShown: PropTypes.number
 };
 
+ModelCardContent.propTypes = {
+  item: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
+    price: PropTypes.number.isRequired,
+    description: PropTypes.string.isRequired,
+    author: PropTypes.string.isRequired,
+  }).isRequired,
+  hasLink: PropTypes.bool,
+};
+
+export { ModelCardContent, ModelCardMedia };
 export default ModelCard;

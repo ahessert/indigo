@@ -52,7 +52,7 @@ const mock = [
   },
   {
     title: 'Near + Sushi Volume',
-    dapps: ['near', 'ethereum'],
+    dapps: ['near', 'ethereum', 'chainlink'],
     author: 'Nick Fury',
     description:
       'locavore tbh health goth street art tumblr 3 wolf moon single-origin coffee vexillologist +1 skateboard taxidermy copper mug master cleanse hexagon kitsch.',

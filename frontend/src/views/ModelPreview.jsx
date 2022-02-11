@@ -1,17 +1,49 @@
 import React from 'react';
 import Layout from 'layout';
-import Container from 'components/Container';
-import { Typography, Box, useTheme, Card, CardContent } from '@mui/material';
+import { Container, WalletButton } from 'components';
+import { ModelCardMedia, ModelCardContent } from 'components/ModelCard';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import {
+  Typography,
+  Box,
+  useTheme,
+  Card,
+  CardContent,
+  Divider,
+  Button,
+} from '@mui/material';
+import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import styled from '@emotion/styled';
 
-const ModelPreview = ({ modelData }) => {
-  console.log(modelData);
+const mockData = {
+  title: 'Aurora + Curve',
+  dapps: ['sushiswap', 'twitter', 'curve', 'chainlink', 'near'],
+  author: 'Nick Fury',
+  description:
+    'locavore tbh health goth street art tumblr 3 wolf moon single-origin coffee vexillologist +1 skateboard taxidermy copper mug master cleanse hexagon kitsch.',
+  price: 7,
+  id: 4,
+};
+
+const SpacedBox = styled(Box)`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const ModelPreview = () => {
   const theme = useTheme();
+  const { id } = useParams();
+  console.log(id);
+  const modelData = mockData;
+  const isXs = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+
   return (
     <Layout isLanding noGradient>
       <Box
         sx={{
-          background: `linear-gradient(${theme.palette.background.paper} 10%, ${theme.palette.common.black}, ${theme.palette.background.paper})`,
+          background: `linear-gradient(${theme.palette.background.paper} , ${theme.palette.common.black} 15%, ${theme.palette.background.paper})`,
         }}
         paddingTop="80px"
       >
@@ -28,11 +60,39 @@ const ModelPreview = ({ modelData }) => {
               Access Data Model
             </Typography>
           </Box>
-          <Box display='flex' justifyContent={'center'}>
-            <Card>
-              <CardContent>something</CardContent>
+          <Container display="flex" justifyContent={'center'}>
+            <Card sx={{ padding: 2, maxWidth: '800px', minWidth: '500px' }}>
+              <Box display="flex" flexDirection={{ xs: 'column', sm: 'row' }}>
+                <ModelCardContent item={modelData} hasLink={false} />
+                <ModelCardMedia
+                  dapps={modelData.dapps}
+                  itemsShown={isXs ? 3 : 4}
+                />
+              </Box>
+              <Divider />
+              <CardContent>
+                <SpacedBox>
+                  <Typography>Connect metamask</Typography>
+                  <WalletButton />
+                </SpacedBox>
+              </CardContent>
+              <Divider />
+              <CardContent>
+                <SpacedBox>
+                  <Typography>Confirm</Typography>
+                  <Button>confirm button</Button>
+                </SpacedBox>
+              </CardContent>
+              <Divider />
+              <CardContent>
+                <Typography>Download or airtable</Typography>
+                <SpacedBox>
+                  <Button>download button</Button>
+                  <Button>airtable button</Button>
+                </SpacedBox>
+              </CardContent>
             </Card>
-          </Box>
+          </Container>
         </Container>
       </Box>
     </Layout>
@@ -40,7 +100,7 @@ const ModelPreview = ({ modelData }) => {
 };
 
 ModelPreview.propTypes = {
-  modelData: PropTypes.object.isRequired,
+  modelData: PropTypes.object,
 };
 
 export default ModelPreview;
