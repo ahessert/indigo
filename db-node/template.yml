@@ -11,7 +11,6 @@ Globals:
     Timeout: 3
     Environment:
       Variables:
-        DBT_LAMBDA_ARN: !Ref DBT
         CONTRACT_ADDRESS: '0xdae7bb93969323a663177b952ee58a8493d072de'
 
 Parameters:
@@ -69,7 +68,14 @@ Resources:
       Handler: pollEvents.pollContractEvents
       Runtime: nodejs12.x
       Timeout: 30
-      Policies: [arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess, arn:aws:iam::aws:policy/AmazonS3FullAccess]
+      Policies: [
+        arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess,
+        arn:aws:iam::aws:policy/AmazonS3FullAccess,
+        arn:aws:iam::aws:policy/AWSLambda_FullAccess
+        ]
+      Environment:
+        Variables:
+          DBT_LAMBDA_ARN: !GetAtt DBT.Arn
       Events: 
         CWSchedule:
           Type: Schedule
@@ -80,10 +86,9 @@ Resources:
   DBT:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: build
-      Handler: pollEvents.invokeDBTLambdaTest
-      Runtime: nodejs12.x
-
+      CodeUri: dbt
+      Handler: dbt_trigger.run
+      Runtime: python3.9
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function

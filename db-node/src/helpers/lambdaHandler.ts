@@ -18,11 +18,18 @@ export class LambdaHandler {
         
         const params = {
             FunctionName: DBT_LAMBDA_ARN,
-            InvokeArgs: payload
+            InvokeArgs: JSON.stringify(payload)
         }
 
         console.log(`Sending New Model ${modelName} to DBT`)
 
-        this.lambda.invokeAsync(params);
+        try {
+            const dbtInvocation = await this.lambda.invokeAsync(params).promise();
+            console.log(`DBT Invocation succes! Status Code: ${dbtInvocation.Status}`)
+        } catch (err) {
+            console.log(
+                `Error on DBT Invocation.\n` 
+              + `\n\tError Code: ${err.code}\n\tMsg: ${err.message}`)
+        }
     };
 }

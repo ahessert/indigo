@@ -1,3 +1,5 @@
+import { ScheduledEvent, Context } from 'aws-lambda'
+
 import { DynamoHandler } from './helpers/dynamoHandler';
 import { IndigoContract } from './helpers/contractHandler';
 import { MintModelProcessor } from './pipeline/newModel';
@@ -55,6 +57,7 @@ const EventPoll = class {
     }
 
     run = async () => {
+        await indigo.setUpComplete
         const blockNumbers : number[] = [indigo.currentBlock];
 
         const eventFilter = this._getContractFilter();
@@ -70,24 +73,12 @@ const EventPoll = class {
             }
         })
         
-        this._updateLastBlockQueried(blockNumbers);
+        await this._updateLastBlockQueried(blockNumbers);
     }
 }
 
-export const pollContractEvents = async () => {
+export const pollContractEvents = (event: ScheduledEvent, context: Context) => {
     const contractEvent = ContractEvent["MintModel"];
     const eventPoll = new EventPoll(contractEvent);
-    await indigo.setUpComplete;
-    await eventPoll.run();
-}
-
-export const invokeDBTLambdaTest = async (event: any) => {
-    try {
-        console.log(event)
-        console.log(event.event)
-        console.log(event.body)
-    } catch (err) {
-        console.log("CAUGHT ERROR: err")
-        throw err
-    }
+    eventPoll.run();
 }

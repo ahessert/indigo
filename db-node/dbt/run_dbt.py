@@ -1,12 +1,9 @@
-import os
 import sys
 import logging
 
 from typing import List
 
-from dbt.contracts.project import GitPackage
 from dbt.logger import log_manager
-from dbt.task.deps import DepsTask
 from dbt.utils import ExitCodes
 
 import dbt.main
