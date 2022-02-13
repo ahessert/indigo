@@ -1,12 +1,14 @@
-import { useState } from 'react';
+import React, { useState, createContext } from 'react';
+import PropTypes from 'prop-types';
 import { ethers } from 'ethers';
 import { CHAIN_ID, CHAIN_ID_0x } from 'utils/constants';
-declare let window: any;
 
-function useMetamask() {
-  const [provider, setProvider] = useState<any>();
-  const [userAddress, setUserAddress] = useState<any>();
-  const [signer, setSigner] = useState<any>();
+export const AppContext = createContext(null);
+
+export const ContextProvider = ({ children }) => {
+  const [provider, setProvider] = useState();
+  const [userAddress, setUserAddress] = useState();
+  const [signer, setSigner] = useState();
 
   async function connect() {
     await window.ethereum.request({ method: 'eth_requestAccounts' });
@@ -40,7 +42,17 @@ function useMetamask() {
     console.log(await provider.getNetwork());
   }
 
-  return { provider, signer, connect, disconnect, userAddress };
-}
+  const value = {
+    provider,
+    signer,
+    connect,
+    disconnect,
+    userAddress,
+  };
 
-export default useMetamask;
+  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+};
+
+ContextProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};

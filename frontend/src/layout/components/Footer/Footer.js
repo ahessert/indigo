@@ -3,13 +3,9 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
-import { useTheme } from '@mui/material/styles';
 import IndigoLogo from 'svg/illustrations/IndigoLogo';
 
 const Footer = () => {
-  const theme = useTheme();
-  const { mode } = theme.palette;
-  console.log(mode);
 
   const links = [
     {

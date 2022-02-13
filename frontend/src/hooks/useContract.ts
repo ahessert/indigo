@@ -1,9 +1,26 @@
-import react from 'react';
+import React from 'react';
 import { ethers } from 'ethers';
-import useMetamask from './useMetamask';
+import { AppContext } from 'context/AppContext';
 
 const indigoAddress = '0x12345';
-const indigoAbi = `{fake: 'abi'}`;
+const indigoAbi = `[{
+  "inputs": [
+    {
+      "internalType": "string",
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "internalType": "string",
+      "name": "cloneUrl",
+      "type": "string"
+    }
+  ],
+  "name": "mintModel",
+  "outputs": [],
+  "stateMutability": "nonpayable",
+  "type": "function"
+}]`;
 
 // type Model = {
 //   modelDescription: string;
@@ -16,10 +33,12 @@ const indigoAbi = `{fake: 'abi'}`;
 //   ipFee: string;
 // };
 
-function useContract() {
-  const { userAddress, signer } = useMetamask();
-
-  const indigoContract = new ethers.Contract(indigoAddress, indigoAbi, signer);
+function useContract(provider: any, userAddress: string) {
+  const indigoContract = new ethers.Contract(
+    indigoAddress,
+    indigoAbi,
+    provider,
+  );
 
   async function getAvailableModels(): Promise<{ available_models: string[] }> {
     return await indigoContract.getAvailableModels();

@@ -1,30 +1,48 @@
-import React from 'react';
-import useMetamask from '../hooks/useMetamask';
-import { Button } from '@mui/material';
+import React, { useContext } from 'react';
+import { AppContext } from 'context/AppContext';
+import { Button, Typography, useTheme } from '@mui/material';
 import shortenAddress from 'utils/shortenAddress';
+import MetamaskLogoText from 'svg/illustrations/MetamaskLogoText';
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 
 function WalletButton() {
-  const { connect, disconnect, provider, userAddress } = useMetamask();
+  const { connect, disconnect, provider, userAddress } = useContext<any>(AppContext);
+  const theme = useTheme();
 
   return (
     <>
       {provider ? (
         <Button
           variant="contained"
-          color="primary"
           size="large"
           onClick={disconnect}
+          disabled
+          sx={{
+            '&:disabled': {
+              backgroundColor: theme.palette.success.dark,
+              color: theme.palette.text.primary,
+            },
+            display: 'flex',
+            gap: '5px',
+          }}
         >
-          Connected to {shortenAddress(userAddress)}
+          <AccountBalanceWalletIcon />
+          <Typography fontWeight="bold">
+            {shortenAddress(userAddress)}
+          </Typography>
         </Button>
       ) : (
         <Button
           variant="contained"
-          color="primary"
-          size="large"
+          color="warning"
           onClick={connect}
+          sx={{ padding: '0px 15px' }}
+          disableElevation
         >
-          Connect Wallet
+          <MetamaskLogoText
+            size="140px"
+            style={{ textShadow: `1px 1px 1px ${theme.palette.common.black}` }}
+          />
         </Button>
       )}
     </>
