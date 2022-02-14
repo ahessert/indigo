@@ -1,0 +1,13 @@
+indigo:
+  outputs:
+    dev:
+      type: redshift
+      method: iam
+      cluster_id: "{{ env_var('REDSHIFT_CLUSTER_ID') }}"
+      host: "{{ env_var('REDSHIFT_HOST') }}"
+      port: 5439
+      dbname: dev
+      schema: public
+      threads: 1
+      user: "{{ env_var('REDSHIFT_USER') }}"
+  target: dev

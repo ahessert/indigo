@@ -9,6 +9,10 @@ node_modules
 /.pnp
 .pnp.js
 
+# dev environment
+.vscode
+db-node/.aws-sam
+
 # testing
 /coverage
 

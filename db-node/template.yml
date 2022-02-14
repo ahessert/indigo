@@ -35,10 +35,11 @@ Resources:
   #     AttributeDefinitions:
   #       AttributeName: PK
   #       AttributeType: S
+
   HelloWorldFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: build/api
+      CodeUri: build
       Handler: app.helloWorldHandler
       Runtime: nodejs12.x
       Events:
@@ -83,12 +84,35 @@ Resources:
             Schedule: 'rate(1 minute)'
             Name: PollEventsSchedule
             Enabled: true
+  # DbtLayer:
+  #   Type: AWS::Serverless::LayerVersion
+  #   Properties:
+  #     ContentUri: dbt/DbtLayer.zip
+  #     CompatibleRuntimes: [python3.9]
+  # DbtLayer:
+  #   Type: AWS::Serverless::LayerVersion
+  #   Metadata:
+  #     BuildMethod: makefile
+  #   Properties:
+  #     ContentUri: dbt/layer
+  #     CompatibleRuntimes: [python3.9]
   DBT:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: dbt
       Handler: dbt_trigger.run
       Runtime: python3.9
+      # Layers: [!Ref DbtLayer]
+      Timeout: 900 #15min is max runtime for lambda
+      Policies: arn:aws:iam::aws:policy/AmazonRedshiftFullAccess
+      Environment:
+        Variables: 
+          DBT_PROFILES_DIR: ./
+          REDSHIFT_HOST: redshift-cluster-1.cewz6yzfdkpk.us-east-1.redshift.amazonaws.com
+          REDSHIFT_CLUSTER_ID: redshift-cluster-1
+          REDSHIFT_USER: andrewhessert
+          PATH: $PATH:/opt/libexec/git-core # HACKY: Add layer libexec to path
+          LD_LIBRARY_PATH: $LD_LIBRARY_PATH:/opt/lib64 # Add path to dependency from layer file
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function

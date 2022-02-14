@@ -66,6 +66,5 @@ def run_dbt_wrapper(args: List[str]) -> int:
 
 if __name__ == '__main__':
     params = sys.argv[1:]
-    download_dbt_deps()
     exit_code = run_dbt_wrapper(params)
     sys.exit(exit_code)

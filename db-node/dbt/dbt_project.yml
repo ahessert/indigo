@@ -6,10 +6,18 @@ require-dbt-version: ">=1.0.1"
 
 profile: indigo
 
-model-paths: ["models"]     # paths with source code to compile
-analysis-paths: ["analysis"] # path with analysis files which are compiled, but not run
-target-path: "target"        # path for compiled code
-clean-targets: ["target"]    # directories removed by the clean task
-test-paths: ["test"]         # where to store test results
-seed-paths: ["seed_data"]    # load CSVs from this directory with `dbt seed`
-macro-paths: ["macros"]
+# READ PATHS
+
+model-paths: ["models"]         # paths with source code to compile
+analysis-paths: ["analysis"]    # path with analysis files which are compiled, but not run
+seed-paths: ["seed_data"]       # load CSVs from this directory with `dbt seed`
+macro-paths: ["macros"]         # paths with custom macros to compile
+
+
+# WRITE PATHS (All in /tmp directory for lambda compatibility)
+
+clean-targets: ["/tmp/target"]  # directories removed by the clean task
+test-paths: ["/tmp/test"]       # where to store test results
+target-path: "/tmp/target"      # where compiled model code is written
+log-path: "/tmp/logs"           # where logs are written
+packages-install-path: "/tmp/dbt_packages"   # where to write downloaded packages

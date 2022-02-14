@@ -1,5 +1,8 @@
+import sys
 
-DBT_PACKAGE_FILE = '/tmp/test_packages.yml'
+from run_dbt import download_dbt_deps, run_dbt_wrapper
+
+DBT_PACKAGE_FILE = '/tmp/packages.yml'
 
 def run(event, context):
     print(event)
@@ -17,7 +20,8 @@ def run(event, context):
     yml_file.write(formatted_yml)
     yml_file.close()
 
-    return { 
-        'statusCode': 200,
-        'body': 'Hello World!'
-    }
+    download_dbt_deps()
+
+    build_params = ['build', '-s', model_name]
+    exit_code = run_dbt_wrapper(build_params)
+    sys.exit(exit_code)
