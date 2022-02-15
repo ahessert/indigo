@@ -11,13 +11,12 @@ import { useNavigate } from 'react-router-dom';
 // import ThemeModeToggler from 'components/ThemeModeToggler';
 
 import { SingleNavItem } from './components';
-import { WalletButton } from 'components';
 
 const Topbar = ({
   onSidebarOpen,
   pages,
   colorInvert = false,
-  isLanding = false,
+  enterApp = false,
 }) => {
   const theme = useTheme();
   const { market, developers } = pages;
@@ -69,12 +68,11 @@ const Topbar = ({
           />
         </Box>
       </Box>
-      {isLanding ? (
+      {enterApp ? (
         <Button variant="contained"> Enter App</Button>
       ) : (
         <>
           <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: '15px' }}>
-            <WalletButton />
             <Button
               variant="contained"
               color="secondary"
@@ -111,7 +109,7 @@ Topbar.propTypes = {
   onSidebarOpen: PropTypes.func,
   pages: PropTypes.object,
   colorInvert: PropTypes.bool,
-  isLanding: PropTypes.bool,
+  enterApp: PropTypes.bool,
 };
 
 export default Topbar;

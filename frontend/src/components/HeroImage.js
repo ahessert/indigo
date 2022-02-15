@@ -17,13 +17,9 @@ const HeroImage = ({ hidden, height }) => {
     >
       <Box
         component={'img'}
-        src={'./sky.jpeg'}
+        src={'./cropped-sky.png'}
         height='100%'
         width='100%'
-        sx={{
-          objectFit: 'cover',
-          objectPosition: 'bottom',
-        }}
       />
     </Box>
   );

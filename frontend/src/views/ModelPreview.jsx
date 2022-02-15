@@ -124,7 +124,7 @@ const ModelPreview = () => {
 
   console.log('isLoading', isLoading);
   return (
-    <Layout isLanding noGradient>
+    <Layout hideImage noGradient>
       <LoadingModal
         isLoading={isLoading}
         message="Confirming transaction"

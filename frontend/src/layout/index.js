@@ -10,7 +10,7 @@ import pages from './navigation';
 import { Topbar, Sidebar, Footer } from './components';
 import { Container, HeroImage } from 'components';
 
-const Main = ({ children, colorInvert = false, isLanding = false, noGradient = false }) => {
+const Main = ({ children, colorInvert = false, enterApp = false, hideImage=false, noGradient = false }) => {
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.up('md'), {
     defaultMatches: true,
@@ -48,7 +48,7 @@ const Main = ({ children, colorInvert = false, isLanding = false, noGradient = f
             onSidebarOpen={handleSidebarOpen}
             pages={pages}
             colorInvert={trigger ? false : colorInvert}
-            isLanding={isLanding}
+            enterApp={enterApp}
           />
         </Container>
       </AppBar>
@@ -58,7 +58,7 @@ const Main = ({ children, colorInvert = false, isLanding = false, noGradient = f
         variant="temporary"
         pages={pages}
       />
-      <HeroImage hidden={isLanding} />
+      <HeroImage hidden={hideImage} />
       <main
         style={{
           background: noGradient
@@ -80,7 +80,8 @@ Main.propTypes = {
   children: PropTypes.node,
   colorInvert: PropTypes.bool,
   bgcolor: PropTypes.string,
-  isLanding: PropTypes.bool,
+  enterApp: PropTypes.bool,
+  hideImage: PropTypes.bool,
   noGradient: PropTypes.bool,
 };
 

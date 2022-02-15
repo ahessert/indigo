@@ -9,7 +9,7 @@ const Home = () => {
   const theme = useTheme();
 
   return (
-    <Layout isLanding>
+    <Layout enterApp hideImage>
       <Box sx={{ position: 'relative' }}>
         <div className="meteor m1" />
         <div className="meteor m2" />
