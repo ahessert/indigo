@@ -20,3 +20,4 @@ export const DYNAMO_TABLE = process.env.DYNAMO_TABLE || 'Indigo'
 // Blockchain
 export const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY || "8OYhDuflJekreW0vanJqrjbOjit3CS3M"
 export const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS || '0xdae7bb93969323a663177b952ee58a8493d072de'
+export const WALLET_PRIVATE_KEY = process.env.PRIVATE_KEY

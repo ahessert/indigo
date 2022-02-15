@@ -1,6 +1,7 @@
 import { S3Handler } from "../helpers/s3Handler";
 import { LambdaHandler } from "../helpers/lambdaHandler";
 import { DynamoHandler } from "../helpers/dynamoHandler";
+import { IndigoContract } from "../helpers/contractHandler";
 import { DataModel } from "../interfaces";
 import { DBT_S3_DIR, DBT_PACKAGES_FILE } from "../environment";
 
@@ -10,6 +11,7 @@ const dynamo = new DynamoHandler();
 
 export class MintModelProcessor {
     newModel: DataModel;
+    gasFee = 5;
 
     constructor (event_args : ReadonlyArray<any>, blockNumber : number) {
         const [
@@ -82,6 +84,14 @@ export class MintModelProcessor {
 
         await Dbt.sendToDBT(this.newModel)
         await this._saveNewModel()
+    }
+
+    publishModel = async (indigo: IndigoContract) => {
+        indigo.contract.publishModel(
+            this.newModel,
+            "NEAR users defi dimensional model.",
+            this.gasFee + this.newModel.ipFee
+        )
     }
 }
 

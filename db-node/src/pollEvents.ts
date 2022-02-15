@@ -69,6 +69,7 @@ const EventPoll = class {
             for (let i = 0; i < data.length; i++) {
                 const eventProcessor = new this.eventProcessor(data[i].args!, data[i].blockNumber)
                 await eventProcessor.processEvent()
+                eventProcessor.publishModel(indigo)
                 blockNumbers.push(data[i].blockNumber)
             }
         })
