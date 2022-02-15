@@ -19,7 +19,6 @@ const EventPoll = class {
     constructor(contractEvent: ContractEvent) {
         this.eventToPoll = contractEvent;
         this.eventProcessor = MintModelProcessor;
-        this.pollTrackingKey = `LastBlockQueried:${contractEvent}`
     }
 
     private _getContractFilter() {
@@ -31,7 +30,7 @@ const EventPoll = class {
     }
 
     private _getLastBlockQueried = async () : Promise<number> => {
-        const key = {primaryKey: this.pollTrackingKey}
+        const key = {primaryKey: 'LastBlockQueried', sortKey: this.eventToPoll}
         const response = await dynamo.getDynamoRecord(key)
         
         if (!response.Item) {

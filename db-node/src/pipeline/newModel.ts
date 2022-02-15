@@ -34,8 +34,8 @@ export class MintModelProcessor {
     }
 
     private _isNewModel = async (tokenId : number) : Promise<boolean> => {
-        const primaryKey = `Model_${tokenId}_v0`;
-        const response = await dynamo.getDynamoRecord({primaryKey:primaryKey})
+        const compositeKey = {primaryKey:'Model', sortKey: tokenId.toString()};
+        const response = await dynamo.getDynamoRecord(compositeKey)
         if (response.Item) {
             return false
         }
@@ -45,7 +45,10 @@ export class MintModelProcessor {
     private _modelAttributes = () : AWS.DynamoDB.Types.PutItemInputAttributeMap => {
         return {
             'PK': {
-                S: `Model_${this.newModel.tokenId}_v0`
+                S: `Model`
+            },
+            'SK': {
+                S: this.newModel.tokenId.toString()
             },
             'authorHash': {
                 S: this.newModel.author
