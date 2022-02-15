@@ -4,10 +4,18 @@ import { Button, Typography, useTheme } from '@mui/material';
 import shortenAddress from 'utils/shortenAddress';
 import MetamaskLogoText from 'svg/illustrations/MetamaskLogoText';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import PropTypes from 'prop-types';
 
-function WalletButton() {
-  const { connect, disconnect, provider, userAddress } = useContext<any>(AppContext);
+function WalletButton({
+  Icon,
+  size,
+}: {
+  Icon: React.ComponentClass<any>;
+  size: number;
+}) {
   const theme = useTheme();
+  const { connect, disconnect, provider, userAddress } =
+    useContext<any>(AppContext);
 
   return (
     <>
@@ -23,10 +31,10 @@ function WalletButton() {
               color: theme.palette.text.primary,
             },
             display: 'flex',
-            gap: '5px',
+            gap: '10px',
           }}
         >
-          <AccountBalanceWalletIcon />
+          {Icon ? <Icon size={size} /> : <AccountBalanceWalletIcon />}
           <Typography fontWeight="bold">
             {shortenAddress(userAddress)}
           </Typography>
@@ -48,5 +56,10 @@ function WalletButton() {
     </>
   );
 }
+
+WalletButton.propTypes = {
+  Icon: PropTypes.node,
+  size: PropTypes.number,
+};
 
 export default WalletButton;

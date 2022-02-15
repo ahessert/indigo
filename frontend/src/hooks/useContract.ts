@@ -1,26 +1,24 @@
-import React from 'react';
-import { ethers } from 'ethers';
-import { AppContext } from 'context/AppContext';
+// import { ethers } from 'ethers';
 
-const indigoAddress = '0x12345';
-const indigoAbi = `[{
-  "inputs": [
-    {
-      "internalType": "string",
-      "name": "name",
-      "type": "string"
-    },
-    {
-      "internalType": "string",
-      "name": "cloneUrl",
-      "type": "string"
-    }
-  ],
-  "name": "mintModel",
-  "outputs": [],
-  "stateMutability": "nonpayable",
-  "type": "function"
-}]`;
+// const indigoAddress = '0x12345';
+// const indigoAbi = `[{
+//   "inputs": [
+//     {
+//       "internalType": "string",
+//       "name": "name",
+//       "type": "string"
+//     },
+//     {
+//       "internalType": "string",
+//       "name": "cloneUrl",
+//       "type": "string"
+//     }
+//   ],
+//   "name": "mintModel",
+//   "outputs": [],
+//   "stateMutability": "nonpayable",
+//   "type": "function"
+// }]`;
 
 // type Model = {
 //   modelDescription: string;
@@ -34,11 +32,13 @@ const indigoAbi = `[{
 // };
 
 function useContract(provider: any, userAddress: string) {
-  const indigoContract = new ethers.Contract(
-    indigoAddress,
-    indigoAbi,
-    provider,
-  );
+  if (!provider) return {};
+  // const indigoContract = new ethers.Contract(
+  //   indigoAddress,
+  //   indigoAbi,
+  //   provider,
+  // );
+  const indigoContract: any = {};
 
   async function getAvailableModels(): Promise<{ available_models: string[] }> {
     return await indigoContract.getAvailableModels();
@@ -48,12 +48,9 @@ function useContract(provider: any, userAddress: string) {
     modelName: string,
     address?: string,
   ): Promise<any> {
+    console.log('getting model data');
     console.log(modelName, address);
-    // call contract with some data
 
-    // get response
-
-    // call db node with key? and some data
     return;
     //returns Model type
   }
@@ -76,9 +73,17 @@ function useContract(provider: any, userAddress: string) {
     return await indigoContract.mintModelNFT(from, modelData);
   }
 
+  async function getReceipt(modelId: string): Promise<boolean> {
+    console.log('receipt gotten ', modelId);
+    return false;
+    // return await new Promise((resolve) => resolve(true));
+    // return await indigoContract.getReceipt(modelId);
+  }
+
   return {
     indigoContract,
     getAvailableModels,
+    getReceipt,
     getModelData,
     getModelDetails,
     mintFreeTrialCoins,

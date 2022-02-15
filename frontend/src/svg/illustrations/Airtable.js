@@ -15,7 +15,6 @@ const AirtableIcon = ({ style, size, disabled }) => {
     return colors[number];
   }
 
-  console.log(size);
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
