@@ -7,9 +7,12 @@ import { RedshiftHandler } from "./helpers/redshiftHandler";
 import { DynamoHandler } from "./helpers/dynamoHandler"
 import { ModelResults } from "./interfaces";
 import { DynamoDB } from "aws-sdk";
+import { IndigoContract } from "./helpers/contractHandler";
+import { MY_NODE_URL } from "./environment";
 
 const redshiftHandler = new RedshiftHandler()
 const dynamo = new DynamoHandler()
+const indigo = new IndigoContract()
 
 type LambdaResponse = {
   statusCode: number,
@@ -53,13 +56,16 @@ export const getDataHandler =
       404, {message: `Error: modelName '${modelName}' does not exist`}
     );
   }
-  if (!validPayment(paymentReceipt)) {
+  if (!validPayment(paymentReceipt, modelName)) {
     return lambdaResponse(
         404, {message: `Error: Invalid payment reciept '${paymentReceipt}'`}
     );
   }
 
   const modelData : ModelResults = await getDataFromModel(modelName)
+  await indigo.contract.burnReceipt(paymentReceipt, modelName)
+  
+  console.log(`SUCCESS: Delivering data for Model '${modelName}'. \nBurning receipt: ${paymentReceipt}`)
   
   return lambdaResponse(
     200, modelData
@@ -84,8 +90,21 @@ const getAvailableModels = async () : Promise<string[]> => {
     })
 }
 
-const validPayment = (paymentReceipt: String) : Boolean => {
-    return paymentReceipt === "paid"
+const validPayment = (receiptId: string, modelName: string) : Boolean => {
+    const tokenUri : string = indigo.contract.tokenURI(receiptId);
+    const receiptInfo = JSON.parse(tokenUri)
+    
+    if (receiptInfo.modelName !== modelName) {
+      console.log(`Error: invalid receipt. Requested '${modelName}', paid for '${receiptInfo.modelName}'`)
+      return false
+    }
+
+    if (receiptInfo.nodeUrl !== MY_NODE_URL) {
+      console.log('Error: invalid receipt. Node URL does not match this node.')
+      return false
+    }
+
+    return true
 }
 
 const getDataFromModel = async (modelName: String) : Promise<ModelResults> => {

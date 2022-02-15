@@ -67,11 +67,11 @@ export class DynamoHandler {
     await this.ddb.updateItem(params).promise()
   }
 
-  queryDynamoRecord = async (PK: string, skBeginsWith?: string) : 
+  queryDynamoRecords = async (PK: string, skBeginsWith?: string) : 
     Promise<AWS.DynamoDB.Types.QueryOutput> => {
     
     const params : AWS.DynamoDB.Types.QueryInput = {
-      TableName: "Music",
+      TableName: this.dynamoTable,
       KeyConditionExpression: "PK = :pk",
       ExpressionAttributeValues: {
           ":pk": {'S': PK}

@@ -239,8 +239,8 @@ abstract contract Customer is ERC721URIStorage {
     {
         string[2] memory fields;
 
-        fields[0] = string(abi.encodePacked('{"name": "', name, '",'));
-        fields[1] = string(abi.encodePacked('"cloneUrl": "', nodeUrl, '"}'));
+        fields[0] = string(abi.encodePacked('{"modelName": "', name, '",'));
+        fields[1] = string(abi.encodePacked('"nodeUrl": "', nodeUrl, '"}'));
 
         return string(abi.encodePacked('data:application/json;base64,',
                                         fields[0], fields[1]));
