@@ -4,7 +4,7 @@ import { Box } from '@mui/material';
 import PropTypes from 'prop-types';
 // import { LazyLoadImage } from 'react-lazy-load-image-component';
 
-const HeroImage = ({ hidden, height }) => {
+const HeroImage = ({ hidden, height, cropped=false }) => {
   return (
     <Box
       sx={{
@@ -17,9 +17,12 @@ const HeroImage = ({ hidden, height }) => {
     >
       <Box
         component={'img'}
-        src={'./cropped-sky.png'}
+        src={cropped ? './cropped-sky.png' : './sky.jpeg'}
         height='100%'
         width='100%'
+        sx={{
+          objectFit: 'cover',
+        }}
       />
     </Box>
   );
@@ -28,6 +31,7 @@ const HeroImage = ({ hidden, height }) => {
 HeroImage.propTypes = {
   hidden: PropTypes.bool,
   height: PropTypes.string,
+  cropped: PropTypes.bool,
 };
 
 export default HeroImage;

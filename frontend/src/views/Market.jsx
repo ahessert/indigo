@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import Layout from 'layout';
 import Container from 'components/Container';
 import { Jobs, SearchBar, WalletButton } from 'components';
-import { Typography, Box, Card, CardContent } from '@mui/material';
+import { Typography, Box } from '@mui/material';
 import { AppContext } from 'context/AppContext';
 
 const JobListing = () => {
@@ -34,24 +34,18 @@ const JobListing = () => {
           {provider ? (
             <Jobs />
           ) : (
-            <Box display="flex" justifyContent="center">
-              <Card sx={{ margin: 3, width: '50%', background:'linear-gradient(#1E0067, #4900FF)'}}>
-                <CardContent>
-                  <Box
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                    flexDirection="column"
-                    padding={4}
-                    gap={3}
-                  >
-                    <Typography variant="h5">
-                      Please connect wallet to view marketplace
-                    </Typography>
-                    <WalletButton />
-                  </Box>
-                </CardContent>
-              </Card>
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              flexDirection="column"
+              height="45vh"
+              gap={3}
+            >
+              <Typography variant="h5">
+                Please connect wallet to view marketplace
+              </Typography>
+              <WalletButton />
             </Box>
           )}
         </Box>

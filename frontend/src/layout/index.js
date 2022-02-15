@@ -58,7 +58,7 @@ const Main = ({ children, colorInvert = false, enterApp = false, hideImage=false
         variant="temporary"
         pages={pages}
       />
-      <HeroImage hidden={hideImage} />
+      <HeroImage hidden={hideImage} cropped />
       <main
         style={{
           background: noGradient
