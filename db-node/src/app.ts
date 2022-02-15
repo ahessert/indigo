@@ -3,10 +3,13 @@ import {
   APIGatewayProxyResult,
 } from "aws-lambda";
 
-import { RedshiftHandler } from "./helpers/redshiftHandler"
+import { RedshiftHandler } from "./helpers/redshiftHandler";
+import { DynamoHandler } from "./helpers/dynamoHandler"
 import { ModelResults } from "./interfaces";
+import { DynamoDB } from "aws-sdk";
 
 const redshiftHandler = new RedshiftHandler()
+const dynamo = new DynamoHandler()
 
 type LambdaResponse = {
   statusCode: number,
@@ -43,8 +46,9 @@ export const getDataHandler =
 
   const modelName : string = event.queryStringParameters.modelName;
   const paymentReceipt : string = event.queryStringParameters.paymentReceipt;
+  const availableModels : string[] = await getAvailableModels()
 
-  if (!PollAvailableModels().includes(modelName)) {
+  if (!availableModels.includes(modelName)) {
     return lambdaResponse(
       404, {message: `Error: modelName '${modelName}' does not exist`}
     );
@@ -72,17 +76,12 @@ function lambdaResponse(status: number, body: {}): LambdaResponse {
   };
 }
 
-const PollAvailableModels = () : String[] => {
-    return [
-      "blocks", 
-      "users", 
-      "venue", 
-      "category", 
-      "date", 
-      "event", 
-      "listing", 
-      "sales"
-    ]
+const getAvailableModels = async () : Promise<string[]> => {
+  const modelRecords = await dynamo.queryDynamoRecords('Model')
+  return modelRecords.Items.map(
+    (record : DynamoDB.AttributeMap) : string => {
+      return record['modelName'].S
+    })
 }
 
 const validPayment = (paymentReceipt: String) : Boolean => {

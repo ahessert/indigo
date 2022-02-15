@@ -66,4 +66,29 @@ export class DynamoHandler {
     
     await this.ddb.updateItem(params).promise()
   }
+
+  queryDynamoRecord = async (PK: string, skBeginsWith?: string) : 
+    Promise<AWS.DynamoDB.Types.QueryOutput> => {
+    
+    const params : AWS.DynamoDB.Types.QueryInput = {
+      TableName: "Music",
+      KeyConditionExpression: "PK = :pk",
+      ExpressionAttributeValues: {
+          ":pk": {'S': PK}
+      }
+    }
+
+    if (skBeginsWith) {
+      params.KeyConditionExpression += ' and begins_with(SK, :sk)'
+      params.ExpressionAttributeValues[':sk'] = {'S': skBeginsWith}
+    }
+  
+    try {
+      const response = await this.ddb.query(params).promise();
+      return response;
+    } catch (err) {
+      console.log(`getDynamoRecord Error: params = ${params}`);
+      throw err;
+    }
+  }
 }
