@@ -85,7 +85,13 @@ contract Nodes {
     mapping (address => uint64) private _nodeStake;
 
     event RegisterNode(address indexed _address, string _url);
-    event PublishModel(string indexed _modelName, address indexed _address, string _url, uint256 _gasConsumed);
+    event PublishModel(
+        string indexed modelName, 
+        address indexed address, 
+        string url, 
+        string description, 
+        uint256 gasConsumed
+    );
 
     modifier onlyAdmin() {
         require(
@@ -136,7 +142,12 @@ contract Nodes {
         emit RegisterNode(msg.sender, nodeUrl);
     }
 
-    function publishModel(string memory modelName, uint64 gasFee) public {
+    function publishModel(
+        string memory modelName, 
+        string memory description, 
+        uint64 gasFee) 
+        public 
+    {
         require(bytes(_registeredNodeUrls[msg.sender]).length != 0,
                 "Must be registered node to publish model");
 
@@ -147,6 +158,7 @@ contract Nodes {
             modelName, 
             msg.sender, 
             _registeredNodeUrls[msg.sender], 
+            description,
             gasFee
         );
     }
@@ -308,6 +320,4 @@ contract Indigo is Models, Nodes, Customer {
     function coinBalance(address _account) public view returns (uint256) {
         return coin.balanceOf(_account);
     }
-    
-
 }
