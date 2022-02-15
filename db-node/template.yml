@@ -35,7 +35,22 @@ Resources:
   #     AttributeDefinitions:
   #       AttributeName: PK
   #       AttributeType: S
-
+  ReadAllSecretsPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: ReadAllSecrets
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - secretsmanager:GetResourcePolicy
+          - secretsmanager:GetSecretValue
+          - secretsmanager:DescribeSecret
+          - secretsmanager:ListSecretVersionIds
+          - secretsmanager:ListSecrets
+          Resource:
+          - "*"
   HelloWorldFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -69,11 +84,11 @@ Resources:
       Handler: pollEvents.pollContractEvents
       Runtime: nodejs12.x
       Timeout: 30
-      Policies: [
-        arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess,
-        arn:aws:iam::aws:policy/AmazonS3FullAccess,
-        arn:aws:iam::aws:policy/AWSLambda_FullAccess
-        ]
+      Policies:
+      - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess,
+      - arn:aws:iam::aws:policy/AmazonS3FullAccess,
+      - arn:aws:iam::aws:policy/AWSLambda_FullAccess,
+      - !GetAtt ReadAllSecretsPolicy.Arn
       Environment:
         Variables:
           DBT_LAMBDA_ARN: !GetAtt DbtBuild.Arn

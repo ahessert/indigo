@@ -1,9 +1,7 @@
 import { Contract, Wallet, providers } from 'ethers';
-import { 
-    ALCHEMY_API_KEY, 
-    CONTRACT_ADDRESS, 
-    WALLET_PRIVATE_KEY 
-} from '../environment';
+
+import { ALCHEMY_API_KEY, CONTRACT_ADDRESS } from '../environment';
+import { getWalletPrivateKey } from './secretHandler';
 
 const indigoAbi = [
     // UNSIGNED METHODS / EVENTS
@@ -28,13 +26,16 @@ export class IndigoContract {
     private signedProvider: Wallet;
 
     constructor() {
-        this.provider = new providers.AlchemyProvider("ropsten", ALCHEMY_API_KEY); // Using Ropsten ETH testnet
-        this.signedProvider = new Wallet(WALLET_PRIVATE_KEY, this.provider)
-        this.contract = new Contract(CONTRACT_ADDRESS, indigoAbi, this.signedProvider);
-        this.setUpComplete = this._setBlock();
+        this.setUpComplete = this._setUp();
     }
 
-    private _setBlock = async () => {
+    private _setUp = async () => {
+        const privateKey = await getWalletPrivateKey()
+
+        this.provider = new providers.AlchemyProvider("ropsten", ALCHEMY_API_KEY); // Using Ropsten ETH testnet
+        this.signedProvider = new Wallet(privateKey, this.provider)
+        this.contract = new Contract(CONTRACT_ADDRESS, indigoAbi, this.signedProvider);
+
         this.currentBlock = await this.provider.getBlockNumber();
         console.log(`Current Block Number: ${this.currentBlock}`);
     }
