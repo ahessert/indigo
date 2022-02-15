@@ -13,7 +13,7 @@ import dbt.version
 EXPECTED_DBT_VERSION = '1.0.1'
 
 def download_dbt_deps():
-    run_dbt_wrapper(["deps"])
+    run_dbt_wrapper(["deps", "--project-dir", "/tmp"])
     # Reset dbt logger before running build task
     log_manager._file_handler.reset()
 

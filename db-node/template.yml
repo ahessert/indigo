@@ -76,7 +76,7 @@ Resources:
         ]
       Environment:
         Variables:
-          DBT_LAMBDA_ARN: !GetAtt DBT.Arn
+          DBT_LAMBDA_ARN: !GetAtt DbtBuild.Arn
       Events: 
         CWSchedule:
           Type: Schedule
@@ -87,32 +87,46 @@ Resources:
   # DbtLayer:
   #   Type: AWS::Serverless::LayerVersion
   #   Properties:
-  #     ContentUri: dbt/DbtLayer.zip
+  #     # ContentUri: s3://indigo-db-node/dbt/lambdaLayer.zip
+  #     ContentUri:
+  #       Bucket: indigo-db-node
+  #       Key: dbt/lambdaLayer.zip
   #     CompatibleRuntimes: [python3.9]
-  # DbtLayer:
+  # DbtLayer2:
   #   Type: AWS::Serverless::LayerVersion
-  #   Metadata:
-  #     BuildMethod: makefile
   #   Properties:
-  #     ContentUri: dbt/layer
+  #     ContentUri: dbt/dependencies.zip
   #     CompatibleRuntimes: [python3.9]
-  DBT:
+  # DBT:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     CodeUri: dbt
+  #     Handler: dbt_trigger.run
+  #     Runtime: python3.9
+  #     Layers: [!Ref DbtLayer, arn:aws:lambda:us-east-1:553035198032:layer:git-lambda2:8]
+  #     Timeout: 900 #15min is max runtime for lambda
+  #     Policies: arn:aws:iam::aws:policy/AmazonRedshiftFullAccess
+  #     Environment:
+  #       Variables:
+  #         REDSHIFT_HOST: redshift-cluster-1.cewz6yzfdkpk.us-east-1.redshift.amazonaws.com
+  #         REDSHIFT_CLUSTER_ID: redshift-cluster-1
+  #         REDSHIFT_USER: andrewhessert
+  #         DBT_PROFILES_DIR: /var/task
+  DbtBuild:
     Type: AWS::Serverless::Function
+    Metadata:
+      DockerTag: IndigoDBT
+      DockerContext: dbt
+      Dockerfile: Dockerfile
     Properties:
-      CodeUri: dbt
-      Handler: dbt_trigger.run
-      Runtime: python3.9
-      # Layers: [!Ref DbtLayer]
+      PackageType: Image
       Timeout: 900 #15min is max runtime for lambda
       Policies: arn:aws:iam::aws:policy/AmazonRedshiftFullAccess
       Environment:
-        Variables: 
-          DBT_PROFILES_DIR: ./
+        Variables:
           REDSHIFT_HOST: redshift-cluster-1.cewz6yzfdkpk.us-east-1.redshift.amazonaws.com
           REDSHIFT_CLUSTER_ID: redshift-cluster-1
           REDSHIFT_USER: andrewhessert
-          PATH: $PATH:/opt/libexec/git-core # HACKY: Add layer libexec to path
-          LD_LIBRARY_PATH: $LD_LIBRARY_PATH:/opt/lib64 # Add path to dependency from layer file
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function

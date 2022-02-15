@@ -12,6 +12,8 @@ node_modules
 # dev environment
 .vscode
 db-node/.aws-sam
+db-node/testnet
+*.session.sql
 
 # testing
 /coverage
@@ -21,11 +23,11 @@ db-node/.aws-sam
 /build
 
 # dbt
-dbt/dbt_packages
-dbt/logs
-dbt/target
-dbt/venv
-dbt/__pycache__
+db-node/dbt/dbt_packages
+db-node/dbt/logs
+db-node/dbt/target
+db-node/dbt/venv
+db-node/dbt/__pycache__
 
 # misc
 .DS_Store
