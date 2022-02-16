@@ -17,7 +17,7 @@ class SecretManager {
         const walletSecret  = await this.client.getSecretValue(
             {SecretId: secretName_WALLET_PRIVATE_KEY}
         ).promise();
-        this.WALLET_PRIVATE_KEY = walletSecret.SecretString;
+        this.WALLET_PRIVATE_KEY = JSON.parse(walletSecret.SecretString)['WALLET_PRIVATE_KEY'];
     }
 }
 

@@ -14,7 +14,7 @@ const indigoAbi = [
 
 
     // SIGNED METHODS
-    "functon publishModel(string indexed modelName, string description, uint64 gasFee)",
+    "function publishModel(string modelName, string description, uint64 gasFee)",
     "function burnReceipt(uint160 tokenId, string modelName) returns (bool)"
 ];
 

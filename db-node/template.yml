@@ -36,9 +36,8 @@ Resources:
   #       AttributeName: PK
   #       AttributeType: S
   ReadAllSecretsPolicy:
-    Type: AWS::IAM::Policy
+    Type: AWS::IAM::ManagedPolicy
     Properties:
-      PolicyName: ReadAllSecrets
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -70,6 +69,8 @@ Resources:
       Handler: app.getDataHandler
       Runtime: nodejs12.x
       Timeout: 30
+      Policies:
+      - !Ref ReadAllSecretsPolicy
       Events:
         GetData:
           Type: Api
@@ -84,11 +85,12 @@ Resources:
       Handler: pollEvents.pollContractEvents
       Runtime: nodejs12.x
       Timeout: 30
-      Policies:
-      - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess,
-      - arn:aws:iam::aws:policy/AmazonS3FullAccess,
-      - arn:aws:iam::aws:policy/AWSLambda_FullAccess,
-      - !GetAtt ReadAllSecretsPolicy.Arn
+      Policies: [
+        arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess,
+        arn:aws:iam::aws:policy/AmazonS3FullAccess,
+        arn:aws:iam::aws:policy/AWSLambda_FullAccess,
+        !Ref ReadAllSecretsPolicy
+      ]
       Environment:
         Variables:
           DBT_LAMBDA_ARN: !GetAtt DbtBuild.Arn
