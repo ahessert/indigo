@@ -56,7 +56,7 @@ export const getDataHandler =
       404, {message: `Error: modelName '${modelName}' does not exist`}
     );
   }
-  if (!validPayment(paymentReceipt, modelName)) {
+  if (! await validPayment(paymentReceipt, modelName)) {
     return lambdaResponse(
         404, {message: `Error: Invalid payment reciept '${paymentReceipt}'`}
     );
@@ -66,7 +66,7 @@ export const getDataHandler =
   await indigo.contract.burnReceipt(paymentReceipt, modelName)
   
   console.log(`SUCCESS: Delivering data for Model '${modelName}'. \nBurning receipt: ${paymentReceipt}`)
-  
+
   return lambdaResponse(
     200, modelData
   );
@@ -90,21 +90,31 @@ const getAvailableModels = async () : Promise<string[]> => {
     })
 }
 
-const validPayment = (receiptId: string, modelName: string) : Boolean => {
-    const tokenUri : string = indigo.contract.tokenURI(receiptId);
-    const receiptInfo = JSON.parse(tokenUri)
+const validPayment = async (receiptId: string, modelName: string) : Promise<Boolean> => {
+    await indigo.setUpComplete
+    try {
+      console.log(receiptId, modelName, MY_NODE_URL)
+
+      const tokenUri : string = await indigo.contract.tokenURI(receiptId);
+      const receiptInfo = JSON.parse(tokenUri.replace('data:application/json;base64,',''))
+      console.log(`Retrieved tokenURI ${tokenUri}`)
+
     
-    if (receiptInfo.modelName !== modelName) {
-      console.log(`Error: invalid receipt. Requested '${modelName}', paid for '${receiptInfo.modelName}'`)
-      return false
-    }
+      if (receiptInfo.modelName !== modelName) {
+        console.log(`Error: invalid receipt. Requested '${modelName}', paid for '${receiptInfo.modelName}'`)
+        return false
+      }
 
-    if (receiptInfo.nodeUrl !== MY_NODE_URL) {
-      console.log('Error: invalid receipt. Node URL does not match this node.')
-      return false
-    }
+      if (receiptInfo.nodeUrl !== MY_NODE_URL) {
+        console.log('Error: invalid receipt. Node URL does not match this node.')
+        return false
+      }
 
-    return true
+      return true
+    } catch (err) {
+      console.log(`Error retrieving tokenURI ${err}`)
+      return false
+    } 
 }
 
 const getDataFromModel = async (modelName: String) : Promise<ModelResults> => {

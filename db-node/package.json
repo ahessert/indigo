@@ -11,7 +11,7 @@
     "eslint:fix": "eslint ./src --fix",
     "codeStyle:fix": "npm run prettier:fix && npm run eslint:fix",
     "clear-all": "rimraf ./build ./node_modules",
-    "db-node": "nodemon ./src/*.ts --exec ts-node ./src/app.ts",
+    "db-node": "ts-node ./src/app.ts",
     "watch-contract": "ts-node ./src/pollEvents.ts"
   },
   "eslintConfig": {

@@ -2,7 +2,7 @@
 export const AWS_REGION = process.env.AWS_REGION || 'us-east-1'
 
 // Lambda
-export const DBT_LAMBDA_ARN =  process.env.DBT_LAMBDA_ARN || 'DBT'
+export const DBT_LAMBDA_ARN =  process.env.DBT_LAMBDA_ARN || 'arn:aws:lambda:us-east-1:754091198799:function:Indigo-DbtBuild-Aysdn3dgoTp2'
 
 // S3
 export const INDIGO_BUCKET = 'indigo-db-node';

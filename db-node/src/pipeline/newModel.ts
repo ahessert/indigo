@@ -91,7 +91,7 @@ export class MintModelProcessor {
 
     publishModel = async (indigo: IndigoContract) => {
         try {
-            await indigo.contract.publishModel(
+            const txResponse = await indigo.contract.publishModel(
                 this.newModel.modelName,
                 "NEAR users defi dimensional model.",
                 this.gasFee + this.newModel.ipFee

@@ -11,7 +11,7 @@ Globals:
     Timeout: 3
     Environment:
       Variables:
-        CONTRACT_ADDRESS: '0xdae7bb93969323a663177b952ee58a8493d072de'
+        CONTRACT_ADDRESS: '0x5fedc038efa936f87a90592c17add9c3f55cfd9d'
 
 Parameters:
   DynamoTableName:
@@ -48,6 +48,7 @@ Resources:
           - secretsmanager:DescribeSecret
           - secretsmanager:ListSecretVersionIds
           - secretsmanager:ListSecrets
+          - dynamodb:Query
           Resource:
           - "*"
   HelloWorldFunction:
@@ -69,15 +70,16 @@ Resources:
       Handler: app.getDataHandler
       Runtime: nodejs12.x
       Timeout: 30
-      Policies:
-      - !Ref ReadAllSecretsPolicy
       Events:
         GetData:
           Type: Api
           Properties:
             Path: /api/get-data
             Method: get
-      Policies: arn:aws:iam::aws:policy/AmazonRedshiftFullAccess
+      Policies: [
+        arn:aws:iam::aws:policy/AmazonRedshiftFullAccess,
+        !Ref ReadAllSecretsPolicy
+      ]
   PollContractEvents:
     Type: AWS::Serverless::Function
     Properties:
