@@ -58,7 +58,7 @@ function WalletButton({
 }
 
 WalletButton.propTypes = {
-  Icon: PropTypes.node,
+  Icon: PropTypes.any,
   size: PropTypes.number,
 };
 

@@ -7,6 +7,8 @@ import { AppContext } from 'context/AppContext';
 
 const JobListing = () => {
   const { provider } = useContext(AppContext);
+  console.log(WalletButton);
+  console.log(provider);
   return (
     <Layout>
       <Container style={{ position: 'relative' }}>
@@ -31,9 +33,9 @@ const JobListing = () => {
           <SearchBar />
         </Box>
         <Box>
-          {provider ? (
-            <Jobs />
-          ) : (
+          {/* {provider ? ( */}
+          <Jobs />
+          {/* ) : (
             <Box
               display="flex"
               justifyContent="center"
@@ -47,7 +49,7 @@ const JobListing = () => {
               </Typography>
               <WalletButton />
             </Box>
-          )}
+          )} */}
         </Box>
       </Container>
     </Layout>

@@ -2,7 +2,7 @@ import React, { useState, useContext, useRef } from 'react';
 import Layout from 'layout';
 import { saveAs } from 'file-saver';
 import { AppContext } from 'context/AppContext';
-import { Container, WalletButton, LoadingModal } from 'components';
+import { WalletButton, LoadingModal } from 'components';
 import { ModelCardMedia, ModelCardContent } from 'components/ModelCard';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import mockGraphData from 'utils/mockGraphData.json';
@@ -10,9 +10,7 @@ import {
   Typography,
   Box,
   useTheme,
-  Card,
   CardContent,
-  Divider,
   Button,
 } from '@mui/material';
 import { useParams } from 'react-router-dom';
@@ -23,6 +21,12 @@ import { BiDownload } from 'react-icons/bi';
 import AirtableIcon from 'svg/illustrations/Airtable';
 import { useContract } from 'hooks';
 import { blockExplorerUrl } from 'utils/constants';
+import {
+  InstructionCard,
+  InstructionRow,
+  SpacedBox,
+  SpacedDivider,
+} from 'components/InstructionCard';
 
 const mockData = {
   title: 'Aurora + Curve',
@@ -33,18 +37,6 @@ const mockData = {
   price: 7,
   id: 4,
 };
-
-const SpacedBox = styled(Box)`
-  display: flex;
-  align-items: center;
-  gap: 45px;
-  padding: 0px 10px;
-`;
-
-const SpacedDivider = styled(Divider)`
-  margin: 30px 10px;
-  background: black;
-`;
 
 const IconBox = styled(Box)`
   display: flex;
@@ -130,206 +122,139 @@ const ModelPreview = () => {
         message="Confirming transaction"
         href={`${blockExplorerUrl}/tx/${'0x433b1c1e500036910f13a4d8e03ce8c29fc3cd8804d80724f4dff0add840933f'}`}
       />
-      <Box
-        sx={{
-          background: `linear-gradient(${theme.palette.background.paper} , ${theme.palette.common.black} 15%, ${theme.palette.background.paper})`,
-        }}
-        paddingTop="80px"
-      >
-        <Container style={{ position: 'relative' }}>
-          <Box>
-            <Typography
-              variant="h3"
-              fontWeight="bold"
+      <InstructionCard>
+        <Box display="flex" flexDirection={{ xs: 'column', sm: 'row' }}>
+          <ModelCardContent item={modelDetails} hasLink={false} />
+          <ModelCardMedia
+            dapps={modelDetails.dapps}
+            itemsShown={isXs ? 3 : 4}
+          />
+        </Box>
+        <InstructionRow title="Connect Wallet to Indigo" number={1}>
+          <WalletButton Icon={FaRegCheckCircle} size={25} />
+        </InstructionRow>
+        <InstructionRow title="Confirm transaction" number={2}>
+          {hasReceipt ? (
+            <Button
+              variant="contained"
+              color="success"
+              size="large"
               sx={{
-                textShadow:
-                  '0 0 32px rgb(192 219 255 / 48%), 0 0 8px rgb(65 120 255 / 24%)',
+                backgroundColor: theme.palette.success.dark,
+                color: theme.palette.text.primary,
+              }}
+              disableElevation
+              onClick={() => {
+                // open tabs to aurora etherscan
+                console.log('TO ETHERSCAN!');
               }}
             >
-              Access Data Model
+              <IconBox>
+                <FaRegCheckCircle size={25} />{' '}
+                <Typography fontWeight="bold">CONFIRMED</Typography>
+              </IconBox>
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              color="primary"
+              size="large"
+              disableElevation
+              disabled={!provider}
+              onClick={() => handleTransaction(id)}
+            >
+              <IconBox>
+                <FaRegHandshake size={25} />{' '}
+                <Typography fontWeight="bold">CONFIRM</Typography>
+              </IconBox>
+            </Button>
+          )}
+        </InstructionRow>
+        <InstructionRow title="Retrieve model" number={3}>
+          {model ? (
+            <Button
+              variant="contained"
+              color="success"
+              size="large"
+              sx={{
+                backgroundColor: theme.palette.success.dark,
+                color: theme.palette.text.primary,
+              }}
+              disableElevation
+              onClick={() => {
+                // open tabs to aurora etherscan
+                console.log('TO ETHERSCAN!');
+              }}
+            >
+              <IconBox>
+                <FaRegCheckCircle size={25} />{' '}
+                <Typography fontWeight="bold">REDEEMED</Typography>
+              </IconBox>
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              color="primary"
+              size="large"
+              onClick={handleRedeem}
+              disabled={!hasReceipt}
+              disableElevation
+            >
+              <IconBox>
+                <FaTicketAlt size={25} />{' '}
+                <Typography fontWeight="bold">REDEEM</Typography>
+              </IconBox>
+            </Button>
+          )}
+        </InstructionRow>
+        <SpacedDivider />
+        <CardContent>
+          <SpacedBox>
+            <Typography fontWeight="bold" variant="h2">
+              4
             </Typography>
-          </Box>
-          <Container display="flex" justifyContent={'center'}>
-            <Card
-              sx={{
-                padding: 2,
-                maxWidth: '800px',
-                minWidth: '500px',
-                background: 'linear-gradient(#1E0067, #4900FF)',
-              }}
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              width="100%"
+              gap="10%"
             >
-              <Box display="flex" flexDirection={{ xs: 'column', sm: 'row' }}>
-                <ModelCardContent item={modelDetails} hasLink={false} />
-                <ModelCardMedia
-                  dapps={modelDetails.dapps}
-                  itemsShown={isXs ? 3 : 4}
-                />
-              </Box>
-              <SpacedDivider />
-              <CardContent>
-                <SpacedBox>
-                  <Typography fontWeight="bold" variant="h2">
-                    1
+              <Button
+                variant="contained"
+                color="primary"
+                disableElevation
+                fullWidth
+                disabled={!model}
+                onClick={handleDownload}
+              >
+                <IconBox>
+                  <BiDownload size={25} />
+                  <Typography paddingTop="1px" fontWeight="bold">
+                    DOWNLOAD
                   </Typography>
-                  <Typography>Connect Wallet to Indigo</Typography>
-                  <Box marginLeft="auto">
-                    <WalletButton Icon={FaRegCheckCircle} size={25} />
-                  </Box>
-                </SpacedBox>
-              </CardContent>
-              <SpacedDivider />
-              <CardContent>
-                <SpacedBox>
-                  <Typography fontWeight="bold" variant="h2" component="span">
-                    2
+                </IconBox>
+              </Button>
+              <Typography variant="body">OR</Typography>
+              <Button
+                variant="contained"
+                color="primary"
+                disableElevation
+                fullWidth
+                disabled={!model}
+              >
+                <IconBox>
+                  <Typography paddingTop="1px" fontWeight="bold">
+                    SEND TO
+                    {isSm && ' AIRTABLE'}
                   </Typography>
-                  <Typography>Confirm transaction</Typography>
-                  <Box marginLeft="auto">
-                    {hasReceipt ? (
-                      <Button
-                        variant="contained"
-                        color="success"
-                        size="large"
-                        sx={{
-                          backgroundColor: theme.palette.success.dark,
-                          color: theme.palette.text.primary,
-                        }}
-                        disableElevation
-                        onClick={() => {
-                          // open tabs to aurora etherscan
-                          console.log('TO ETHERSCAN!');
-                        }}
-                      >
-                        <IconBox>
-                          <FaRegCheckCircle size={25} />{' '}
-                          <Typography fontWeight="bold">CONFIRMED</Typography>
-                        </IconBox>
-                      </Button>
-                    ) : (
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        size="large"
-                        disableElevation
-                        disabled={!provider}
-                        onClick={() => handleTransaction(id)}
-                      >
-                        <IconBox>
-                          <FaRegHandshake size={25} />{' '}
-                          <Typography fontWeight="bold">CONFIRM</Typography>
-                        </IconBox>
-                      </Button>
-                    )}
-                  </Box>
-                </SpacedBox>
-              </CardContent>
-              <SpacedDivider />
-              <CardContent>
-                <SpacedBox>
-                  <Typography fontWeight="bold" variant="h2">
-                    3
-                  </Typography>
-                  <Box
-                    display="flex"
-                    justifyContent="space-between"
-                    alignItems="center"
-                    width="100%"
-                    gap="10%"
-                  >
-                    Retrieve model
-                  </Box>
-                  <Box marginLeft="auto">
-                    {model ? (
-                      <Button
-                        variant="contained"
-                        color="success"
-                        size="large"
-                        sx={{
-                          backgroundColor: theme.palette.success.dark,
-                          color: theme.palette.text.primary,
-                        }}
-                        disableElevation
-                        onClick={() => {
-                          // open tabs to aurora etherscan
-                          console.log('TO ETHERSCAN!');
-                        }}
-                      >
-                        <IconBox>
-                          <FaRegCheckCircle size={25} />{' '}
-                          <Typography fontWeight="bold">REDEEMED</Typography>
-                        </IconBox>
-                      </Button>
-                    ) : (
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        size="large"
-                        onClick={handleRedeem}
-                        disabled={!hasReceipt}
-                        disableElevation
-                      >
-                        <IconBox>
-                          <FaTicketAlt size={25} />{' '}
-                          <Typography fontWeight="bold">REDEEM</Typography>
-                        </IconBox>
-                      </Button>
-                    )}
-                  </Box>
-                </SpacedBox>
-              </CardContent>
-              <SpacedDivider />
-              <CardContent>
-                <SpacedBox>
-                  <Typography fontWeight="bold" variant="h2">
-                    4
-                  </Typography>
-                  <Box
-                    display="flex"
-                    justifyContent="space-between"
-                    alignItems="center"
-                    width="100%"
-                    gap="10%"
-                  >
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      disableElevation
-                      fullWidth
-                      disabled={!model}
-                      onClick={handleDownload}
-                    >
-                      <IconBox>
-                        <BiDownload size={25} />
-                        <Typography paddingTop="1px" fontWeight="bold">
-                          DOWNLOAD
-                        </Typography>
-                      </IconBox>
-                    </Button>
-                    <Typography variant="body">OR</Typography>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      disableElevation
-                      fullWidth
-                      disabled={!model}
-                    >
-                      <IconBox>
-                        <Typography paddingTop="1px" fontWeight="bold">
-                          SEND TO
-                          {isSm && ' AIRTABLE'}
-                        </Typography>
-                        {!isSm && (
-                          <AirtableIcon size="110px" disabled={!model} />
-                        )}
-                      </IconBox>
-                    </Button>
-                  </Box>
-                </SpacedBox>
-              </CardContent>
-            </Card>
-          </Container>
-        </Container>
-      </Box>
+                  {!isSm && <AirtableIcon size="110px" disabled={!model} />}
+                </IconBox>
+              </Button>
+            </Box>
+          </SpacedBox>
+        </CardContent>
+      </InstructionCard>
     </Layout>
   );
 };
