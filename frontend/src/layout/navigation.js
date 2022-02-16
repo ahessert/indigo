@@ -6,6 +6,10 @@ const pages = {
   developers: {
     title: 'Developer',
     href: '/developer'
+  },
+  airdrop: {
+    title: 'Airdrop',
+    href: '/airdrop'
   }
 };
 

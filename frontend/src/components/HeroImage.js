@@ -22,6 +22,7 @@ const HeroImage = ({ hidden, height, cropped=false }) => {
         width='100%'
         sx={{
           objectFit: 'cover',
+          objectPosition: 'bottom',
         }}
       />
     </Box>

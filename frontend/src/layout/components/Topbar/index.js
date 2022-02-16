@@ -19,7 +19,6 @@ const Topbar = ({
   enterApp = false,
 }) => {
   const theme = useTheme();
-  const { market, developers } = pages;
   const navigate = useNavigate();
 
   return (
@@ -56,16 +55,17 @@ const Topbar = ({
           sx={{ display: { xs: 'none', md: 'flex' }, gap: '30px' }}
           alignItems={'center'}
         >
-          <SingleNavItem
-            id={'market-page'}
-            items={market}
-            colorInvert={colorInvert}
-          />
-          <SingleNavItem
-            id={'developer-page'}
-            items={developers}
-            colorInvert={colorInvert}
-          />
+          {Object.values(pages).map((page) => {
+            const key = `${page.title}-page`;
+            return (
+              <SingleNavItem
+                id={key}
+                key={key}
+                items={page}
+                colorInvert={colorInvert}
+              />
+            );
+          })}
         </Box>
       </Box>
       {enterApp ? (

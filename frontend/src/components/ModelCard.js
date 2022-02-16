@@ -33,12 +33,18 @@ const ModelCardMedia = ({ dapps, itemsShown = 4 }) => {
   let displayCount = 0;
 
   if (dapps.length === 1) {
-    return <CardMedia src={getLogo(dapps[0])} component="img" />;
+    return (
+      <CardMedia
+        sx={{ maxWidth: '300px' }}
+        src={getLogo(dapps[0])}
+        component="img"
+      />
+    );
   }
 
   return (
     <Box
-      height={{xs:'200px', sm: '250px'}}
+      height={{ xs: '200px', sm: '250px' }}
       sx={{
         borderRadius: '10px',
         display: 'flex',
@@ -81,7 +87,7 @@ const ModelCardMedia = ({ dapps, itemsShown = 4 }) => {
         <Box
           sx={{
             position: 'absolute',
-            bottom: {xs: '10%', sm:'0px'},
+            bottom: { xs: '10%', sm: '0px' },
             right: '45px',
             zIndex: '2',
             width: '30px',
@@ -108,9 +114,11 @@ const ModelCardContent = ({ item, hasLink = true }) => {
       <Typography variant={'h4'} sx={{ fontWeight: 'bold' }}>
         {title}
       </Typography>
-      <Typography variant={'h6'} sx={{ fontWeight: 500 }}>
-        Author: {author}
-      </Typography>
+      {author && (
+        <Typography variant={'h6'} sx={{ fontWeight: 500 }}>
+          Author: {author}
+        </Typography>
+      )}
       <Box
         display={'flex'}
         alignItems={'center'}
@@ -121,7 +129,7 @@ const ModelCardContent = ({ item, hasLink = true }) => {
           {description}
         </Typography>
       </Box>
-      {hasLink ? (
+      {price && id && hasLink && (
         <Button
           variant={'outlined'}
           size="large"
@@ -133,10 +141,13 @@ const ModelCardContent = ({ item, hasLink = true }) => {
             Payload: {price} $INDG
           </Typography>
         </Button>
-      ) : (
+      )}
+      {price && !hasLink ? (
         <Typography variant={'h6'} color="secondary" fontWeight="bold">
           Access: {price} $INDG
         </Typography>
+      ) : (
+        <></>
       )}
     </CardContent>
   );
@@ -150,7 +161,7 @@ const ModelCard = ({ item }) => {
       <Box
         display={'block'}
         width={1}
-        minWidth={{xs:'550px', sm:'0'}}
+        minWidth={{ xs: '550px', sm: '0' }}
         height={1}
         sx={{
           textDecoration: 'none',
@@ -191,7 +202,7 @@ ModelCard.propTypes = {
   item: PropTypes.shape({
     dapps: PropTypes.arrayOf(PropTypes.string).isRequired,
     title: PropTypes.string.isRequired,
-    id: PropTypes.number.isRequired,
+    id: PropTypes.number,
     price: PropTypes.number.isRequired,
     description: PropTypes.string.isRequired,
     author: PropTypes.string.isRequired,
@@ -200,16 +211,16 @@ ModelCard.propTypes = {
 
 ModelCardMedia.propTypes = {
   dapps: PropTypes.arrayOf(PropTypes.string).isRequired,
-  itemsShown: PropTypes.number
+  itemsShown: PropTypes.number,
 };
 
 ModelCardContent.propTypes = {
   item: PropTypes.shape({
     title: PropTypes.string.isRequired,
-    id: PropTypes.number.isRequired,
-    price: PropTypes.number.isRequired,
+    id: PropTypes.number,
+    price: PropTypes.number,
     description: PropTypes.string.isRequired,
-    author: PropTypes.string.isRequired,
+    author: PropTypes.string,
   }).isRequired,
   hasLink: PropTypes.bool,
 };
