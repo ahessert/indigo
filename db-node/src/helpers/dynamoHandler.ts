@@ -2,7 +2,7 @@ import AWS from "aws-sdk";
 import { DYNAMO_TABLE, AWS_REGION } from "../environment"
 
 
-interface DynamoKeys {
+export interface DynamoKeys {
     primaryKey: string, 
     sortKey?: string
 }

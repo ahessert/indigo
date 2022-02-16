@@ -90,11 +90,17 @@ export class MintModelProcessor {
     }
 
     publishModel = async (indigo: IndigoContract) => {
-        indigo.contract.publishModel(
-            this.newModel,
-            "NEAR users defi dimensional model.",
-            this.gasFee + this.newModel.ipFee
-        )
+        try {
+            await indigo.contract.publishModel(
+                this.newModel.modelName,
+                "NEAR users defi dimensional model.",
+                this.gasFee + this.newModel.ipFee
+            )
+            console.log(`Publish SUCCESS: View on etherscan link below:\n\t`
+                        +`https://ropsten.etherscan.io/tx/${txResponse.hash}`)
+        } catch (err) {
+            console.log(`Error in publishModel\n${err}`)
+        }
     }
 }
 
