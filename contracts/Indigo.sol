@@ -253,13 +253,14 @@ interface CoinInterface is IERC20 {
     function burnCoins(address, address, uint256) external;
     function mintCoins(address, address, uint64) external;
     function transferCoins(address, address, uint256) external;
+    function freeTrialMint(address _to, uint64 _amount) external;
 } 
 
 
 contract Coin is ERC20, CoinInterface {
     address private _admin = address(0);
 
-    constructor(address admin) ERC20("IndigoCoin", "INDC") {
+    constructor(address admin) ERC20("Indigo", "INDG") {
         _admin = admin;
     }
 
@@ -269,8 +270,12 @@ contract Coin is ERC20, CoinInterface {
     }
 
     function mintCoins(address _sender, address _to, uint64 _amount) public override {
-        require(_sender == _admin, //|| freeTrial(msg.sender)
+        require(_sender == _admin,
                 "Unauthorized to mint new coins");
+        _mint(_to, _amount);
+    }
+
+    function freeTrialMint(address _to, uint64 _amount) public override {
         _mint(_to, _amount);
     }
 
@@ -279,13 +284,46 @@ contract Coin is ERC20, CoinInterface {
     }
 }
 
+contract AirDrop {
+    address private _admin;
+    uint64 freeTrialINDG = 200;
+    uint64 freeTrialWEI = 10000000000000000; // 0.01 ETH To cover gas fees
+    mapping (address => bool) internal participants;
+    CoinInterface private _coin;
 
-contract Indigo is Models, Nodes, Customer {
+    constructor(CoinInterface coin) {
+        _admin = msg.sender;
+        _coin = coin;
+    }
+
+    modifier onlyFirstTimeUsers() {
+        require(
+            participants[msg.sender] != true,
+            "Address already received free trial AirDrop"
+        ); 
+        _;
+    }
+
+    function freeTrial() public onlyFirstTimeUsers {
+        _coin.freeTrialMint(msg.sender, freeTrialINDG);
+        payable(msg.sender).transfer(freeTrialWEI);
+    }
+
+    function freeTrialBalance() public view returns (uint256) {
+        return address(this).balance;
+    }
+}
+
+contract Indigo is Models, Nodes, Customer, AirDrop {
     address private _admin = address(0);
     CoinInterface coin = new Coin(msg.sender);
 
-    constructor() Customer(coin) Nodes(coin) {
+    constructor() Customer(coin) Nodes(coin) AirDrop(coin) payable {
         _admin = msg.sender;
+    }
+
+    receive() external payable {
+        payable(msg.sender).transfer(msg.value);
     }
 
     function getModel(string memory modelName) 
