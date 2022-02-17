@@ -41,7 +41,7 @@ const Mint = () => {
         href={`${blockExplorerUrl}/tx/${'0x433b1c1e500036910f13a4d8e03ce8c29fc3cd8804d80724f4dff0add840933f'}`}
       />
       <InstructionCard>
-        <Box display="flex" flexDirection={{ xs: 'column', sm: 'row' }}>
+        <Box display="flex">
           <ModelCardContent item={airdropDescription} hasLink={false} />
           <CardMedia
             sx={{
@@ -49,6 +49,7 @@ const Mint = () => {
               height: '100%',
               padding: 4,
               objectFit: 'cover',
+              display: { xs: 'none', md: 'block' },
             }}
             src={'/indigoGearIcon.svg'}
             component="img"

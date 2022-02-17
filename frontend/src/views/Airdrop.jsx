@@ -37,7 +37,7 @@ const Airdrop = () => {
     setIsLoading(false);
   }
 
-  function handleCaptcha(captchaValue){
+  function handleCaptcha(captchaValue) {
     console.log(captchaValue);
     setCompletedCaptcha(true);
   }
@@ -50,13 +50,14 @@ const Airdrop = () => {
         href={`${blockExplorerUrl}/tx/${'0x433b1c1e500036910f13a4d8e03ce8c29fc3cd8804d80724f4dff0add840933f'}`}
       />
       <InstructionCard>
-        <Box display="flex" flexDirection={{ xs: 'column', sm: 'row' }}>
+        <Box display="flex">
           <ModelCardContent item={airdropDescription} hasLink={false} />
           <CardMedia
             sx={{
-              maxWidth: '250px',
+              width: '200px',
               padding: 4,
               filter: 'brightness(0) invert(1)',
+              display: { xs: 'none', md: 'block' },
             }}
             src={'/logo/default.svg'}
             component="img"
@@ -91,7 +92,7 @@ const Airdrop = () => {
             >
               <IconBox>
                 <IndigoIcon
-                  size='25'
+                  size="25"
                   style={{
                     filter: 'brightness(0) invert(1)',
                     opacity: !provider || !completedCaptcha ? '0.4' : '1',
@@ -111,7 +112,7 @@ const Airdrop = () => {
             >
               <IconBox>
                 <IndigoIcon
-                  size='25'
+                  size="25"
                   style={{
                     filter: 'brightness(0) invert(1)',
                     opacity: !provider || !completedCaptcha ? '0.4' : '1',
