@@ -87,8 +87,8 @@ contract Nodes {
     event RegisterNode(address indexed _address, string _url);
     event PublishModel(
         string indexed modelName, 
-        address indexed address, 
-        string url, 
+        address indexed _address, 
+        string _url, 
         string description, 
         uint256 gasConsumed
     );
