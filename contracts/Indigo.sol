@@ -86,11 +86,11 @@ contract Nodes {
 
     event RegisterNode(address indexed _address, string _url);
     event PublishModel(
-        string indexed modelName, 
-        address indexed _address, 
-        string _url, 
+        string indexed modelNamehash, 
+        string modelName,
         string description, 
-        uint256 gasConsumed
+        uint256 feeTotal,
+        string _url
     );
 
     modifier onlyAdmin() {
@@ -145,7 +145,8 @@ contract Nodes {
     function publishModel(
         string memory modelName, 
         string memory description, 
-        uint64 gasFee) 
+        uint64 gasFee,
+        uint64 ipFee) 
         public 
     {
         require(bytes(_registeredNodeUrls[msg.sender]).length != 0,
@@ -156,10 +157,10 @@ contract Nodes {
 
         emit PublishModel(
             modelName, 
-            msg.sender, 
-            _registeredNodeUrls[msg.sender], 
+            modelName,
             description,
-            gasFee
+            gasFee + ipFee,
+            _registeredNodeUrls[msg.sender]
         );
     }
 }

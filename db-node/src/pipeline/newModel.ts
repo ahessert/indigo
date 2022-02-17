@@ -12,6 +12,10 @@ const dynamo = new DynamoHandler();
 export class MintModelProcessor {
     newModel: DataModel;
     gasFee = 5;
+    modelDescription = {  // Hard coded dummy decription
+        text: "NEAR users defi dimensional model.",
+        symbols: ["near", "aroura"]
+    }
 
     constructor (event_args : ReadonlyArray<any>, blockNumber : number) {
         const [
@@ -93,8 +97,9 @@ export class MintModelProcessor {
         try {
             const txResponse = await indigo.contract.publishModel(
                 this.newModel.modelName,
-                "NEAR users defi dimensional model.",
-                this.gasFee + this.newModel.ipFee
+                JSON.stringify(this.modelDescription),
+                this.gasFee,
+                this.newModel.ipFee
             )
             console.log(`Publish SUCCESS: View on etherscan link below:\n\t`
                         +`https://ropsten.etherscan.io/tx/${txResponse.hash}`)
