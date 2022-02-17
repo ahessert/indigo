@@ -23,4 +23,4 @@ export const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS || '0xaC59Fe12edaD7
 export const WALLET_PRIVATE_KEY = process.env.PRIVATE_KEY
 
 // MISC
-export const MY_NODE_URL = process.env.MY_NODE_URL ||  "https://hq6elmg3a4.execute-api.us-east-1.amazonaws.com"
+export const MY_NODE_URL = process.env.MY_NODE_URL ||  "https://hq6elmg3a4.execute-api.us-east-1.amazonaws.com/"
