@@ -17,10 +17,6 @@ const IconBox = styled(Box)`
   gap: 10px;
 `;
 
-// split out box logic into reusable container
-// const InstructionBox = () => {
-// };
-
 const Airdrop = () => {
   const theme = useTheme();
   const { provider } = useContext(AppContext);

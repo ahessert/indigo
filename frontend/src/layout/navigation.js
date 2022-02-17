@@ -5,7 +5,7 @@ const pages = {
   },
   developers: {
     title: 'Developer',
-    href: '/developer'
+    href: '/mint'
   },
   airdrop: {
     title: 'Airdrop',

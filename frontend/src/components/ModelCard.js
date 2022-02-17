@@ -34,11 +34,17 @@ const ModelCardMedia = ({ dapps, itemsShown = 4 }) => {
 
   if (dapps.length === 1) {
     return (
-      <CardMedia
-        sx={{ maxWidth: '300px' }}
-        src={getLogo(dapps[0])}
-        component="img"
-      />
+      <Box
+        display="flex"
+        justifyContent="center"
+        height={{ xs: '200px', sm: '250px' }}
+      >
+        <CardMedia
+          sx={{ maxWidth: '300px' }}
+          src={getLogo(dapps[0])}
+          component="img"
+        />
+      </Box>
     );
   }
 

@@ -76,7 +76,7 @@ const Topbar = ({
             <Button
               variant="contained"
               color="secondary"
-              onClick={() => navigate('/developer')}
+              onClick={() => navigate('/mint')}
             >
               Mint NFT Model
             </Button>

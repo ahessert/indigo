@@ -7,6 +7,7 @@ import {
   Card,
   CardContent,
   Divider,
+  Grid,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
@@ -28,13 +29,19 @@ const InstructionRow = ({ number, title, children }) => {
     <>
       <SpacedDivider />
       <CardContent>
-        <SpacedBox>
-          <Typography fontWeight="bold" variant="h2">
-            {number}
-          </Typography>
-          <Typography>{title}</Typography>
-          <Box marginLeft="auto">{children}</Box>
-        </SpacedBox>
+        <Grid container>
+          <Grid item xs={1} paddingX={2}>
+            <Typography fontWeight="bold" variant="h2" >
+              {number}
+            </Typography>
+          </Grid>
+          <Grid item xs={6} display="flex" alignItems="center" paddingX={2}>
+            <Typography >{title}</Typography>
+          </Grid>
+          <Grid item xs={5} display="flex" alignItems="center"paddingX={2}>
+            <Box marginLeft="auto">{children}</Box>
+          </Grid>
+        </Grid>
       </CardContent>
     </>
   );
