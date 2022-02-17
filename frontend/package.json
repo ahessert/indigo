@@ -42,6 +42,7 @@
     "aos": "^2.3.4",
     "aws-sdk": "^2.1066.0",
     "card-validator": "^8.1.1",
+    "ethers": "^5.5.4",
     "file-saver": "^2.0.5",
     "formik": "^2.2.6",
     "jarallax": "^1.12.8",
