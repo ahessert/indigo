@@ -11,7 +11,7 @@ Globals:
     Timeout: 3
     Environment:
       Variables:
-        CONTRACT_ADDRESS: '0xaC59Fe12edaD70779671E43Db6155960edcf6Bc5'
+        CONTRACT_ADDRESS: '0x438914A9e5d7e422de0eE0dA7B3A498e50403f43'
 
 Parameters:
   DynamoTableName:

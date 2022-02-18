@@ -19,8 +19,8 @@ export const DYNAMO_TABLE = process.env.DYNAMO_TABLE || 'Indigo'
 
 // Blockchain
 export const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY || "8OYhDuflJekreW0vanJqrjbOjit3CS3M"
-export const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS || '0xaC59Fe12edaD70779671E43Db6155960edcf6Bc5'
+export const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS || '0x438914A9e5d7e422de0eE0dA7B3A498e50403f43'
 export const WALLET_PRIVATE_KEY = process.env.PRIVATE_KEY
 
 // MISC
-export const MY_NODE_URL = process.env.MY_NODE_URL ||  "https://hq6elmg3a4.execute-api.us-east-1.amazonaws.com/"
+export const MY_NODE_URL = process.env.MY_NODE_URL ||  "https://hq6elmg3a4.execute-api.us-east-1.amazonaws.com"

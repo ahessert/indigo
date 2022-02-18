@@ -209,7 +209,8 @@ abstract contract Customer is ERC721URIStorage {
     }
 
     function getReceipt(string memory modelName) public view returns (uint160) {
-        require(_customerReceipts[msg.sender][modelName] != uint160(0),
+        require(_customerReceipts[msg.sender][modelName] != uint160(0) &
+                _exists(_customerReceipts[msg.sender][modelName]),
                 "No valid receipts for model." );
         return _customerReceipts[msg.sender][modelName];
     }
@@ -221,9 +222,6 @@ abstract contract Customer is ERC721URIStorage {
         internal
         returns (uint160)
     {   
-        require(_customerReceipts[msg.sender][modelName] == uint160(0),
-                "Already paid for model. Check receipts." );
-
         _tokensMinted += 1;
         uint160 tokenId = uint160(msg.sender) + _tokensMinted;
 
