@@ -16,9 +16,35 @@ const rotate = keyframes`
 
 const LoadingModal = ({ isLoading, setIsLoading, href, message }) => {
   return (
+    <GenericModal isOpen={isLoading} setIsOpen={setIsLoading}>
+      <Box
+        display="flex"
+        justifyContent="center"
+        sx={{
+          animation: `${rotate} 1s infinite linear`,
+        }}
+      >
+        <AiOutlineLoading3Quarters size={40} />
+      </Box>
+      <Link
+        underline="none"
+        component="a"
+        href={href}
+        target="_blank"
+        color="text.primary"
+        variant={'h6'}
+      >
+        {message} {href && <BiLinkExternal size={11} />}
+      </Link>
+    </GenericModal>
+  );
+};
+
+const GenericModal = ({ children, isOpen, setIsOpen }) => {
+  return (
     <Modal
-      open={isLoading}
-      onClose={() => (setIsLoading ? setIsLoading(false) : undefined)}
+      open={isOpen}
+      onClose={() => (setIsOpen ? setIsOpen(false) : undefined)}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
@@ -40,29 +66,17 @@ const LoadingModal = ({ isLoading, setIsLoading, href, message }) => {
           flexDirection="column"
           gap={2}
         >
-          <Box
-            display="flex"
-            justifyContent="center"
-            sx={{
-              animation: `${rotate} 1s infinite linear`,
-            }}
-          >
-            <AiOutlineLoading3Quarters size={40} />
-          </Box>
-          <Link
-            underline="none"
-            component="a"
-            href={href}
-            target="_blank"
-            color="text.primary"
-            variant={'h6'}
-          >
-            {message} {href && <BiLinkExternal size={11} />}
-          </Link>
+          {children}
         </Box>
       </Card>
     </Modal>
   );
+};
+
+GenericModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  setIsOpen: PropTypes.func,
+  children: PropTypes.node.isRequired,
 };
 
 LoadingModal.propTypes = {
@@ -72,4 +86,4 @@ LoadingModal.propTypes = {
   message: PropTypes.string.isRequired,
 };
 
-export default LoadingModal;
+export { GenericModal, LoadingModal };

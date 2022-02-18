@@ -1,14 +1,25 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Layout from 'layout';
 import Container from 'components/Container';
-import { Jobs, SearchBar, WalletButton } from 'components';
+import { Jobs, SearchBar, ConnectPrompt } from 'components';
 import { Typography, Box } from '@mui/material';
 import { AppContext } from 'context/AppContext';
+import { useContract } from 'hooks';
 
 const JobListing = () => {
   const { provider } = useContext(AppContext);
-  console.log(WalletButton);
-  console.log(provider);
+  const { getAllModelDescriptions } = useContract(provider);
+  const [models, setModels] = useState([]);
+  console.log('models', models);
+
+  useEffect(() => {
+    (async () => {
+      if (!provider) return;
+      const newModels = await getAllModelDescriptions();
+      setModels(newModels);
+    })();
+  }, [provider]);
+
   return (
     <Layout>
       <Container style={{ position: 'relative' }}>
@@ -32,25 +43,7 @@ const JobListing = () => {
           </Box>
           <SearchBar />
         </Box>
-        <Box>
-          {/* {provider ? ( */}
-          <Jobs />
-          {/* ) : (
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              flexDirection="column"
-              height="45vh"
-              gap={3}
-            >
-              <Typography variant="h5">
-                Please connect wallet to view marketplace
-              </Typography>
-              <WalletButton />
-            </Box>
-          )} */}
-        </Box>
+        <Box>{provider ? <Jobs data={models} /> : <ConnectPrompt />}</Box>
       </Container>
     </Layout>
   );

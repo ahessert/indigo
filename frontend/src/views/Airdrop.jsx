@@ -6,10 +6,10 @@ import { ModelCardContent } from 'components/ModelCard';
 import { Typography, Box, useTheme, CardMedia, Button } from '@mui/material';
 import styled from '@emotion/styled';
 import { FaRegCheckCircle } from 'react-icons/fa';
-import { blockExplorerUrl } from 'utils/constants';
 import IndigoIcon from 'svg/illustrations/IndigoIcon';
 import { InstructionCard, InstructionRow } from 'components/InstructionCard';
 import ReCAPTCHA from 'react-google-recaptcha';
+import useContract from 'hooks/useContract';
 
 const IconBox = styled(Box)`
   display: flex;
@@ -17,23 +17,33 @@ const IconBox = styled(Box)`
   gap: 10px;
 `;
 
+// public site keys for captcha
+const testSiteKey = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
+const siteKey = '6Lc-MYIeAAAAAO-XhXh9oqjIxWXptrxSP4eO3L_W';
+
 const Airdrop = () => {
   const theme = useTheme();
-  const { provider } = useContext(AppContext);
+  const { provider, signer } = useContext(AppContext);
+  const { mintFreeTrialCoins } = useContract(signer);
   const [isLoading, setIsLoading] = useState(false);
   const [completedCaptcha, setCompletedCaptcha] = useState(false);
   const [claimed, setClaimed] = useState(false);
 
   const airdropDescription = {
-    title: '$INDG One-time Airdrop',
+    modelName: '$INDG One-time Airdrop',
     description:
       'locavore tbh health goth street art tumblr 3 wolf moon single-origin coffee vexillologist +1 skateboard taxidermy copper mug master cleanse hexagon kitsch.',
     dapps: ['default'],
   };
 
-  function handleTransaction() {
+  async function handleTransaction() {
     setIsLoading(true);
-    setClaimed(true);
+    try {
+      await mintFreeTrialCoins();
+      setClaimed(true);
+    } catch (e) {
+      console.error(e);
+    }
     setIsLoading(false);
   }
 
@@ -47,7 +57,6 @@ const Airdrop = () => {
       <LoadingModal
         isLoading={isLoading}
         message="Confirming transaction"
-        href={`${blockExplorerUrl}/tx/${'0x433b1c1e500036910f13a4d8e03ce8c29fc3cd8804d80724f4dff0add840933f'}`}
       />
       <InstructionCard>
         <Box display="flex">
@@ -56,7 +65,7 @@ const Airdrop = () => {
             sx={{
               width: '200px',
               padding: 4,
-              filter: 'brightness(0) invert(1)',
+              filter: 'brightness(0) invert(.8)',
               display: { xs: 'none', md: 'block' },
             }}
             src={'/logo/default.svg'}
@@ -70,7 +79,7 @@ const Airdrop = () => {
           <ReCAPTCHA
             // testing site key, needs real keys and backend verification
             // see: https://developers.google.com/recaptcha/docs/display
-            sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+            sitekey={testSiteKey || siteKey}
             onChange={handleCaptcha}
           />
         </InstructionRow>
