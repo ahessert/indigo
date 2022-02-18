@@ -4,7 +4,7 @@ import Table from './Table';
 import Hero from './Hero';
 import HeroImage from './HeroImage';
 import Jobs from './Jobs';
-import LoadingModal from './LoadingModal';
+import {GenericModal, LoadingModal} from './Modal';
 import ModelCard from './ModelCard';
 import Page from './Page';
 import SearchBar from './SearchBar';
@@ -17,6 +17,7 @@ export {
   Container,
   ConnectPrompt,
   Table,
+  GenericModal,
   Hero,
   HeroImage,
   Jobs,

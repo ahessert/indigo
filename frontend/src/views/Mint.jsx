@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Layout from 'layout';
-import { WalletButton, LoadingModal } from 'components';
+import { WalletButton, LoadingModal, GenericModal } from 'components';
 import { ModelCardContent } from 'components/ModelCard';
 import {
   Box,
@@ -20,7 +20,7 @@ import {
   SpacedDivider,
 } from 'components/InstructionCard';
 import { useContract } from 'hooks';
-import {AppContext} from 'context/AppContext';
+import { AppContext } from 'context/AppContext';
 
 const Mint = () => {
   const { provider, signer } = useContext(AppContext);
@@ -28,13 +28,14 @@ const Mint = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [modelName, setModelName] = useState('');
   const [githubUrl, setGithubUrl] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     setIsLoading(false);
-  },[]);
+  }, []);
 
   const airdropDescription = {
-    modelName: '$INDG One-time Airdrop',
+    modelName: 'Mint Model',
     description:
       'locavore tbh health goth street art tumblr 3 wolf moon single-origin coffee vexillologist +1 skateboard taxidermy copper mug master cleanse hexagon kitsch.',
     dapps: ['default'],
@@ -42,20 +43,24 @@ const Mint = () => {
 
   async function handleSubmit() {
     setIsLoading(true);
-    try{
-      await mintModel( modelName, githubUrl );
-    }catch(e){
+    try {
+      await mintModel(modelName, githubUrl);
+    } catch (e) {
       console.error(e);
     }
     setIsLoading(false);
+    setIsOpen(true);
   }
 
   return (
     <Layout hideImage noGradient>
-      <LoadingModal
-        isLoading={isLoading}
-        message="Confirming transaction"
-      />
+      <LoadingModal isLoading={isLoading} message="Confirming transaction" />
+      <GenericModal isOpen={isOpen} setIsOpen={setIsOpen}>
+        <FaRegCheckCircle size={40}/>
+        <Typography variant='h6'>
+          Model successfully minted!
+        </Typography>
+      </GenericModal>
       <InstructionCard>
         <Box display="flex">
           <ModelCardContent item={airdropDescription} hasLink={false} />
