@@ -202,8 +202,9 @@ abstract contract Customer is ERC721URIStorage {
             "Not approved to burn receipt"
         );
 
+        address customerAddress = ownerOf(tokenId);
         _burn(tokenId);
-        _customerReceipts[msg.sender][modelName] = uint160(0);
+        _customerReceipts[customerAddress][modelName] = uint160(0);
         return true;
     }
 
@@ -307,6 +308,7 @@ contract AirDrop {
     function freeTrial() public onlyFirstTimeUsers {
         _coin.freeTrialMint(msg.sender, freeTrialINDG);
         payable(msg.sender).transfer(freeTrialWEI);
+        participants[msg.sender] = true;
     }
 
     function freeTrialBalance() public view returns (uint256) {
