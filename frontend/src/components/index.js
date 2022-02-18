@@ -10,10 +10,12 @@ import Page from './Page';
 import SearchBar from './SearchBar';
 import ThemeModeToggler from './ThemeModeToggler';
 import WalletButton from './WalletButton';
+import ConnectPrompt from './ConnectPrompt';
 
 export {
   About,
   Container,
+  ConnectPrompt,
   Table,
   Hero,
   HeroImage,

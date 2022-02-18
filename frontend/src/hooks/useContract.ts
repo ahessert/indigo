@@ -1,93 +1,79 @@
-// import { ethers } from 'ethers';
+import { ethers } from 'ethers';
+import indigoAbi from 'utils/abi.json';
+import formatModelDescription from '../utils/formatModelDescription';
 
-// const indigoAddress = '0x12345';
-// const indigoAbi = `[{
-//   "inputs": [
-//     {
-//       "internalType": "string",
-//       "name": "name",
-//       "type": "string"
-//     },
-//     {
-//       "internalType": "string",
-//       "name": "cloneUrl",
-//       "type": "string"
-//     }
-//   ],
-//   "name": "mintModel",
-//   "outputs": [],
-//   "stateMutability": "nonpayable",
-//   "type": "function"
-// }]`;
+const indigoAddress = '0xaC59Fe12edaD70779671E43Db6155960edcf6Bc5';
 
-// type Model = {
-//   modelDescription: string;
-//   fields: {
-//     user_id: string;
-//     nft_count: number;
-//     last_seen_at: string;
-//   };
-//   gasFee: string;
-//   ipFee: string;
+// type PublishedModel = {
+//   modelName: string; // this is a hash .. need to add readable field
+//   address: string; //hashedNodeAddress
+//   url: string; // nodeUrl **SAVE IN  BACKGROUND FOR getData request**,
+//   description: string; //model description .. currently hard-coded
+//   gasConsumed: number;
 // };
 
-function useContract(provider: any, userAddress: string) {
-  if (!provider) return {};
-  // const indigoContract = new ethers.Contract(
-  //   indigoAddress,
-  //   indigoAbi,
-  //   provider,
-  // );
-  const indigoContract: any = {};
+function useContract(providerOrSigner: any) {
+  const indigoContract = new ethers.Contract(
+    indigoAddress,
+    indigoAbi,
+    providerOrSigner,
+  );
 
-  async function getAvailableModels(): Promise<{ available_models: string[] }> {
-    return await indigoContract.getAvailableModels();
+  async function getAllModelDescriptions(): Promise<any> {
+    const publishModelFilter = indigoContract.filters.PublishModel();
+    const publishedModels = await indigoContract.queryFilter(
+      publishModelFilter,
+    );
+    console.log(publishedModels);
+    return publishedModels.map((data) => {
+      return formatModelDescription(data);
+    });
   }
 
-  async function getModelData(
+  async function getSingleModelDescription(modelNameHash: string) {
+    const filter = indigoContract.filters.PublishModel(modelNameHash);
+    const model = await indigoContract.queryFilter(filter);
+    return formatModelDescription(model[0]);
+  }
+
+  async function purchaseModel(modelName: string) {
+    const transaction = await indigoContract.getModel(modelName);
+    return await transaction.wait();
+  }
+
+  async function getData(
+    url: string,
     modelName: string,
-    address?: string,
-  ): Promise<any> {
-    console.log('getting model data');
-    console.log(modelName, address);
-
-    return;
-    //returns Model type
+    paymentReceipt: string,
+  ) {
+    const data = await fetch(
+      `${url}/api/get-data?modelName=${modelName}&paymentReceipt=${paymentReceipt}`,
+    );
+    return data;
   }
 
-  async function getModelDetails(modelName: string) {
-    return await indigoContract.getModelDetails(modelName);
+  async function mintFreeTrialCoins() {
+    return await indigoContract.freeTrial();
   }
 
-  async function mintFreeTrialCoins(address?: string) {
-    const from = address ?? userAddress;
-    return await indigoContract.mintFreeTrialCoins(from);
-  }
-
-  async function mintModelNFT(
-    modelData: { modelName: string; githubUrl: string },
-    address?: string,
-  ): Promise<boolean> {
+  async function mintModel(name: string, cloneUrl: string): Promise<any> {
     // validate?
-    const from = address ?? userAddress;
-    return await indigoContract.mintModelNFT(from, modelData);
+    return await indigoContract.mintModel(name, cloneUrl);
   }
 
   async function getReceipt(modelId: string): Promise<boolean> {
-    console.log('receipt gotten ', modelId);
-    return false;
-    // return await new Promise((resolve) => resolve(true));
-    // return await indigoContract.getReceipt(modelId);
+    return await indigoContract.getReceipt(modelId);
   }
 
   return {
     indigoContract,
-    getAvailableModels,
+    getAllModelDescriptions,
+    getData,
     getReceipt,
-    getModelData,
-    getModelDetails,
+    getSingleModelDescription,
     mintFreeTrialCoins,
-    mintModelNFT,
+    mintModel,
+    purchaseModel,
   };
 }
 

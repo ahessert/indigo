@@ -6,68 +6,60 @@ import ModelCard from 'components/ModelCard';
 
 const mock = [
   {
-    title: 'Near Defi dApp Data',
+    modelName: 'Near Defi dApp Data',
     dapps: ['sushiswap'],
-    author: 'Nick Fury',
+    address: '0x12345',
     description:
       'locavore tbh health goth street art tumblr 3 wolf moon single-origin coffee vexillologist +1 skateboard taxidermy copper mug master cleanse hexagon kitsch.',
-    price: 7,
-    id: 1,
+    feeTotal: '7',
+    url:'312'
   },
   {
-    title: 'Near + Sushi Volume',
+    modelName: 'Near + Sushi Volume',
     dapps: ['sushiswap', 'near'],
-    author: 'Jack Black',
+    address: '0x12345',
     description:
       'locavore tbh health goth street art tumblr 3 wolf moon single-origin coffee vexillologist +1 skateboard taxidermy copper mug master cleanse hexagon kitsch.',
-    price: 7,
-    id: 2,
+    feeTotal: '7',
+    url:'312'
   },
   {
-    title: 'Aurora + Curve',
+    modelName: 'Aurora + Curve',
     dapps: ['sushiswap', 'nxar', 'curve'],
-    author: 'Nick Fury',
+    address: '0x12345',
     description:
       'locavore tbh health goth street art tumblr 3 wolf moon single-origin coffee vexillologist +1 skateboard taxidermy copper mug master cleanse hexagon kitsch.',
-    price: 7,
-    id: 3,
+    feeTotal: '7',
+    url:'312'
   },
   {
-    title: 'Aurora + Curve',
+    modelName: 'Aurora + Curve',
     dapps: ['sushiswap', 'twitter', 'curve', 'chainlink'],
-    author: 'Nick Fury',
+    address: '0x12345',
     description:
       'locavore tbh health goth street art tumblr 3 wolf moon single-origin coffee vexillologist +1 skateboard taxidermy copper mug master cleanse hexagon kitsch.',
-    price: 7,
-    id: 4,
+    feeTotal: '7',
+    url:'312'
   },
   {
-    title: 'Near Defi dApp Data',
+    modelName: 'Near Defi dApp Data',
     dapps: ['twitter', 'chainlink', 'near', 'terra', 'curve'],
-    author: 'Nick Fury',
+    address: '0x12345',
     description:
       'locavore tbh health goth street art tumblr 3 wolf moon single-origin coffee vexillologist +1 skateboard taxidermy copper mug master cleanse hexagon kitsch.',
-    price: 7,
-    id: 5,
-  },
-  {
-    title: 'Near + Sushi Volume',
-    dapps: ['near', 'ethereum', 'chainlink'],
-    author: 'Nick Fury',
-    description:
-      'locavore tbh health goth street art tumblr 3 wolf moon single-origin coffee vexillologist +1 skateboard taxidermy copper mug master cleanse hexagon kitsch.',
-    price: 7,
-    id: 6,
+    feeTotal: '7',
+    url:'312'
   },
 ];
 
 const Jobs = ({ data }) => {
   console.log(data);
+  data=data.concat(mock);
   return (
     <Box>
-      <Grid container spacing={4}>
-        {mock.map((item, i) => (
-          <ModelCard item={item} key={item.title + i} />
+      <Grid container spacing={4} height='100%'>
+        {data.map((item, i) => (
+          <ModelCard item={item} key={item.modelName + i} />
         ))}
       </Grid>
     </Box>
@@ -75,7 +67,7 @@ const Jobs = ({ data }) => {
 };
 
 Jobs.propTypes = {
-  data: PropTypes.object,
+  data: PropTypes.array,
 };
 
 export default Jobs;

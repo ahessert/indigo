@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import Layout from 'layout';
 import { saveAs } from 'file-saver';
 import { AppContext } from 'context/AppContext';
@@ -6,13 +6,7 @@ import { WalletButton, LoadingModal } from 'components';
 import { ModelCardMedia, ModelCardContent } from 'components/ModelCard';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import mockGraphData from 'utils/mockGraphData.json';
-import {
-  Typography,
-  Box,
-  useTheme,
-  CardContent,
-  Button,
-} from '@mui/material';
+import { Typography, Box, useTheme, CardContent, Button } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
@@ -20,23 +14,12 @@ import { FaRegHandshake, FaRegCheckCircle, FaTicketAlt } from 'react-icons/fa';
 import { BiDownload } from 'react-icons/bi';
 import AirtableIcon from 'svg/illustrations/Airtable';
 import { useContract } from 'hooks';
-import { blockExplorerUrl } from 'utils/constants';
 import {
   InstructionCard,
   InstructionRow,
   SpacedBox,
   SpacedDivider,
 } from 'components/InstructionCard';
-
-const mockData = {
-  title: 'Aurora + Curve',
-  dapps: ['sushiswap', 'twitter', 'curve', 'chainlink', 'near'],
-  author: 'Nick Fury',
-  description:
-    'locavore tbh health goth street art tumblr 3 wolf moon single-origin coffee vexillologist +1 skateboard taxidermy copper mug master cleanse hexagon kitsch.',
-  price: 7,
-  id: 4,
-};
 
 const IconBox = styled(Box)`
   display: flex;
@@ -45,56 +28,62 @@ const IconBox = styled(Box)`
 `;
 
 const ModelPreview = () => {
-  const interval = useRef();
   const theme = useTheme();
-  const { provider, userAddress } = useContext(AppContext);
+  const { provider, signer, userAddress } = useContext(AppContext);
+  const { getSingleModelDescription, purchaseModel } = useContract(signer);
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(false);
   const [hasReceipt, setHasReceipt] = useState();
   const [model, setModel] = useState();
-  const { getModelData, getReceipt } = useContract(provider, userAddress);
+  const { getData, getReceipt } = useContract(provider, userAddress);
   const isXs = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const isSm = useMediaQuery((theme) => theme.breakpoints.down('md'));
-  const modelDetails = mockData;
+  const [modelDetails, setModelDetails] = useState({
+    modelName: '',
+    dapps: [],
+    description: '',
+    url: '',
+  });
 
-  function handleTransaction(id) {
-    // consider breaking this out into two parts in case user loses connection/refreshes between minting
-    // nft and calling getModelData. also consider searching account for nft to skip straight
-    // to getting model data
+  useEffect(() => {
+    (async () => {
+      console.log(id);
+      const modelDetails = await getSingleModelDescription(id);
+      console.log(modelDetails);
+      setModelDetails(modelDetails);
+    })();
+  }, [provider]);
 
-    // mintNFTReceipt
-    console.log('mintNFTReceipt', id);
+  async function handleTransaction(id) {
+    try {
+      const purchased = await getReceipt(id);
+
+      console.log('purchased', purchased);
+      if (purchased) {
+        setHasReceipt(true);
+        return;
+      }
+    } catch (e) {
+      console.error(e);
+    }
 
     // start polling getReceipt to see if db-node is ready to receive
     // pop loading modal until complete
     setIsLoading(true);
-    pollReceipt(id);
-  }
-
-  function pollReceipt(receiptId) {
-    clearInterval(interval.current); // clean up any old timers
-    interval.current = setInterval(async () => {
-      let receipt;
-      try {
-        receipt = await getReceipt(receiptId);
-      } catch (e) {
-        setIsLoading(false);
-        console.log('failure');
-      }
-
-      receipt = receiptId;
-      if (receipt) {
-        setIsLoading(false);
-        setHasReceipt(receipt);
-        clearInterval(interval.current);
-      }
-    }, 1000);
+    try {
+      await purchaseModel(id);
+      setHasReceipt(true);
+    } catch (e) {
+      console.error(e);
+      setIsLoading(false);
+    }
   }
 
   async function handleRedeem() {
-    // call getModelData
     setIsLoading(true);
-    let modelData = await getModelData(id, userAddress);
+    let receipt = await getReceipt(id);
+    console.log(receipt);
+    let modelData = await getData(modelDetails.url, id, userAddress);
     modelData = mockGraphData;
 
     setModel(modelData);
@@ -114,14 +103,9 @@ const ModelPreview = () => {
     return false;
   }
 
-  console.log('isLoading', isLoading);
   return (
     <Layout hideImage noGradient>
-      <LoadingModal
-        isLoading={isLoading}
-        message="Confirming transaction"
-        href={`${blockExplorerUrl}/tx/${'0x433b1c1e500036910f13a4d8e03ce8c29fc3cd8804d80724f4dff0add840933f'}`}
-      />
+      <LoadingModal isLoading={isLoading} message="Confirming transaction" />
       <InstructionCard>
         <Box display="flex" flexDirection={{ xs: 'column', sm: 'row' }}>
           <ModelCardContent item={modelDetails} hasLink={false} />
@@ -260,7 +244,7 @@ const ModelPreview = () => {
 };
 
 ModelPreview.propTypes = {
-  modelData: PropTypes.object,
+  modelDetails: PropTypes.object,
 };
 
 export default ModelPreview;

@@ -7,6 +7,7 @@ import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
+import Tooltip from '@mui/material/Tooltip';
 import PropTypes from 'prop-types';
 import Ellipses from 'svg/illustrations/Ellipses';
 import { useNavigate } from 'react-router-dom';
@@ -90,17 +91,19 @@ const ModelCardMedia = ({ dapps, itemsShown = 4 }) => {
         );
       })}
       {ellipses && (
-        <Box
-          sx={{
-            position: 'absolute',
-            bottom: { xs: '10%', sm: '0px' },
-            right: '45px',
-            zIndex: '2',
-            width: '30px',
-          }}
-        >
-          <Ellipses />
-        </Box>
+        <Tooltip title={dapps.join(', ')} arro>
+          <Box
+            sx={{
+              position: 'absolute',
+              bottom: { xs: '10%', sm: '0px' },
+              right: '45px',
+              zIndex: '2',
+              width: '30px',
+            }}
+          >
+            <Ellipses />
+          </Box>
+        </Tooltip>
       )}
     </Box>
   );
@@ -108,7 +111,8 @@ const ModelCardMedia = ({ dapps, itemsShown = 4 }) => {
 
 const ModelCardContent = ({ item, hasLink = true }) => {
   const navigate = useNavigate();
-  const { title, author, description, id, price } = item;
+  const { description, address, modelName, feeTotal } = item;
+
   return (
     <CardContent
       sx={{
@@ -118,39 +122,34 @@ const ModelCardContent = ({ item, hasLink = true }) => {
       }}
     >
       <Typography variant={'h4'} sx={{ fontWeight: 'bold' }}>
-        {title}
+        {modelName}
       </Typography>
-      {author && (
+      {address && (
         <Typography variant={'h6'} sx={{ fontWeight: 500 }}>
-          Author: {author}
+          Author: {address}
         </Typography>
       )}
-      <Box
-        display={'flex'}
-        alignItems={'center'}
-        marginTop={2}
-        marginBottom={3}
-      >
+      <Box marginTop={2} marginBottom={3} height="100px">
         <Typography variant={'subtitle2'} color="text.secondary">
           {description}
         </Typography>
       </Box>
-      {price && id && hasLink && (
+      {feeTotal && hasLink && (
         <Button
           variant={'outlined'}
           size="large"
           color="secondary"
-          onClick={() => navigate(`/market/${id}`)}
+          onClick={() => navigate(`/market/${modelName}`)}
           fullWidth
         >
           <Typography variant={'h6'} fontWeight="bold">
-            Payload: {price} $INDG
+            Payload: {feeTotal} $INDG
           </Typography>
         </Button>
       )}
-      {price && !hasLink ? (
+      {feeTotal && !hasLink ? (
         <Typography variant={'h6'} color="secondary" fontWeight="bold">
-          Access: {price} $INDG
+          Access: {feeTotal} $INDG
         </Typography>
       ) : (
         <></>
@@ -163,7 +162,7 @@ const ModelCard = ({ item }) => {
   const theme = useTheme();
 
   return (
-    <Grid item xs={12} sm={6} md={4} key={'d'}>
+    <Grid item xs={12} sm={6} md={4}>
       <Box
         display={'block'}
         width={1}
@@ -207,11 +206,11 @@ const ModelCard = ({ item }) => {
 ModelCard.propTypes = {
   item: PropTypes.shape({
     dapps: PropTypes.arrayOf(PropTypes.string).isRequired,
-    title: PropTypes.string.isRequired,
-    id: PropTypes.number,
-    price: PropTypes.number.isRequired,
+    modelName: PropTypes.string.isRequired,
+    address: PropTypes.string,
+    url: PropTypes.string,
     description: PropTypes.string.isRequired,
-    author: PropTypes.string.isRequired,
+    feeTotal: PropTypes.string,
   }).isRequired,
 };
 
@@ -222,11 +221,11 @@ ModelCardMedia.propTypes = {
 
 ModelCardContent.propTypes = {
   item: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    id: PropTypes.number,
-    price: PropTypes.number,
+    modelName: PropTypes.string.isRequired,
+    address: PropTypes.string,
+    url: PropTypes.string,
     description: PropTypes.string.isRequired,
-    author: PropTypes.string,
+    feeTotal: PropTypes.string,
   }).isRequired,
   hasLink: PropTypes.bool,
 };

@@ -20,13 +20,14 @@ export const ContextProvider = ({ children }) => {
 
     newProvider.on('network', async (newNetwork) => {
       // trigger network change if not on Near network
-      if (newNetwork.chainId !== CHAIN_ID) {
-        await window.ethereum.request({
-          method: 'wallet_switchEthereumChain',
-          params: [{ chainId: CHAIN_ID_0x }],
-        });
-        window.location.reload();
-      }
+      // if (newNetwork.chainId !== CHAIN_ID) {
+      //   await window.ethereum.request({
+      //     method: 'wallet_switchEthereumChain',
+      //     params: [{ chainId: CHAIN_ID_0x }],
+      //   });
+      //   window.location.reload();
+      // }
+      console.log(newNetwork, CHAIN_ID, CHAIN_ID_0x);
     });
 
     setUserAddress(await signer.getAddress());

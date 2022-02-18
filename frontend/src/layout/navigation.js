@@ -3,10 +3,6 @@ const pages = {
     title: 'Market',
     href: '/market'
   },
-  developers: {
-    title: 'Developer',
-    href: '/mint'
-  },
   airdrop: {
     title: 'Airdrop',
     href: '/airdrop'
