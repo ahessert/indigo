@@ -2,10 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 import { alpha, useTheme } from '@mui/material/styles';
 import MenuIcon from '@mui/icons-material/Menu';
 import IndigoLogo from 'svg/illustrations/IndigoLogo';
+import IndigoIcon from 'svg/illustrations/IndigoIcon';
 import { WalletButton } from 'components';
+import { useContract } from 'hooks';
 
 // import ThemeModeToggler from 'components/ThemeModeToggler';
 
@@ -14,6 +18,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Topbar = ({ onSidebarOpen, pages, colorInvert = false }) => {
   const theme = useTheme();
+  const { addToMetamask } = useContract();
   const navigate = useNavigate();
 
   return (
@@ -60,16 +65,22 @@ const Topbar = ({ onSidebarOpen, pages, colorInvert = false }) => {
         </Box>
       </Box>
       <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 2 }}>
+        <Tooltip arrow title="Add $INDG to Metamask">
+          <IconButton onClick={addToMetamask}>
+            <IndigoIcon
+              size={30}
+              style={{ filter: 'brightness(0) invert(0.8)' }}
+            />
+          </IconButton>
+        </Tooltip>
         <Button
           variant="contained"
           sx={{
             color: theme.palette.text.primary,
-            background: `linear-gradient( to right, ${
-              theme.palette.secondary.main
-            }, ${theme.palette.secondary.dark})`,
+            background: `linear-gradient( to right, ${theme.palette.secondary.main}, ${theme.palette.secondary.dark})`,
             fontWeight: 'bold',
           }}
-          onClick={()=>navigate('/mint')}
+          onClick={() => navigate('/mint')}
         >
           Mint NFT Model
         </Button>

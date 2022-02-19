@@ -9,10 +9,12 @@ import PropTypes from 'prop-types';
 function WalletButton({
   Icon,
   size,
+  sx,
   ...props
 }: {
   Icon: React.ComponentClass<any>;
   size: number;
+  sx: {};
 }) {
   const theme = useTheme();
   const { connect, disconnect, provider, userAddress } =
@@ -33,6 +35,7 @@ function WalletButton({
             },
             display: 'flex',
             gap: '10px',
+            ...sx
           }}
           {...props}
         >
@@ -46,7 +49,7 @@ function WalletButton({
           variant="contained"
           color="warning"
           onClick={connect}
-          sx={{ padding: '0px 15px' }}
+          sx={{ padding: '0px 15px', ...sx }}
           disableElevation
           {...props}
         >
@@ -63,6 +66,7 @@ function WalletButton({
 WalletButton.propTypes = {
   Icon: PropTypes.any,
   size: PropTypes.number,
+  sx: PropTypes.object,
 };
 
 export default WalletButton;

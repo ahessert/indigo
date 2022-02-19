@@ -27,7 +27,7 @@ export const light = {
     default: '#ffffff',
     level2: '#f5f5f5',
     level1: '#ffffff',
-    gradient: 'green'
+    gradient: 'green',
   },
 };
 
@@ -53,6 +53,12 @@ export const dark = {
     light: '#FF85C6',
     dark: '#cc006d',
     contrastText: 'rgba(0, 0, 0, 0.87)',
+  },
+  warning: {
+    light: '#ffb74d',
+    main: '#FFA500',
+    dark: '#f57c00',
+    contrastText: 'rgba(0, 0, 0, 0.8)',
   },
   text: {
     primary: '#EEEEEF',

@@ -84,8 +84,25 @@ function useContract(provider: any, signer: any) {
     return await indigoContract.getReceipt(modelId);
   }
 
+  async function addToMetamask() {
+    const tokenAddress = '0x50Bd6fAEBD7Ed82574a9543ad941de9761f0D172';
+    await window.ethereum.request({
+      method: 'wallet_watchAsset',
+      params: {
+        type: 'ERC20', // Initially only supports ERC20, but eventually more!
+        options: {
+          address: tokenAddress, // The address that the token is at.
+          symbol: 'INDG', // A ticker symbol or shorthand, up to 5 chars.
+          decimals: 18, // The number of decimals in the token
+          image: 'https://app.indigodapp.com/logo/default.svg', // A string url of the token logo
+        },
+      },
+    });
+  }
+
   return {
     indigoContract,
+    addToMetamask,
     getAllModelDescriptions,
     getData,
     getReceipt,

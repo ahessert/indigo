@@ -6,7 +6,7 @@ import ModelCard from 'components/ModelCard';
 
 const mock = [
   {
-    modelName: 'Near Defi dApp Data',
+    modelName: 'Sushi Defi dApp Data',
     dapps: ['sushiswap'],
     address: '0x12345',
     description:
@@ -25,7 +25,7 @@ const mock = [
   },
   {
     modelName: 'Aurora + Curve',
-    dapps: ['sushiswap', 'nxar', 'curve'],
+    dapps: ['aurora', 'curve'],
     address: '0x12345',
     description:
       'locavore tbh health goth street art tumblr 3 wolf moon single-origin coffee vexillologist +1 skateboard taxidermy copper mug master cleanse hexagon kitsch.',
@@ -33,7 +33,7 @@ const mock = [
     url:'312'
   },
   {
-    modelName: 'Aurora + Curve',
+    modelName: 'Data Correlation',
     dapps: ['sushiswap', 'twitter', 'curve', 'chainlink'],
     address: '0x12345',
     description:
@@ -42,7 +42,7 @@ const mock = [
     url:'312'
   },
   {
-    modelName: 'Near Defi dApp Data',
+    modelName: 'Ecosystem data',
     dapps: ['twitter', 'chainlink', 'near', 'terra', 'curve'],
     address: '0x12345',
     description:

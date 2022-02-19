@@ -80,8 +80,8 @@ const InstructionCard = ({ title, children }) => {
           <Card
             sx={{
               padding: 2,
-              width:'100%',
-              maxWidth:'1000px',
+              width: '100%',
+              maxWidth: '1000px',
               minWidth: '500px',
               background: 'linear-gradient(#1E0067, #4900FF)',
             }}

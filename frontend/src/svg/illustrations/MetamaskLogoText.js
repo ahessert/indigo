@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const MetamaskIcon = ({ style, size }) => {
+const MetamaskLogoText = ({ style, size }) => {
   return (
     <svg
       version="1.1"
@@ -189,9 +189,9 @@ const MetamaskIcon = ({ style, size }) => {
   );
 };
 
-MetamaskIcon.propTypes = {
+MetamaskLogoText.propTypes = {
   style: PropTypes.object,
   size: PropTypes.string,
 };
 
-export default MetamaskIcon;
+export default MetamaskLogoText;

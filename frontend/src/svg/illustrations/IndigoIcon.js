@@ -23,7 +23,7 @@ const IndigoIcon = ({ style, size }) => {
 
 IndigoIcon.propTypes = {
   style: PropTypes.object,
-  size: PropTypes.string,
+  size: PropTypes.number,
 };
 
 export default IndigoIcon;

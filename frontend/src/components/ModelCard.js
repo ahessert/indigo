@@ -16,7 +16,6 @@ const imageMappings = {
   near: 'near.svg',
   sushiswap: 'sushiswap.svg',
   curve: 'curve.svg',
-  aurora: 'aurora.png',
   twitter: 'twitter.svg',
   chainlink: 'chainlink.svg',
   terra: 'terra.svg',

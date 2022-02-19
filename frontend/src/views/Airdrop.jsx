@@ -26,7 +26,7 @@ const siteKey = '6Lc-MYIeAAAAAO-XhXh9oqjIxWXptrxSP4eO3L_W';
 const Airdrop = () => {
   const theme = useTheme();
   const { provider, signer } = useContext(AppContext);
-  const { mintFreeTrialCoins } = useContract(provider, signer);
+  const { mintFreeTrialCoins, addToMetamask } = useContract(provider, signer);
   const [isLoading, setIsLoading] = useState(false);
   const [completedCaptcha, setCompletedCaptcha] = useState(false);
   const [claimed, setClaimed] = useState(false);
@@ -34,10 +34,9 @@ const Airdrop = () => {
   const isSm = useMediaQuery((theme) => theme.breakpoints.down('md'));
 
   const airdropDescription = {
-    modelName: 'Free trial $INDG',
-    description: `In order to increase awareness of the usefulness of the product, 
-      We've provided a small amount of free $INDG to use on any of the models available 
-      on the marketplace. In order to claim, follow the instructions below. `,
+    modelName: '$INDG One-time Airdrop',
+    description:
+      '$INDG is the native token of the Indigo ecosystem. We provide a small amount of free $INDG to test and experience Indigo. Follow the steps below to claim a one-time airdrop of $INDG.',
     dapps: ['default'],
   };
 
@@ -48,6 +47,7 @@ const Airdrop = () => {
       setTxUrl(getTransactionUrl(mint.hash));
       await mint.wait();
       setClaimed(true);
+      await addToMetamask();
     } catch (e) {
       console.error(e);
     }
@@ -66,7 +66,7 @@ const Airdrop = () => {
         message="Confirming transaction"
         href={txUrl}
       />
-      <InstructionCard>
+      <InstructionCard title="$INDG Airdrop">
         <Box display="flex">
           <ModelCardContent item={airdropDescription} hasLink={false} />
           <CardMedia
@@ -89,6 +89,7 @@ const Airdrop = () => {
             // see: https://developers.google.com/recaptcha/docs/display
             // eslint-disable-next-line no-undef
             sitekey={
+              // eslint-disable-next-line no-undef
               process.env.NODE_ENV === 'development' ? testSiteKey : siteKey
             }
             onChange={handleCaptcha}
@@ -97,33 +98,35 @@ const Airdrop = () => {
         </InstructionRow>
         <InstructionRow title="Receive $INDG Airdrop" number={3}>
           {claimed ? (
-            <Button
-              component="a"
-              variant="contained"
-              color="success"
-              size="large"
-              sx={{
-                backgroundColor: theme.palette.success.dark,
-                color: theme.palette.text.primary,
-              }}
-              disableElevation
-              href={txUrl}
-            >
-              <IconBox>
-                <IndigoIcon
-                  size="25"
-                  style={{
-                    filter: 'brightness(0) invert(1)',
-                    opacity: !provider || !completedCaptcha ? '0.4' : '1',
-                  }}
-                />{' '}
-                <Typography fontWeight="bold">CLAIMED</Typography>
-              </IconBox>
-            </Button>
+            <Box>
+              <Button
+                component="a"
+                variant="contained"
+                color="success"
+                size="large"
+                sx={{
+                  backgroundColor: theme.palette.success.dark,
+                  color: theme.palette.text.primary,
+                }}
+                disableElevation
+                href={txUrl}
+              >
+                <IconBox>
+                  <IndigoIcon
+                    size={25}
+                    style={{
+                      filter: 'brightness(0) invert(1)',
+                      opacity: !provider || !completedCaptcha ? '0.4' : '1',
+                    }}
+                  />{' '}
+                  <Typography fontWeight="bold">CLAIMED</Typography>
+                </IconBox>
+              </Button>
+            </Box>
           ) : (
             <Button
               variant="contained"
-              color="primary"
+              color="warning"
               size="large"
               disableElevation
               disabled={!provider || !completedCaptcha}
@@ -131,9 +134,12 @@ const Airdrop = () => {
             >
               <IconBox>
                 <IndigoIcon
-                  size="25"
+                  size={25}
                   style={{
-                    filter: 'brightness(0) invert(1)',
+                    filter:
+                      !provider || !completedCaptcha
+                        ? 'brightness(0) invert(1)'
+                        : 'brightness(0.3)',
                     opacity: !provider || !completedCaptcha ? '0.4' : '1',
                   }}
                 />{' '}

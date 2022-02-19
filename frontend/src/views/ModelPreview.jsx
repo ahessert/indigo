@@ -22,6 +22,11 @@ const IconBox = styled(Box)`
   gap: 10px;
 `;
 
+const buttonWidth='200px';
+const StandardButton = styled(Button)`
+  min-width: ${buttonWidth};
+`;
+
 const ModelPreview = () => {
   const theme = useTheme();
   const { provider, signer } = useContext(AppContext);
@@ -75,7 +80,6 @@ const ModelPreview = () => {
 
     setIsLoading(true);
     try {
-      console.log('in try');
       const purchase = await purchaseModel(id);
       setTxUrl(getTransactionUrl(purchase.hash));
       await purchase.wait();
@@ -102,6 +106,9 @@ const ModelPreview = () => {
       }
     } catch (e) {
       console.error(e);
+      // temp workaround for getReceipt
+      setModel(mockGraphData);
+      setIsLoading(false);
     }
   }
 
@@ -125,7 +132,7 @@ const ModelPreview = () => {
         href={txUrl}
         message="Confirming transaction"
       />
-      <InstructionCard>
+      <InstructionCard title="Purchase Model">
         <Box
           display="flex"
           justifyContent="center"
@@ -141,11 +148,11 @@ const ModelPreview = () => {
           </Box>
         </Box>
         <InstructionRow title="Connect Wallet to Indigo" number={1}>
-          <WalletButton Icon={FaRegCheckCircle} size={25} />
+          <WalletButton Icon={FaRegCheckCircle} size={25} sx={{minWidth: buttonWidth}} />
         </InstructionRow>
         <InstructionRow title="Confirm transaction" number={2}>
           {hasReceipt ? (
-            <Button
+            <StandardButton
               variant="contained"
               color="success"
               size="large"
@@ -159,11 +166,11 @@ const ModelPreview = () => {
                 <FaRegCheckCircle size={25} />{' '}
                 <Typography fontWeight="bold">CONFIRMED</Typography>
               </IconBox>
-            </Button>
+            </StandardButton>
           ) : (
-            <Button
+            <StandardButton
               variant="contained"
-              color="primary"
+              color="warning"
               size="large"
               disableElevation
               disabled={!provider}
@@ -173,12 +180,12 @@ const ModelPreview = () => {
                 <FaRegHandshake size={25} />{' '}
                 <Typography fontWeight="bold">CONFIRM</Typography>
               </IconBox>
-            </Button>
+            </StandardButton>
           )}
         </InstructionRow>
         <InstructionRow title="Retrieve model" number={3}>
           {model ? (
-            <Button
+            <StandardButton
               variant="contained"
               color="success"
               size="large"
@@ -192,11 +199,11 @@ const ModelPreview = () => {
                 <FaRegCheckCircle size={25} />{' '}
                 <Typography fontWeight="bold">REDEEMED</Typography>
               </IconBox>
-            </Button>
+            </StandardButton>
           ) : (
-            <Button
+            <StandardButton
               variant="contained"
-              color="primary"
+              color="warning"
               size="large"
               onClick={handleRedeem}
               disabled={!hasReceipt}
@@ -206,13 +213,13 @@ const ModelPreview = () => {
                 <FaTicketAlt size={25} />{' '}
                 <Typography fontWeight="bold">REDEEM</Typography>
               </IconBox>
-            </Button>
+            </StandardButton>
           )}
         </InstructionRow>
         <InstructionRow number={4} title="Download model">
-          <Button
+          <StandardButton
             variant="contained"
-            color="primary"
+            color="warning"
             disableElevation
             fullWidth
             disabled={!model}
@@ -225,7 +232,7 @@ const ModelPreview = () => {
                 DOWNLOAD
               </Typography>
             </IconBox>
-          </Button>
+          </StandardButton>
         </InstructionRow>
       </InstructionCard>
     </Layout>

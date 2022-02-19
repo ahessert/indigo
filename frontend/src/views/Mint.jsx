@@ -10,7 +10,6 @@ import {
   Grid,
   TextField,
   Button,
-  FormControl,
 } from '@mui/material';
 import { FaRegCheckCircle } from 'react-icons/fa';
 import { BsFillGearFill } from 'react-icons/bs';
@@ -73,7 +72,7 @@ const Mint = () => {
         message="Model Successfully Minted!"
         href={txUrl}
       />
-      <InstructionCard>
+      <InstructionCard title={'Mint Model'}>
         <Box display="flex">
           <ModelCardContent item={airdropDescription} hasLink={false} />
           <CardMedia
@@ -93,67 +92,60 @@ const Mint = () => {
         </InstructionRow>
         <SpacedDivider />
         <CardContent>
-          <FormControl onSubmit={handleSubmit}>
-            <Grid container>
-              <Grid item xs={1} paddingX={2}>
-                <Typography
-                  fontWeight="bold"
-                  variant="h2"
-                  sx={{
-                    textShadow:
-                      '0 0 32px rgb(192 219 255 / 48%), 0 0 8px rgb(65 120 255 / 24%)',
-                  }}
-                >
-                  2
-                </Typography>
-              </Grid>
-              <Grid
-                item
-                xs={11}
-                display="flex"
-                alignItems="center"
-                paddingX={3}
+          <Grid container>
+            <Grid item xs={1} paddingX={2}>
+              <Typography
+                fontWeight="bold"
+                variant="h2"
+                sx={{
+                  textShadow:
+                    '0 0 32px rgb(192 219 255 / 48%), 0 0 8px rgb(65 120 255 / 24%)',
+                }}
               >
-                <Typography>Mint Data Model NFT</Typography>
-              </Grid>
-              <Grid item xs={1}></Grid>
-              <Grid
-                item
-                xs={11}
-                display="flex"
-                flexDirection={'column'}
-                gap={2}
-                paddingX={3}
-              >
-                <TextField
-                  id="dataName"
-                  label="Data Model Name"
-                  variant="outlined"
-                  onChange={(e) => setModelName(e.target.value)}
-                  value={modelName}
-                ></TextField>
-                <TextField
-                  id="dataUrl"
-                  label="Github Url (<https clone url>)"
-                  variant="outlined"
-                  onChange={(e) => setGithubUrl(e.target.value)}
-                  value={githubUrl}
-                ></TextField>
-              </Grid>
-              <Grid marginLeft="auto" padding={2}>
-                <Button
-                  variant="contained"
-                  display="flex"
-                  sx={{ gap: 1 }}
-                  onClick={handleSubmit}
-                  disabled={!provider}
-                >
-                  <BsFillGearFill />
-                  <Typography>MINT NFT</Typography>
-                </Button>
-              </Grid>
+                2
+              </Typography>
             </Grid>
-          </FormControl>
+            <Grid item xs={11} display="flex" alignItems="center" paddingX={3}>
+              <Typography>Mint Data Model NFT</Typography>
+            </Grid>
+            <Grid item xs={1}></Grid>
+            <Grid
+              item
+              xs={11}
+              display="flex"
+              flexDirection={'column'}
+              gap={2}
+              paddingX={3}
+            >
+              <TextField
+                id="dataName"
+                label="Data Model Name"
+                variant="outlined"
+                onChange={(e) => setModelName(e.target.value)}
+                value={modelName}
+              ></TextField>
+              <TextField
+                id="dataUrl"
+                label="Github Url (<https clone url>)"
+                variant="outlined"
+                onChange={(e) => setGithubUrl(e.target.value)}
+                value={githubUrl}
+              ></TextField>
+            </Grid>
+            <Grid marginLeft="auto" padding={2}>
+              <Button
+                variant="contained"
+                color="warning"
+                display="flex"
+                sx={{ gap: 1, minWidth: '200px' }}
+                onClick={handleSubmit}
+                disabled={!provider}
+              >
+                <BsFillGearFill />
+                <Typography>MINT NFT</Typography>
+              </Button>
+            </Grid>
+          </Grid>
         </CardContent>
       </InstructionCard>
     </Layout>
