@@ -209,9 +209,9 @@ abstract contract Customer is ERC721URIStorage {
     }
 
     function getReceipt(string memory modelName) public view returns (uint160) {
-        require(_customerReceipts[msg.sender][modelName] != uint160(0) &
+        require(_customerReceipts[msg.sender][modelName] != uint160(0) &&
                 _exists(_customerReceipts[msg.sender][modelName]),
-                "No valid receipts for model." );
+                "No valid receipts for model.");
         return _customerReceipts[msg.sender][modelName];
     }
 
@@ -249,6 +249,7 @@ abstract contract Customer is ERC721URIStorage {
 }
 
 interface CoinInterface is IERC20 {
+    function coin_address() external view returns(address);
     function burnCoins(address, address, uint256) external;
     function mintCoins(address, address, uint64) external;
     function transferCoins(address, address, uint256) external;
@@ -258,9 +259,15 @@ interface CoinInterface is IERC20 {
 
 contract Coin is ERC20, CoinInterface {
     address private _admin = address(0);
+    address private _coinAddress;
 
     constructor(address admin) ERC20("Indigo", "INDG") {
         _admin = admin;
+        _coinAddress=address(this);
+    }
+
+    function coin_address() public view override returns(address) {
+        return _coinAddress;
     }
 
     function burnCoins(address _sender, address _from, uint256 _amount) public override {
@@ -324,6 +331,10 @@ contract Indigo is Models, Nodes, Customer, AirDrop {
 
     receive() external payable {
         payable(msg.sender).transfer(msg.value);
+    }
+
+    function coinAddress() public view returns(address) {
+        return coin.coin_address();
     }
 
     function getModel(string memory modelName) 
