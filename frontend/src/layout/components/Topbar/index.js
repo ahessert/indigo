@@ -34,7 +34,7 @@ const Topbar = ({ onSidebarOpen, pages, colorInvert = false }) => {
           alignItems="flex-start"
           justifyContent="space-between"
           component="a"
-          href="https://www.indigodapp.com"
+          href="https://indigodapp.com/"
           target="_blank"
           title="Indigo"
           width="120px"

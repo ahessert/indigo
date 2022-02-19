@@ -14,7 +14,7 @@ const indigoAddress = '0x438914A9e5d7e422de0eE0dA7B3A498e50403f43';
 //   gasConsumed: number;
 // };
 
-function useContract(provider: any, signer:any) {
+function useContract(provider: any, signer: any) {
   const indigoContract = new ethers.Contract(
     indigoAddress,
     indigoAbi,
@@ -63,6 +63,7 @@ function useContract(provider: any, signer:any) {
     await changeNetwork();
     const data = await fetch(
       `${url}/api/get-data?modelName=${modelName}&paymentReceipt=${paymentReceipt}`,
+      { mode: 'no-cors' },
     );
     return data;
   }
