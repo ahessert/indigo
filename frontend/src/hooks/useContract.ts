@@ -79,7 +79,7 @@ function useContract(provider: any, signer: any) {
     return await indigoContract.mintModel(name, cloneUrl);
   }
 
-  async function getReceipt(modelId: string): Promise<boolean> {
+  async function getReceipt(modelId: string): Promise<any> {
     await changeNetwork();
     return await indigoContract.getReceipt(modelId);
   }

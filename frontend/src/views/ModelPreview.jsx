@@ -93,7 +93,7 @@ const ModelPreview = () => {
     try {
       let receipt = await getReceipt(id);
       if (receipt) {
-        let modelData = await getData(modelDetails.url, id, 'receipt');
+        let modelData = await getData(modelDetails.url, id, receipt);
         console.log(modelData);
         modelData = mockGraphData;
 
