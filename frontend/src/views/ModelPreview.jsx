@@ -6,20 +6,15 @@ import { WalletButton, LoadingModal } from 'components';
 import { ModelCardMedia, ModelCardContent } from 'components/ModelCard';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import mockGraphData from 'utils/mockGraphData.json';
-import { Typography, Box, useTheme, CardContent, Button } from '@mui/material';
+import { Typography, Box, useTheme, Button } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import { FaRegHandshake, FaRegCheckCircle, FaTicketAlt } from 'react-icons/fa';
 import { BiDownload } from 'react-icons/bi';
-import AirtableIcon from 'svg/illustrations/Airtable';
 import { useContract } from 'hooks';
-import {
-  InstructionCard,
-  InstructionRow,
-  SpacedBox,
-  SpacedDivider,
-} from 'components/InstructionCard';
+import { InstructionCard, InstructionRow } from 'components/InstructionCard';
+import { getTransactionUrl } from 'utils/constants';
 
 const IconBox = styled(Box)`
   display: flex;
@@ -37,7 +32,7 @@ const ModelPreview = () => {
   const [model, setModel] = useState();
   const { getData, getReceipt } = useContract(provider, userAddress);
   const isXs = useMediaQuery((theme) => theme.breakpoints.down('sm'));
-  const isSm = useMediaQuery((theme) => theme.breakpoints.down('md'));
+  const [txUrl, setTxUrl] = useState('');
   const [modelDetails, setModelDetails] = useState({
     modelName: '',
     dapps: [],
@@ -47,19 +42,30 @@ const ModelPreview = () => {
 
   useEffect(() => {
     (async () => {
-      console.log(id);
-      const modelDetails = await getSingleModelDescription(id);
-      console.log(modelDetails);
-      setModelDetails(modelDetails);
+      try {
+        const modelDetails = await getSingleModelDescription(id);
+        setModelDetails(modelDetails);
+      } catch (e) {
+        console.error(e);
+      }
+
+      try {
+        const alreadyPurchased = await getReceipt(id);
+        if (alreadyPurchased) {
+          setHasReceipt(true);
+          return;
+        }
+      } catch (e) {
+        console.error(e);
+      }
     })();
-  }, [provider]);
+  }, [signer]);
 
   async function handleTransaction(id) {
     try {
-      const purchased = await getReceipt(id);
-
-      console.log('purchased', purchased);
-      if (purchased) {
+      const alreadyPurchased = await getReceipt(id);
+      console.log(alreadyPurchased);
+      if (alreadyPurchased) {
         setHasReceipt(true);
         return;
       }
@@ -67,12 +73,15 @@ const ModelPreview = () => {
       console.error(e);
     }
 
-    // start polling getReceipt to see if db-node is ready to receive
-    // pop loading modal until complete
     setIsLoading(true);
     try {
-      await purchaseModel(id);
+      console.log('in try');
+      const purchase = await purchaseModel(id);
+      setTxUrl(getTransactionUrl(purchase.hash));
+      await purchase.wait();
+
       setHasReceipt(true);
+      setIsLoading(false);
     } catch (e) {
       console.error(e);
       setIsLoading(false);
@@ -81,13 +90,19 @@ const ModelPreview = () => {
 
   async function handleRedeem() {
     setIsLoading(true);
-    let receipt = await getReceipt(id);
-    console.log(receipt);
-    let modelData = await getData(modelDetails.url, id, userAddress);
-    modelData = mockGraphData;
+    try {
+      let receipt = await getReceipt(id);
+      if (receipt) {
+        let modelData = await getData(modelDetails.url, id, 'receipt');
+        console.log(modelData);
+        modelData = mockGraphData;
 
-    setModel(modelData);
-    setIsLoading(false);
+        setModel(modelData);
+        setIsLoading(false);
+      }
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   // saving data annoyingly refreshes the page when using
@@ -96,7 +111,7 @@ const ModelPreview = () => {
     var blob = new Blob([JSON.stringify(model)], {
       type: 'text/json;charset=utf-8',
     });
-    saveAs(blob, 'data.json');
+    saveAs(blob, `${id}.json`);
 
     e.preventDefault();
     e.stopPropagation();
@@ -105,14 +120,25 @@ const ModelPreview = () => {
 
   return (
     <Layout hideImage noGradient>
-      <LoadingModal isLoading={isLoading} message="Confirming transaction" />
+      <LoadingModal
+        isLoading={isLoading}
+        href={txUrl}
+        message="Confirming transaction"
+      />
       <InstructionCard>
-        <Box display="flex" flexDirection={{ xs: 'column', sm: 'row' }}>
+        <Box
+          display="flex"
+          justifyContent="center"
+          flexDirection={{ xs: 'column', sm: 'row' }}
+          position="relative"
+        >
           <ModelCardContent item={modelDetails} hasLink={false} />
-          <ModelCardMedia
-            dapps={modelDetails.dapps}
-            itemsShown={isXs ? 3 : 4}
-          />
+          <Box sx={{ marginLeft: { xs: '0', md: 'auto' } }}>
+            <ModelCardMedia
+              dapps={modelDetails.dapps}
+              itemsShown={isXs ? 3 : 4}
+            />
+          </Box>
         </Box>
         <InstructionRow title="Connect Wallet to Indigo" number={1}>
           <WalletButton Icon={FaRegCheckCircle} size={25} />
@@ -128,10 +154,6 @@ const ModelPreview = () => {
                 color: theme.palette.text.primary,
               }}
               disableElevation
-              onClick={() => {
-                // open tabs to aurora etherscan
-                console.log('TO ETHERSCAN!');
-              }}
             >
               <IconBox>
                 <FaRegCheckCircle size={25} />{' '}
@@ -165,10 +187,6 @@ const ModelPreview = () => {
                 color: theme.palette.text.primary,
               }}
               disableElevation
-              onClick={() => {
-                // open tabs to aurora etherscan
-                console.log('TO ETHERSCAN!');
-              }}
             >
               <IconBox>
                 <FaRegCheckCircle size={25} />{' '}
@@ -191,53 +209,24 @@ const ModelPreview = () => {
             </Button>
           )}
         </InstructionRow>
-        <SpacedDivider />
-        <CardContent>
-          <SpacedBox>
-            <Typography fontWeight="bold" variant="h2">
-              4
-            </Typography>
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              width="100%"
-              gap="10%"
-            >
-              <Button
-                variant="contained"
-                color="primary"
-                disableElevation
-                fullWidth
-                disabled={!model}
-                onClick={handleDownload}
-              >
-                <IconBox>
-                  <BiDownload size={25} />
-                  <Typography paddingTop="1px" fontWeight="bold">
-                    DOWNLOAD
-                  </Typography>
-                </IconBox>
-              </Button>
-              <Typography variant="body">OR</Typography>
-              <Button
-                variant="contained"
-                color="primary"
-                disableElevation
-                fullWidth
-                disabled={!model}
-              >
-                <IconBox>
-                  <Typography paddingTop="1px" fontWeight="bold">
-                    SEND TO
-                    {isSm && ' AIRTABLE'}
-                  </Typography>
-                  {!isSm && <AirtableIcon size="110px" disabled={!model} />}
-                </IconBox>
-              </Button>
-            </Box>
-          </SpacedBox>
-        </CardContent>
+        <InstructionRow number={4} title="Download model">
+          <Button
+            variant="contained"
+            color="primary"
+            disableElevation
+            fullWidth
+            disabled={!model}
+            onClick={handleDownload}
+            sx={{ paddingX: 4 }}
+          >
+            <IconBox>
+              <BiDownload size={25} />
+              <Typography paddingTop="1px" fontWeight="bold">
+                DOWNLOAD
+              </Typography>
+            </IconBox>
+          </Button>
+        </InstructionRow>
       </InstructionCard>
     </Layout>
   );

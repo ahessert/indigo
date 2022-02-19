@@ -2,7 +2,6 @@ import React from 'react';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
-import Typography from '@mui/material/Typography';
 import IndigoLogo from 'svg/illustrations/IndigoLogo';
 import { developerDocUrl, githubUrl } from 'utils/constants';
 
@@ -49,14 +48,6 @@ const Footer = () => {
             <IndigoLogo />
           </Box>
         </Box>
-        <Typography
-          display={{ xs: 'none', md: 'block' }}
-          align={'center'}
-          variant={'subtitle2'}
-          color="text.secondary"
-        >
-          &copy; 2022 Indigo
-        </Typography>
       </Grid>
     </Grid>
   );

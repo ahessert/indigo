@@ -45,9 +45,7 @@ const Airdrop = () => {
     try {
       const mint = await mintFreeTrialCoins();
       setTxUrl(getTransactionUrl(mint.hash));
-      const success = await mint.wait();
-      console.log(success);
-      setTxUrl(getTransactionUrl(success.transactionHash));
+      await mint.wait();
       setClaimed(true);
     } catch (e) {
       console.error(e);

@@ -36,8 +36,7 @@ function useContract(providerOrSigner: any) {
   }
 
   async function purchaseModel(modelName: string) {
-    const transaction = await indigoContract.getModel(modelName);
-    return await transaction.wait();
+    return await indigoContract.getModel(modelName);
   }
 
   async function getData(

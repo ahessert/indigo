@@ -1,4 +1,4 @@
-import React, { useState, createContext } from 'react';
+import React, { useState, createContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { ethers } from 'ethers';
 import { CHAIN_ID, CHAIN_ID_0x } from 'utils/constants';
@@ -9,6 +9,10 @@ export const ContextProvider = ({ children }) => {
   const [provider, setProvider] = useState();
   const [userAddress, setUserAddress] = useState();
   const [signer, setSigner] = useState();
+
+  useEffect(() => {
+    connect();
+  },[]);
 
   async function connect() {
     await window.ethereum.request({ method: 'eth_requestAccounts' });

@@ -21,7 +21,7 @@ import {
 } from 'components/InstructionCard';
 import { useContract } from 'hooks';
 import { AppContext } from 'context/AppContext';
-import {getTransactionUrl} from 'utils/constants';
+import { getTransactionUrl } from 'utils/constants';
 
 const Mint = () => {
   const { provider, signer } = useContext(AppContext);
@@ -48,8 +48,7 @@ const Mint = () => {
     try {
       const mint = await mintModel(modelName, githubUrl);
       setTxUrl(getTransactionUrl(mint.hash));
-      const success = await mint.wait();
-      setTxUrl(getTransactionUrl(success.transactionHash));
+      await mint.wait();
       setIsLoading(false);
       setIsOpen(true);
     } catch (e) {
@@ -94,7 +93,14 @@ const Mint = () => {
           <FormControl onSubmit={handleSubmit}>
             <Grid container>
               <Grid item xs={1} paddingX={2}>
-                <Typography fontWeight="bold" variant="h2">
+                <Typography
+                  fontWeight="bold"
+                  variant="h2"
+                  sx={{
+                    textShadow:
+                      '0 0 32px rgb(192 219 255 / 48%), 0 0 8px rgb(65 120 255 / 24%)',
+                  }}
+                >
                   2
                 </Typography>
               </Grid>
@@ -103,18 +109,18 @@ const Mint = () => {
                 xs={11}
                 display="flex"
                 alignItems="center"
-                paddingX={2}
+                paddingX={3}
               >
                 <Typography>Mint Data Model NFT</Typography>
               </Grid>
-              <Grid item xs={1} paddingX={2}></Grid>
+              <Grid item xs={1}></Grid>
               <Grid
                 item
                 xs={11}
                 display="flex"
                 flexDirection={'column'}
                 gap={2}
-                paddingX={2}
+                paddingX={3}
               >
                 <TextField
                   id="dataName"

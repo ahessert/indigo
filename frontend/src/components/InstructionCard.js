@@ -12,13 +12,6 @@ import {
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
-const SpacedBox = styled(Box)`
-  display: flex;
-  align-items: center;
-  gap: 45px;
-  padding: 0px 10px;
-`;
-
 const SpacedDivider = styled(Divider)`
   margin: 30px 10px;
   background: black;
@@ -29,16 +22,23 @@ const InstructionRow = ({ number, title, children }) => {
     <>
       <SpacedDivider />
       <CardContent>
-        <Grid container alignItems='center'>
+        <Grid container alignItems="center">
           <Grid item xs={1} paddingX={2}>
-            <Typography fontWeight="bold" variant="h2" >
+            <Typography
+              fontWeight="bold"
+              variant="h2"
+              sx={{
+                textShadow:
+                  '0 0 32px rgb(192 219 255 / 48%), 0 0 8px rgb(65 120 255 / 24%)',
+              }}
+            >
               {number}
             </Typography>
           </Grid>
-          <Grid item xs={6} display="flex" alignItems="center" paddingX={2}>
-            <Typography >{title}</Typography>
+          <Grid item xs={6} display="flex" alignItems="center" paddingX={3}>
+            <Typography>{title}</Typography>
           </Grid>
-          <Grid item xs={5} display="flex" alignItems="center"paddingX={2}>
+          <Grid item xs={5} display="flex" alignItems="center" paddingX={2}>
             <Box marginLeft="auto">{children}</Box>
           </Grid>
         </Grid>
@@ -80,7 +80,8 @@ const InstructionCard = ({ title, children }) => {
           <Card
             sx={{
               padding: 2,
-              maxWidth: '800px',
+              width:'100%',
+              maxWidth:'1000px',
               minWidth: '500px',
               background: 'linear-gradient(#1E0067, #4900FF)',
             }}
@@ -98,4 +99,4 @@ InstructionCard.propTypes = {
   title: PropTypes.string,
 };
 
-export { InstructionRow, InstructionCard, SpacedBox, SpacedDivider };
+export { InstructionRow, InstructionCard, SpacedDivider };

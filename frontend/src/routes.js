@@ -11,8 +11,8 @@ import Mint from './views/Mint';
 const Routes = () => {
   return (
     <ReactRoutes>
-      <Route path="/developer" element={<Developer/>} />
       <Route path="/" element={<Market/>} />
+      <Route path="/developer" element={<Developer/>} />
       <Route path="/market/:id" element={<ModelPreview/>} />
       <Route path="/airdrop" element={<Airdrop />} />
       <Route path="/mint" element={<Mint />} />
