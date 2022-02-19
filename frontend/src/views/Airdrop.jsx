@@ -32,6 +32,7 @@ const Airdrop = () => {
   const [claimed, setClaimed] = useState(false);
   const [txUrl, setTxUrl] = useState('');
   const isSm = useMediaQuery((theme) => theme.breakpoints.down('md'));
+  // eslint-disable-next-line no-undef
 
   const airdropDescription = {
     modelName: '$INDG One-time Airdrop',
@@ -71,7 +72,7 @@ const Airdrop = () => {
           <ModelCardContent item={airdropDescription} hasLink={false} />
           <CardMedia
             sx={{
-              width: '200px',
+              width: '250px',
               padding: 4,
               filter: 'brightness(0) invert(.8)',
               display: { xs: 'none', md: 'block' },
@@ -87,7 +88,8 @@ const Airdrop = () => {
           <ReCAPTCHA
             // testing site key, needs real keys and backend verification
             // see: https://developers.google.com/recaptcha/docs/display
-            sitekey={testSiteKey || siteKey}
+            // eslint-disable-next-line no-undef
+            sitekey={process.env.NODE_ENV === 'development' ? testSiteKey : siteKey}
             onChange={handleCaptcha}
             size={isSm ? 'compact' : 'normal'}
           />
