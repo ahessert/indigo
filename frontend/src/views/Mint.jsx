@@ -35,7 +35,7 @@ const Mint = () => {
   }, []);
 
   const airdropDescription = {
-    modelName: 'Mint Model',
+    modelName: 'Upload Data Model',
     description:
       'locavore tbh health goth street art tumblr 3 wolf moon single-origin coffee vexillologist +1 skateboard taxidermy copper mug master cleanse hexagon kitsch.',
     dapps: ['default'],

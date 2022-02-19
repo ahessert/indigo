@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 function WalletButton({
   Icon,
   size,
+  ...props
 }: {
   Icon: React.ComponentClass<any>;
   size: number;
@@ -33,6 +34,7 @@ function WalletButton({
             display: 'flex',
             gap: '10px',
           }}
+          {...props}
         >
           {Icon ? <Icon size={size} /> : <AccountBalanceWalletIcon />}
           <Typography fontWeight="bold">
@@ -46,6 +48,7 @@ function WalletButton({
           onClick={connect}
           sx={{ padding: '0px 15px' }}
           disableElevation
+          {...props}
         >
           <MetamaskLogoText
             size="140px"

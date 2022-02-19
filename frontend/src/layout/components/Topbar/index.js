@@ -5,19 +5,14 @@ import Button from '@mui/material/Button';
 import { alpha, useTheme } from '@mui/material/styles';
 import MenuIcon from '@mui/icons-material/Menu';
 import IndigoLogo from 'svg/illustrations/IndigoLogo';
-import IndigoIcon from 'svg/illustrations/IndigoIcon';
-import { useNavigate } from 'react-router-dom';
+import { WalletButton } from 'components';
 
 // import ThemeModeToggler from 'components/ThemeModeToggler';
 
-import { SingleNavItem } from './components';
+import { SingleNavItem } from './components/NavItem';
+import { useNavigate } from 'react-router-dom';
 
-const Topbar = ({
-  onSidebarOpen,
-  pages,
-  colorInvert = false,
-  enterApp = false,
-}) => {
+const Topbar = ({ onSidebarOpen, pages, colorInvert = false }) => {
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -32,24 +27,20 @@ const Topbar = ({
         display={'flex'}
         justifyContent={{ xs: 'space-between', md: 'flex-start' }}
         alignItems="center"
-        sx={{ gap: '30px' }}
+        sx={{ gap: 2 }}
       >
         <Box
           display={'flex'}
           alignItems="flex-start"
           justifyContent="space-between"
           component="a"
-          href="/"
+          href="https://www.indigodapp.com"
+          target="_blank"
           title="Indigo"
-          width="185px"
-          marginTop="10px"
+          width="120px"
+          marginX={2}
         >
-          <Box width={{ xs: '50px' }}>
-            <IndigoIcon />
-          </Box>
-          <Box width={{ xs: '120px' }}>
-            <IndigoLogo />
-          </Box>
+          <IndigoLogo />
         </Box>
         <Box
           sx={{ display: { xs: 'none', md: 'flex' }, gap: '30px' }}
@@ -57,6 +48,7 @@ const Topbar = ({
         >
           {Object.values(pages).map((page) => {
             const key = `${page.title}-page`;
+            console.log(page);
             return (
               <SingleNavItem
                 id={key}
@@ -68,39 +60,37 @@ const Topbar = ({
           })}
         </Box>
       </Box>
-      {enterApp ? (
-        <Button variant="contained"> Enter App</Button>
-      ) : (
-        <>
-          <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: '15px' }}>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={() => navigate('/mint')}
-            >
-              Mint NFT Model
-            </Button>
-          </Box>
-          <Box
-            sx={{ display: { xs: 'block', md: 'none' } }}
-            alignItems={'center'}
-          >
-            <Button
-              onClick={() => onSidebarOpen()}
-              aria-label="Menu"
-              variant={'outlined'}
-              sx={{
-                borderRadius: 2,
-                minWidth: 'auto',
-                padding: 1,
-                borderColor: alpha(theme.palette.divider, 0.2),
-              }}
-            >
-              <MenuIcon />
-            </Button>
-          </Box>
-        </>
-      )}
+      <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 2 }}>
+        <Button
+          variant="contained"
+          sx={{
+            color: theme.palette.text.primary,
+            background: `linear-gradient( to right, ${
+              theme.palette.secondary.main
+            }, ${theme.palette.secondary.dark})`,
+            fontWeight: 'bold',
+          }}
+          onClick={()=>navigate('/mint')}
+        >
+          Mint NFT Model
+        </Button>
+        <WalletButton />
+      </Box>
+      <Box sx={{ display: { xs: 'block', md: 'none' } }} alignItems={'center'}>
+        <Button
+          onClick={() => onSidebarOpen()}
+          aria-label="Menu"
+          variant={'outlined'}
+          sx={{
+            borderRadius: 2,
+            minWidth: 'auto',
+            padding: 1,
+            borderColor: alpha(theme.palette.divider, 0.2),
+          }}
+        >
+          <MenuIcon />
+        </Button>
+      </Box>
     </Box>
   );
 };

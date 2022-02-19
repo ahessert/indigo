@@ -1,18 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import { useTheme } from '@mui/material/styles';
+import IndigoLogo from 'svg/illustrations/IndigoLogo';
+import {WalletButton} from 'components';
 
-import {MultiNavItem } from './components/NavItem';
+import { SingleNavItem } from './components/NavItem';
+import { githubUrl, developerDocUrl } from 'utils/constants';
 
 const SidebarNav = ({ pages }) => {
-  const theme = useTheme();
-  const { mode } = theme.palette;
+  console.log(pages);
+  // const {
 
-  const {
-    explore
-  } = pages;
+  // } = pages;
 
   return (
     <Box>
@@ -24,32 +23,26 @@ const SidebarNav = ({ pages }) => {
           title="theFront"
           width={{ xs: 100, md: 120 }}
         >
-          <Box
-            component={'img'}
-            src={
-              mode === 'light'
-                ? './indigo_light.png'
-                : './indigo_dark.png'
-            }
-            height={1}
-            width={1}
-          />
+          <IndigoLogo />
         </Box>
       </Box>
       <Box paddingX={2}>
-        <Box>
-          <MultiNavItem title={'Explore'} items={explore} />
-        </Box>
-        <Box marginTop={2}>
-          <Button
-            size={'large'}
-            variant="outlined"
-            fullWidth
-            component="a"
-            href="/docs/introduction"
-          >
-            Documentation
-          </Button>
+        {Object.values(pages).map((page) => {
+          const key = `${page.title}-page`;
+          return <SingleNavItem id={key} key={key} item={page} />;
+        })}
+        <SingleNavItem
+          id={'documentation-page'}
+          item={{ href: githubUrl, title: 'Github' }}
+          target='_blank'
+        />
+        <SingleNavItem
+          id={'documentation-page'}
+          item={{ href: developerDocUrl, title: 'Documentation' }}
+          target='_blank'
+        />
+        <Box marginY={1}>
+          <WalletButton fullWidth/>
         </Box>
       </Box>
     </Box>

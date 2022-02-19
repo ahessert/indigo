@@ -88,10 +88,38 @@ const MultiNavItem = ({ title, items }) => {
   );
 };
 
+const SingleNavItem = ({item, ...props}) => {
+  const theme = useTheme();
+  console.log(item);
+  return (
+    <Button
+      size={'large'}
+      component={'a'}
+      href={item.href}
+      fullWidth
+      sx={{
+        justifyContent: 'flex-start',
+        color: theme.palette.text.main,
+        backgroundColor:'transparent',
+        fontWeight: 400,
+      }}
+      {...props}
+    >
+      {item.title}
+    </Button>
+  );
+};
+
 MultiNavItem.propTypes = {
   items: PropTypes.array.isRequired,
   title: PropTypes.string.isRequired,
   onClose: PropTypes.func,
 };
 
-export {MultiNavItem};
+SingleNavItem.propTypes = {
+  id: PropTypes.string.isRequired,
+  item: PropTypes.object.isRequired,
+  colorInvert: PropTypes.bool,
+};
+
+export { MultiNavItem, SingleNavItem };

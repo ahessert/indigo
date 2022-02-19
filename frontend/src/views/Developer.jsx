@@ -1,7 +1,6 @@
 import React from 'react';
 import Layout from 'layout';
 import Container from 'components/Container';
-import { SearchBar } from 'components';
 import { Typography, Box } from '@mui/material';
 
 const Developer = () => {
@@ -26,7 +25,6 @@ const Developer = () => {
               Developer
             </Typography>
           </Box>
-          <SearchBar />
         </Box>
       </Container>
     </Layout>

@@ -1,7 +1,7 @@
 import React from 'react';
 import Layout from 'layout';
 import Container from 'components/Container';
-import { SearchBar, Table } from 'components';
+import { Table } from 'components';
 import { Typography, Box } from '@mui/material';
 
 const DisplayData = () => {
@@ -26,7 +26,6 @@ const DisplayData = () => {
 							Data
             </Typography>
           </Box>
-          <SearchBar />
         </Box>
         <Box>
           <Table />

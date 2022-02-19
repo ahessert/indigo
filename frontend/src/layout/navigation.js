@@ -1,7 +1,11 @@
 const pages = {
   market: {
     title: 'Market',
-    href: '/market'
+    href: '/'
+  },
+  upload: {
+    title: 'Upload',
+    href: '/mint'
   },
   airdrop: {
     title: 'Airdrop',

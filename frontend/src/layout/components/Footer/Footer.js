@@ -4,29 +4,18 @@ import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import IndigoLogo from 'svg/illustrations/IndigoLogo';
+import { developerDocUrl, githubUrl } from 'utils/constants';
 
 const Footer = () => {
 
   const links = [
     {
       title: 'Documentation',
-      uri: 'https://www.github.com',
+      uri: developerDocUrl,
     },
     {
       title: 'Github',
-      uri: 'https://www.github.com',
-    },
-    {
-      title: 'Discord',
-      uri: 'https://www.discord.com',
-    },
-    {
-      title: 'Twitter',
-      uri: 'https://www.twitter.com',
-    },
-    {
-      title: 'Telegram',
-      uri: 'https://www.telegram.com',
+      uri: githubUrl,
     },
   ];
 
@@ -49,6 +38,7 @@ const Footer = () => {
                   href={uri}
                   color="text.primary"
                   variant={'subtitle2'}
+                  target='_blank'
                 >
                   {title}
                 </Link>

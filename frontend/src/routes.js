@@ -1,6 +1,5 @@
 import React from 'react';
 import { Routes as ReactRoutes, Route, Navigate } from 'react-router-dom';
-import Home from './views/Home';
 import Market from './views/Market';
 import DisplayData from './views/DisplayData';
 import Developer from './views/Developer';
@@ -12,9 +11,8 @@ import Mint from './views/Mint';
 const Routes = () => {
   return (
     <ReactRoutes>
-      <Route path="/" element={<Home  />} />
       <Route path="/developer" element={<Developer/>} />
-      <Route path="/market" element={<Market/>} />
+      <Route path="/" element={<Market/>} />
       <Route path="/market/:id" element={<ModelPreview/>} />
       <Route path="/airdrop" element={<Airdrop />} />
       <Route path="/mint" element={<Mint />} />

@@ -2,7 +2,7 @@ import { ethers } from 'ethers';
 import indigoAbi from 'utils/abi.json';
 import formatModelDescription from '../utils/formatModelDescription';
 
-const indigoAddress = '0xaC59Fe12edaD70779671E43Db6155960edcf6Bc5';
+const indigoAddress = '0x438914A9e5d7e422de0eE0dA7B3A498e50403f43';
 
 // type PublishedModel = {
 //   modelName: string; // this is a hash .. need to add readable field

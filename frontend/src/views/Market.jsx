@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Layout from 'layout';
 import Container from 'components/Container';
-import { Jobs, SearchBar, ConnectPrompt } from 'components';
+import { Jobs, ConnectPrompt } from 'components';
 import { Typography, Box } from '@mui/material';
 import { AppContext } from 'context/AppContext';
 import { useContract } from 'hooks';
@@ -41,7 +41,6 @@ const JobListing = () => {
               Marketplace
             </Typography>
           </Box>
-          <SearchBar />
         </Box>
         <Box>{provider ? <Jobs data={models} /> : <ConnectPrompt />}</Box>
       </Container>
