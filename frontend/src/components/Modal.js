@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { keyframes } from '@emotion/react';
 import { BiLinkExternal } from 'react-icons/bi';
+import { FaRegCheckCircle } from 'react-icons/fa';
 
 const rotate = keyframes`
   from {
@@ -25,6 +26,29 @@ const LoadingModal = ({ isLoading, setIsLoading, href, message }) => {
         }}
       >
         <AiOutlineLoading3Quarters size={40} />
+      </Box>
+      <Link
+        underline="none"
+        component="a"
+        href={href}
+        target="_blank"
+        color="text.primary"
+        variant={'h6'}
+      >
+        {message} {href && <BiLinkExternal size={11} />}
+      </Link>
+    </GenericModal>
+  );
+};
+
+const SuccessModal = ({ isOpen, setIsOpen, href, message }) => {
+  return (
+    <GenericModal isOpen={isOpen} setIsOpen={setIsOpen}>
+      <Box
+        display="flex"
+        justifyContent="center"
+      >
+        <FaRegCheckCircle size={40} />
       </Box>
       <Link
         underline="none"
@@ -79,11 +103,18 @@ GenericModal.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
+SuccessModal.propTypes = {
+  isOpen: PropTypes.any.isRequired,
+  setIsOpen: PropTypes.func,
+  href: PropTypes.string,
+  message: PropTypes.string.isRequired,
+};
+
 LoadingModal.propTypes = {
-  isLoading: PropTypes.bool.isRequired,
+  isLoading: PropTypes.any.isRequired,
   setIsLoading: PropTypes.func,
   href: PropTypes.string,
   message: PropTypes.string.isRequired,
 };
 
-export { GenericModal, LoadingModal };
+export { GenericModal, LoadingModal, SuccessModal };

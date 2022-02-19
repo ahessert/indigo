@@ -4,12 +4,14 @@ import { AppContext } from 'context/AppContext';
 import { WalletButton, LoadingModal } from 'components';
 import { ModelCardContent } from 'components/ModelCard';
 import { Typography, Box, useTheme, CardMedia, Button } from '@mui/material';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import styled from '@emotion/styled';
 import { FaRegCheckCircle } from 'react-icons/fa';
 import IndigoIcon from 'svg/illustrations/IndigoIcon';
 import { InstructionCard, InstructionRow } from 'components/InstructionCard';
 import ReCAPTCHA from 'react-google-recaptcha';
 import useContract from 'hooks/useContract';
+import { getTransactionUrl } from 'utils/constants';
 
 const IconBox = styled(Box)`
   display: flex;
@@ -28,6 +30,8 @@ const Airdrop = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [completedCaptcha, setCompletedCaptcha] = useState(false);
   const [claimed, setClaimed] = useState(false);
+  const [txUrl, setTxUrl] = useState('');
+  const isSm = useMediaQuery((theme) => theme.breakpoints.down('md'));
 
   const airdropDescription = {
     modelName: '$INDG One-time Airdrop',
@@ -39,7 +43,11 @@ const Airdrop = () => {
   async function handleTransaction() {
     setIsLoading(true);
     try {
-      await mintFreeTrialCoins();
+      const mint = await mintFreeTrialCoins();
+      setTxUrl(getTransactionUrl(mint.hash));
+      const success = await mint.wait();
+      console.log(success);
+      setTxUrl(getTransactionUrl(success.transactionHash));
       setClaimed(true);
     } catch (e) {
       console.error(e);
@@ -51,12 +59,14 @@ const Airdrop = () => {
     console.log(captchaValue);
     setCompletedCaptcha(true);
   }
+  console.log(isSm);
 
   return (
     <Layout hideImage noGradient>
       <LoadingModal
         isLoading={isLoading}
         message="Confirming transaction"
+        href={txUrl}
       />
       <InstructionCard>
         <Box display="flex">
@@ -81,11 +91,13 @@ const Airdrop = () => {
             // see: https://developers.google.com/recaptcha/docs/display
             sitekey={testSiteKey || siteKey}
             onChange={handleCaptcha}
+            size={isSm ? 'compact' : 'normal'}
           />
         </InstructionRow>
         <InstructionRow title="Receive $INDG Airdrop" number={3}>
           {claimed ? (
             <Button
+              component="a"
               variant="contained"
               color="success"
               size="large"
@@ -94,10 +106,7 @@ const Airdrop = () => {
                 color: theme.palette.text.primary,
               }}
               disableElevation
-              onClick={() => {
-                // open tabs to aurora etherscan
-                console.log('TO ETHERSCAN!');
-              }}
+              href={txUrl}
             >
               <IconBox>
                 <IndigoIcon

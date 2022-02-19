@@ -4,7 +4,7 @@ import Table from './Table';
 import Hero from './Hero';
 import HeroImage from './HeroImage';
 import Jobs from './Jobs';
-import {GenericModal, LoadingModal} from './Modal';
+import {GenericModal, LoadingModal, SuccessModal} from './Modal';
 import ModelCard from './ModelCard';
 import Page from './Page';
 import SearchBar from './SearchBar';
@@ -25,6 +25,7 @@ export {
   ModelCard,
   Page,
   SearchBar,
+  SuccessModal,
   ThemeModeToggler,
   WalletButton
 };

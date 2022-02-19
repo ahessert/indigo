@@ -90,7 +90,6 @@ const MultiNavItem = ({ title, items }) => {
 
 const SingleNavItem = ({item, ...props}) => {
   const theme = useTheme();
-  console.log(item);
   return (
     <Button
       size={'large'}

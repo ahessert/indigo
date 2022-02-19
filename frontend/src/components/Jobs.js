@@ -53,7 +53,6 @@ const mock = [
 ];
 
 const Jobs = ({ data }) => {
-  console.log(data);
   data=data.concat(mock);
   return (
     <Box>

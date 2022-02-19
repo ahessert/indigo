@@ -8,11 +8,6 @@ import { SingleNavItem } from './components/NavItem';
 import { githubUrl, developerDocUrl } from 'utils/constants';
 
 const SidebarNav = ({ pages }) => {
-  console.log(pages);
-  // const {
-
-  // } = pages;
-
   return (
     <Box>
       <Box width={1} paddingX={2} paddingY={1}>

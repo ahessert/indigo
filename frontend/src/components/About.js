@@ -1,11 +1,8 @@
 /* eslint-disable react/no-unescaped-entities */
 import React from 'react';
-import { useTheme } from '@mui/material/styles';
 import { Box, Grid, Typography } from '@mui/material';
 
 const About = () => {
-  const theme = useTheme();
-  console.log(theme);
 
   return (
     <Grid container spacing={4}>

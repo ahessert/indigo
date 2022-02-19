@@ -29,7 +29,7 @@ const InstructionRow = ({ number, title, children }) => {
     <>
       <SpacedDivider />
       <CardContent>
-        <Grid container>
+        <Grid container alignItems='center'>
           <Grid item xs={1} paddingX={2}>
             <Typography fontWeight="bold" variant="h2" >
               {number}

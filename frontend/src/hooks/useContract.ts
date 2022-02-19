@@ -24,7 +24,6 @@ function useContract(providerOrSigner: any) {
     const publishedModels = await indigoContract.queryFilter(
       publishModelFilter,
     );
-    console.log(publishedModels);
     return publishedModels.map((data) => {
       return formatModelDescription(data);
     });

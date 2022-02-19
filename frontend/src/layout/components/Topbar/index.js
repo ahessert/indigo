@@ -48,7 +48,6 @@ const Topbar = ({ onSidebarOpen, pages, colorInvert = false }) => {
         >
           {Object.values(pages).map((page) => {
             const key = `${page.title}-page`;
-            console.log(page);
             return (
               <SingleNavItem
                 id={key}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Layout from 'layout';
-import { WalletButton, LoadingModal, GenericModal } from 'components';
+import { WalletButton, LoadingModal, SuccessModal } from 'components';
 import { ModelCardContent } from 'components/ModelCard';
 import {
   Box,
@@ -21,6 +21,7 @@ import {
 } from 'components/InstructionCard';
 import { useContract } from 'hooks';
 import { AppContext } from 'context/AppContext';
+import {getTransactionUrl} from 'utils/constants';
 
 const Mint = () => {
   const { provider, signer } = useContext(AppContext);
@@ -29,6 +30,7 @@ const Mint = () => {
   const [modelName, setModelName] = useState('');
   const [githubUrl, setGithubUrl] = useState('');
   const [isOpen, setIsOpen] = useState(false);
+  const [txUrl, setTxUrl] = useState('');
 
   useEffect(() => {
     setIsLoading(false);
@@ -44,23 +46,31 @@ const Mint = () => {
   async function handleSubmit() {
     setIsLoading(true);
     try {
-      await mintModel(modelName, githubUrl);
+      const mint = await mintModel(modelName, githubUrl);
+      setTxUrl(getTransactionUrl(mint.hash));
+      const success = await mint.wait();
+      setTxUrl(getTransactionUrl(success.transactionHash));
+      setIsLoading(false);
+      setIsOpen(true);
     } catch (e) {
       console.error(e);
+      setIsLoading(false);
     }
-    setIsLoading(false);
-    setIsOpen(true);
   }
 
   return (
     <Layout hideImage noGradient>
-      <LoadingModal isLoading={isLoading} message="Confirming transaction" />
-      <GenericModal isOpen={isOpen} setIsOpen={setIsOpen}>
-        <FaRegCheckCircle size={40}/>
-        <Typography variant='h6'>
-          Model successfully minted!
-        </Typography>
-      </GenericModal>
+      <LoadingModal
+        isLoading={isLoading}
+        href={txUrl}
+        message="Confirming transaction"
+      />
+      <SuccessModal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        message="Model Successfully Minted!"
+        href={txUrl}
+      />
       <InstructionCard>
         <Box display="flex">
           <ModelCardContent item={airdropDescription} hasLink={false} />
