@@ -25,7 +25,7 @@ import { getTransactionUrl } from 'utils/constants';
 
 const Mint = () => {
   const { provider, signer } = useContext(AppContext);
-  const { mintModel } = useContract(signer);
+  const { mintModel } = useContract(provider, signer);
   const [isLoading, setIsLoading] = useState(false);
   const [modelName, setModelName] = useState('');
   const [githubUrl, setGithubUrl] = useState('');
@@ -38,8 +38,11 @@ const Mint = () => {
 
   const airdropDescription = {
     modelName: 'Upload Data Model',
-    description:
-      'locavore tbh health goth street art tumblr 3 wolf moon single-origin coffee vexillologist +1 skateboard taxidermy copper mug master cleanse hexagon kitsch.',
+    description: `Use this page to upload your data models that will be placed on the 
+      Indigo Marketplace. Currently the price is set, but custom pricing will
+      become available in the NEAR future. For detailed steps on how simple it
+      is to create and mint these data models, please see our developer documentation
+  `,
     dapps: ['default'],
   };
 

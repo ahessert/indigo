@@ -26,18 +26,18 @@ const siteKey = '6Lc-MYIeAAAAAO-XhXh9oqjIxWXptrxSP4eO3L_W';
 const Airdrop = () => {
   const theme = useTheme();
   const { provider, signer } = useContext(AppContext);
-  const { mintFreeTrialCoins } = useContract(signer);
+  const { mintFreeTrialCoins } = useContract(provider, signer);
   const [isLoading, setIsLoading] = useState(false);
   const [completedCaptcha, setCompletedCaptcha] = useState(false);
   const [claimed, setClaimed] = useState(false);
   const [txUrl, setTxUrl] = useState('');
   const isSm = useMediaQuery((theme) => theme.breakpoints.down('md'));
-  // eslint-disable-next-line no-undef
 
   const airdropDescription = {
-    modelName: '$INDG One-time Airdrop',
-    description:
-      'locavore tbh health goth street art tumblr 3 wolf moon single-origin coffee vexillologist +1 skateboard taxidermy copper mug master cleanse hexagon kitsch.',
+    modelName: 'Free trial $INDG',
+    description: `In order to increase awareness of the usefulness of the product, 
+      We've provided a small amount of free $INDG to use on any of the models available 
+      on the marketplace. In order to claim, follow the instructions below. `,
     dapps: ['default'],
   };
 
@@ -58,7 +58,6 @@ const Airdrop = () => {
     console.log(captchaValue);
     setCompletedCaptcha(true);
   }
-  console.log(isSm);
 
   return (
     <Layout hideImage noGradient>
@@ -89,7 +88,9 @@ const Airdrop = () => {
             // testing site key, needs real keys and backend verification
             // see: https://developers.google.com/recaptcha/docs/display
             // eslint-disable-next-line no-undef
-            sitekey={process.env.NODE_ENV === 'development' ? testSiteKey : siteKey}
+            sitekey={
+              process.env.NODE_ENV === 'development' ? testSiteKey : siteKey
+            }
             onChange={handleCaptcha}
             size={isSm ? 'compact' : 'normal'}
           />

@@ -24,13 +24,13 @@ const IconBox = styled(Box)`
 
 const ModelPreview = () => {
   const theme = useTheme();
-  const { provider, signer, userAddress } = useContext(AppContext);
-  const { getSingleModelDescription, purchaseModel } = useContract(signer);
+  const { provider, signer } = useContext(AppContext);
+  const { getSingleModelDescription, purchaseModel, getData, getReceipt } =
+    useContract(provider, signer);
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(false);
   const [hasReceipt, setHasReceipt] = useState();
   const [model, setModel] = useState();
-  const { getData, getReceipt } = useContract(provider, userAddress);
   const isXs = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const [txUrl, setTxUrl] = useState('');
   const [modelDetails, setModelDetails] = useState({

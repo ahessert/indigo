@@ -7,10 +7,9 @@ import { AppContext } from 'context/AppContext';
 import { useContract } from 'hooks';
 
 const JobListing = () => {
-  const { provider } = useContext(AppContext);
-  const { getAllModelDescriptions } = useContract(provider);
+  const { provider, signer } = useContext(AppContext);
+  const { getAllModelDescriptions } = useContract(provider, signer);
   const [models, setModels] = useState([]);
-  console.log('models', models);
 
   useEffect(() => {
     (async () => {

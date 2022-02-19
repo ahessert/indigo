@@ -14,15 +14,15 @@ const indigoAddress = '0x438914A9e5d7e422de0eE0dA7B3A498e50403f43';
 //   gasConsumed: number;
 // };
 
-function useContract(providerOrSigner: any) {
+function useContract(provider: any, signer:any) {
   const indigoContract = new ethers.Contract(
     indigoAddress,
     indigoAbi,
-    providerOrSigner,
+    signer ?? provider,
   );
 
   async function changeNetwork() {
-    const network = await providerOrSigner.getNetwork();
+    const network = await provider.getNetwork();
     if (network.chainId !== CHAIN_ID) {
       await window.ethereum.request({
         method: 'wallet_switchEthereumChain',
