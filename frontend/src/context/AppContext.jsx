@@ -1,7 +1,6 @@
 import React, { useState, createContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { ethers } from 'ethers';
-import { CHAIN_ID, CHAIN_ID_0x } from 'utils/constants';
 
 export const AppContext = createContext(null);
 
@@ -12,7 +11,7 @@ export const ContextProvider = ({ children }) => {
 
   useEffect(() => {
     connect();
-  },[]);
+  }, []);
 
   async function connect() {
     await window.ethereum.request({ method: 'eth_requestAccounts' });
@@ -21,18 +20,6 @@ export const ContextProvider = ({ children }) => {
       'any',
     );
     const signer = newProvider.getSigner();
-
-    newProvider.on('network', async (newNetwork) => {
-      // trigger network change if not on Near network
-      // if (newNetwork.chainId !== CHAIN_ID) {
-      //   await window.ethereum.request({
-      //     method: 'wallet_switchEthereumChain',
-      //     params: [{ chainId: CHAIN_ID_0x }],
-      //   });
-      //   window.location.reload();
-      // }
-      console.log(newNetwork, CHAIN_ID, CHAIN_ID_0x);
-    });
 
     setUserAddress(await signer.getAddress());
     setProvider(newProvider);

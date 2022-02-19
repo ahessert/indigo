@@ -43,7 +43,7 @@ export const dark = {
   },
   mode: 'dark',
   primary: {
-    main: '#b19cd9',
+    main: '#9370DB',
     light: '#4900FF',
     dark: '#1E0067',
     contrastText: '#fff',
