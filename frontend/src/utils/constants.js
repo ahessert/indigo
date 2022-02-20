@@ -7,7 +7,7 @@ export const CHAIN_ID_0x = '1';
 
 export const blockExplorerUrl = 'https://explorer.mainnet.aurora.dev/';
 export const developerDocUrl =
-  'https://github.com/ahessert/indigo_developer_template/blob/main/README.md';
+  'https://github.com/ahessert/indigo_developer_template';
 export const githubUrl = 'https://github.com/ahessert/indigo';
 
 export function getTransactionUrl(txHash) {
