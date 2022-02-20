@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import Layout from 'layout';
 import { saveAs } from 'file-saver';
 import { AppContext } from 'context/AppContext';
-import { WalletButton, LoadingModal } from 'components';
+import { WalletButton, LoadingModal, GenericModal } from 'components';
 import { ModelCardMedia, ModelCardContent } from 'components/ModelCard';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import mockGraphData from 'utils/mockGraphData.json';
@@ -22,7 +22,7 @@ const IconBox = styled(Box)`
   gap: 10px;
 `;
 
-const buttonWidth='200px';
+const buttonWidth = '200px';
 const StandardButton = styled(Button)`
   min-width: ${buttonWidth};
 `;
@@ -38,6 +38,8 @@ const ModelPreview = () => {
   const [model, setModel] = useState();
   const isXs = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const [txUrl, setTxUrl] = useState('');
+  const [showUnavailable, setShowUnavailable]= useState(false);
+
   const [modelDetails, setModelDetails] = useState({
     modelName: '',
     dapps: [],
@@ -48,11 +50,14 @@ const ModelPreview = () => {
   useEffect(() => {
     (async () => {
       try {
+        setShowUnavailable(false);
         const modelDetails = await getSingleModelDescription(id);
         setModelDetails(modelDetails);
       } catch (e) {
         console.error(e);
+        setShowUnavailable(true);
       }
+
 
       try {
         const alreadyPurchased = await getReceipt(id);
@@ -132,6 +137,11 @@ const ModelPreview = () => {
         href={txUrl}
         message="Confirming transaction"
       />
+      <GenericModal isOpen={showUnavailable}>
+        <Typography variant="h6">
+          This model is not available, please choose another model
+        </Typography>
+      </GenericModal>
       <InstructionCard title="Purchase Model">
         <Box
           display="flex"
@@ -148,7 +158,11 @@ const ModelPreview = () => {
           </Box>
         </Box>
         <InstructionRow title="Connect Wallet to Indigo" number={1}>
-          <WalletButton Icon={FaRegCheckCircle} size={25} sx={{minWidth: buttonWidth}} />
+          <WalletButton
+            Icon={FaRegCheckCircle}
+            size={25}
+            sx={{ minWidth: buttonWidth }}
+          />
         </InstructionRow>
         <InstructionRow title="Confirm transaction" number={2}>
           {hasReceipt ? (
