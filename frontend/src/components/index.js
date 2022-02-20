@@ -1,7 +1,6 @@
 import About from './About';
 import Container from './Container';
 import Table from './Table';
-import Hero from './Hero';
 import HeroImage from './HeroImage';
 import Jobs from './Jobs';
 import {GenericModal, LoadingModal, SuccessModal} from './Modal';
@@ -18,7 +17,6 @@ export {
   ConnectPrompt,
   Table,
   GenericModal,
-  Hero,
   HeroImage,
   Jobs,
   LoadingModal,
