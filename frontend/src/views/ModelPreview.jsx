@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import Layout from 'layout';
 import { saveAs } from 'file-saver';
 import { AppContext } from 'context/AppContext';
@@ -38,7 +38,11 @@ const ModelPreview = () => {
   const [model, setModel] = useState();
   const isXs = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const [txUrl, setTxUrl] = useState('');
-  const [showUnavailable, setShowUnavailable]= useState(false);
+  const [showUnavailable, setShowUnavailable] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState(
+    'Confirming transaction',
+  );
+  const interval = useRef();
 
   const [modelDetails, setModelDetails] = useState({
     modelName: '',
@@ -57,7 +61,6 @@ const ModelPreview = () => {
         console.error(e);
         setShowUnavailable(true);
       }
-
 
       try {
         const alreadyPurchased = await getReceipt(id);
@@ -88,18 +91,40 @@ const ModelPreview = () => {
       const purchase = await purchaseModel(id);
       setTxUrl(getTransactionUrl(purchase.hash));
       await purchase.wait();
-
-      setHasReceipt(true);
-      setIsLoading(false);
+      pollReceipt(id);
     } catch (e) {
+      setIsLoading(false);
       console.log(e.message);
-      if(e.code === -32603){
+      if (e.code === -32603) {
         alert('need more $INDG');
-      } else{
+      } else {
         alert(e.message);
       }
-      setIsLoading(false);
     }
+  }
+
+  function pollReceipt(receiptId) {
+    clearInterval(interval.current); // clean up any old timers
+    let count = 0;
+    interval.current = setInterval(async () => {
+      let receipt;
+      setLoadingMessage(
+        'Confirming receipt, this could take up to a minute' + '.'.repeat(count % 3),
+      );
+      count += 1;
+
+      try {
+        receipt = await getReceipt(receiptId);
+        if (receipt) {
+          setIsLoading(false);
+          setHasReceipt(receipt);
+          clearInterval(interval.current);
+          setLoadingMessage('Confirming transaction');
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }, 1000);
   }
 
   async function handleRedeem() {
@@ -140,7 +165,7 @@ const ModelPreview = () => {
       <LoadingModal
         isLoading={isLoading}
         href={txUrl}
-        message="Confirming transaction"
+        message={loadingMessage}
       />
       <GenericModal isOpen={showUnavailable}>
         <Typography variant="h6">
