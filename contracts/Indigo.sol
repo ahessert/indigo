@@ -1,12 +1,18 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
+interface CoinInterface is IERC20 {
+    function burnCoins(address, address, uint256) external;
+    function mintCoins(address, address, uint64) external;
+    function transferCoins(address, address, uint256) external;
+    function freeTrial(address _to) external;
+}
 
 contract Models is ERC721URIStorage {
     uint256 private _tokensCount = 0;
@@ -73,11 +79,10 @@ contract Models is ERC721URIStorage {
 
 }
 
-
 contract Nodes {
     address private _admin = address(0);
     uint64 private _STAKE_MIN = 1000;
-    CoinInterface private _coin;
+    address private _coinAddress;
 
     mapping (string => address) internal _liveModels;
     mapping (string => uint64) internal _gasFees;
@@ -101,22 +106,22 @@ contract Nodes {
         _;
     }
 
-    constructor(CoinInterface coin) {
+    constructor(address coinAddress) {
         _admin = msg.sender;
-        _coin = coin;
+        _coinAddress = coinAddress;
     }
 
     function stakeNode() public {
-        require(_coin.balanceOf(msg.sender) >= _STAKE_MIN, 
+        require(CoinInterface(_coinAddress).balanceOf(msg.sender) >= _STAKE_MIN, 
                 "Account does not have enough Indigo Coin to stake DB Node");
 
-        _coin.burnCoins(msg.sender, msg.sender, _STAKE_MIN);
+        CoinInterface(_coinAddress).burnCoins(msg.sender, msg.sender, _STAKE_MIN);
         _nodeStake[msg.sender] = _STAKE_MIN;
     }
 
     function slashStake(address nodeAddress) public onlyAdmin {
         uint64 _returnAmount = _nodeStake[nodeAddress];
-        _coin.mintCoins(msg.sender, nodeAddress, _returnAmount);
+        CoinInterface(_coinAddress).mintCoins(msg.sender, nodeAddress, _returnAmount);
         _nodeStake[nodeAddress] = 0;
     }
 
@@ -178,16 +183,16 @@ abstract contract Customer is ERC721URIStorage {
     address private _admin = address(0);
     uint64 private _tokensMinted = 0;
     mapping(address => mapping(string => uint160)) _customerReceipts;
-    CoinInterface private _coin;
+    address private _coinAddress;
 
-    constructor(CoinInterface coin) {
+    constructor(address coinAddress) {
         _admin = msg.sender;
-        _coin = coin;
+        _coinAddress = coinAddress;
     }
 
     function _payForModel(Fees memory fees) internal returns (uint160) {
-        _coin.transferCoins(msg.sender, fees.modelOwner, fees.ipFee);
-        _coin.transferCoins(msg.sender, fees.nodeAddress, fees.gasFee);
+        CoinInterface(_coinAddress).transferCoins(msg.sender, fees.modelOwner, fees.ipFee);
+        CoinInterface(_coinAddress).transferCoins(msg.sender, fees.nodeAddress, fees.gasFee);
         uint160 receipt = _mintReceipt(fees.modelName, fees.nodeUrl, fees.nodeAddress);
         return receipt;
     }
@@ -248,93 +253,21 @@ abstract contract Customer is ERC721URIStorage {
     
 }
 
-interface CoinInterface is IERC20 {
-    function coin_address() external view returns(address);
-    function burnCoins(address, address, uint256) external;
-    function mintCoins(address, address, uint64) external;
-    function transferCoins(address, address, uint256) external;
-    function freeTrialMint(address _to, uint64 _amount) external;
-} 
-
-
-contract Coin is ERC20, CoinInterface {
+contract Indigo is Models, Nodes, Customer {
     address private _admin = address(0);
     address private _coinAddress;
 
-    constructor(address admin) ERC20("Indigo", "INDG") {
-        _admin = admin;
-        _coinAddress=address(this);
-    }
-
-    function coin_address() public view override returns(address) {
-        return _coinAddress;
-    }
-
-    function burnCoins(address _sender, address _from, uint256 _amount) public override {
-        require(_sender == _from, "Not token owner. Unauthorized to burn tokens");
-        _burn(_from, _amount);
-    }
-
-    function mintCoins(address _sender, address _to, uint64 _amount) public override {
-        require(_sender == _admin,
-                "Unauthorized to mint new coins");
-        _mint(_to, _amount);
-    }
-
-    function freeTrialMint(address _to, uint64 _amount) public override {
-        _mint(_to, _amount);
-    }
-
-    function transferCoins(address _sender, address _to, uint256 _amount) public override {
-        _transfer(_sender, _to, _amount);
-    }
-}
-
-contract AirDrop {
-    address private _admin;
-    uint64 freeTrialINDG = 200;
-    uint64 freeTrialWEI = 10000000000000000; // 0.01 ETH To cover gas fees
-    mapping (address => bool) internal participants;
-    CoinInterface private _coin;
-
-    constructor(CoinInterface coin) {
+    constructor(address coinAddress) Customer(coinAddress) Nodes(coinAddress) {
         _admin = msg.sender;
-        _coin = coin;
-    }
-
-    modifier onlyFirstTimeUsers() {
-        require(
-            participants[msg.sender] != true,
-            "Address already received free trial AirDrop"
-        ); 
-        _;
-    }
-
-    function freeTrial() public onlyFirstTimeUsers {
-        _coin.freeTrialMint(msg.sender, freeTrialINDG);
-        payable(msg.sender).transfer(freeTrialWEI);
-        participants[msg.sender] = true;
-    }
-
-    function freeTrialBalance() public view returns (uint256) {
-        return address(this).balance;
-    }
-}
-
-contract Indigo is Models, Nodes, Customer, AirDrop {
-    address private _admin = address(0);
-    CoinInterface coin = new Coin(msg.sender);
-
-    constructor() Customer(coin) Nodes(coin) AirDrop(coin) payable {
-        _admin = msg.sender;
+        _coinAddress = coinAddress;
     }
 
     receive() external payable {
         payable(msg.sender).transfer(msg.value);
     }
 
-    function coinAddress() public view returns(address) {
-        return coin.coin_address();
+    function getCoinAddress() public view returns(address) {
+        return _coinAddress;
     }
 
     function getModel(string memory modelName) 
@@ -364,10 +297,14 @@ contract Indigo is Models, Nodes, Customer, AirDrop {
     }
 
     function mintCoins(address _to, uint64 _amount) public {
-        coin.mintCoins(msg.sender, _to, _amount);
+        CoinInterface(_coinAddress).mintCoins(msg.sender, _to, _amount);
     }
 
     function coinBalance(address _account) public view returns (uint256) {
-        return coin.balanceOf(_account);
+        return CoinInterface(_coinAddress).balanceOf(_account);
+    }
+
+    function freeTrial() public {
+        CoinInterface(_coinAddress).freeTrial(msg.sender);
     }
 }
