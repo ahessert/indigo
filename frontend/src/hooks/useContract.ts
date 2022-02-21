@@ -4,7 +4,7 @@ import formatModelDescription from '../utils/formatModelDescription';
 import { CHAIN_ID, CHAIN_ID_0x } from 'utils/constants';
 declare let window: any;
 
-const indigoAddress = '0x438914A9e5d7e422de0eE0dA7B3A498e50403f43';
+const indigoAddress = '0x7f2de2fb3A416014bB1458f8A8A55aBc5F7ee50E';
 
 // type PublishedModel = {
 //   modelName: string; // this is a hash .. need to add readable field

@@ -1,7 +1,13 @@
 [
 	{
-		"inputs": [],
-		"stateMutability": "payable",
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "coinAddress",
+				"type": "address"
+			}
+		],
+		"stateMutability": "nonpayable",
 		"type": "constructor"
 	},
 	{
@@ -266,19 +272,6 @@
 		"type": "function"
 	},
 	{
-		"inputs": [],
-		"name": "freeTrialBalance",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"inputs": [
 			{
 				"internalType": "uint256",
@@ -287,6 +280,19 @@
 			}
 		],
 		"name": "getApproved",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getCoinAddress",
 		"outputs": [
 			{
 				"internalType": "address",

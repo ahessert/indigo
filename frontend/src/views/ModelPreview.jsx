@@ -92,7 +92,12 @@ const ModelPreview = () => {
       setHasReceipt(true);
       setIsLoading(false);
     } catch (e) {
-      console.error(e);
+      console.log(e.message);
+      if(e.code === -32603){
+        alert('need more $INDG');
+      } else{
+        alert(e.message);
+      }
       setIsLoading(false);
     }
   }
