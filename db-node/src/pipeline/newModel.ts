@@ -102,7 +102,7 @@ export class MintModelProcessor {
                 this.newModel.ipFee
             )
             console.log(`Publish SUCCESS: View on etherscan link below:\n\t`
-                        +`https://ropsten.etherscan.io/tx/${txResponse.hash}`)
+                        +`https://testnet.aurorascan.dev/tx/${txResponse.hash}`)
         } catch (err) {
             console.log(`Error in publishModel\n${err}`)
         }

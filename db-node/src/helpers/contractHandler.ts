@@ -1,6 +1,6 @@
-import { Contract, Wallet, providers } from 'ethers';
+import { Contract, Wallet, providers, getDefaultProvider } from 'ethers';
 
-import { ALCHEMY_API_KEY, CONTRACT_ADDRESS } from '../environment';
+import { CONTRACT_ADDRESS, AURORA_URL } from '../environment';
 import { getWalletPrivateKey } from './secretHandler';
 
 const indigoAbi = [
@@ -32,7 +32,7 @@ export class IndigoContract {
     private _setUp = async () => {
         const privateKey = await getWalletPrivateKey()
 
-        this.provider = new providers.AlchemyProvider("ropsten", ALCHEMY_API_KEY); // Using Ropsten ETH testnet
+        this.provider = getDefaultProvider(AURORA_URL);
         this.signedProvider = new Wallet(privateKey, this.provider)
         this.contract = new Contract(CONTRACT_ADDRESS, indigoAbi, this.signedProvider);
 

@@ -8,10 +8,10 @@ Description: >
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
-    Timeout: 3
+    Timeout: 5
     Environment:
       Variables:
-        CONTRACT_ADDRESS: '0x438914A9e5d7e422de0eE0dA7B3A498e50403f43'
+        CONTRACT_ADDRESS: '0x7f2de2fb3A416014bB1458f8A8A55aBc5F7ee50E'
 
 Parameters:
   DynamoTableName:
@@ -69,7 +69,7 @@ Resources:
       CodeUri: build
       Handler: app.getDataHandler
       Runtime: nodejs12.x
-      Timeout: 30
+      Timeout: 45
       Events:
         GetData:
           Type: Api

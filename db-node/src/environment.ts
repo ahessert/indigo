@@ -18,9 +18,9 @@ export const REDSHIFT_DB = process.env.REDSHIFT_DB || 'dev'
 export const DYNAMO_TABLE = process.env.DYNAMO_TABLE || 'Indigo'
 
 // Blockchain
-export const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY || "8OYhDuflJekreW0vanJqrjbOjit3CS3M"
-export const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS || '0x438914A9e5d7e422de0eE0dA7B3A498e50403f43'
+export const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS || '0x7f2de2fb3A416014bB1458f8A8A55aBc5F7ee50E'
 export const WALLET_PRIVATE_KEY = process.env.PRIVATE_KEY
+export const AURORA_URL = process.env.AURORA_URL || "https://testnet.aurora.dev"
 
 // MISC
 export const MY_NODE_URL = process.env.MY_NODE_URL ||  "https://hq6elmg3a4.execute-api.us-east-1.amazonaws.com"
