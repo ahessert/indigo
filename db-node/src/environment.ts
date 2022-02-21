@@ -18,7 +18,7 @@ export const REDSHIFT_DB = process.env.REDSHIFT_DB || 'dev'
 export const DYNAMO_TABLE = process.env.DYNAMO_TABLE || 'Indigo'
 
 // Blockchain
-export const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS || '0x7f2de2fb3A416014bB1458f8A8A55aBc5F7ee50E'
+export const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS || '0xcB67767c819e8fC4Bd2b7BF6c2EFE03472D39676'
 export const WALLET_PRIVATE_KEY = process.env.PRIVATE_KEY
 export const AURORA_URL = process.env.AURORA_URL || "https://testnet.aurora.dev"
 

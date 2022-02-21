@@ -24,6 +24,10 @@ contract Coin is ERC20, CoinInterface {
         payable(msg.sender).transfer(msg.value);
     }
     
+    function decimals() public view virtual override returns (uint8) {
+        return 0;
+    }
+
     function burnCoins(address _sender, address _from, uint256 _amount) public override {
         require(_sender == _from, "Not token owner. Unauthorized to burn tokens");
         _burn(_from, _amount);
