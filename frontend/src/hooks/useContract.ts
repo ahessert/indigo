@@ -84,7 +84,7 @@ function useContract(provider: any, signer: any) {
   }
 
   async function addToMetamask() {
-    const tokenAddress = '0x50Bd6fAEBD7Ed82574a9543ad941de9761f0D172';
+    const tokenAddress = '0xaa5133fdeF78E955ba10c837c2959CAb6a2b51b7';
     await window.ethereum.request({
       method: 'wallet_watchAsset',
       params: {
