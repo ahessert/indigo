@@ -4,7 +4,8 @@ import formatModelDescription from '../utils/formatModelDescription';
 import { CHAIN_ID, CHAIN_ID_0x } from 'utils/constants';
 declare let window: any;
 
-const indigoAddress = '0x7f2de2fb3A416014bB1458f8A8A55aBc5F7ee50E';
+const indigoAddress = '0xcB67767c819e8fC4Bd2b7BF6c2EFE03472D39676';
+const tokenAddress = '0x169aD4fe902087b916E72917AB9b811BE29b2022';
 
 // type PublishedModel = {
 //   modelName: string; // this is a hash .. need to add readable field
@@ -84,7 +85,8 @@ function useContract(provider: any, signer: any) {
   }
 
   async function addToMetamask() {
-    const tokenAddress = '0xaa5133fdeF78E955ba10c837c2959CAb6a2b51b7';
+    console.log(indigoAddress);
+    console.log(tokenAddress);
     await window.ethereum.request({
       method: 'wallet_watchAsset',
       params: {
@@ -92,7 +94,7 @@ function useContract(provider: any, signer: any) {
         options: {
           address: tokenAddress, // The address that the token is at.
           symbol: 'INDG', // A ticker symbol or shorthand, up to 5 chars.
-          decimals: 18, // The number of decimals in the token
+          decimals: 0, // The number of decimals in the token
           image: 'https://app.indigodapp.com/logo/default.svg', // A string url of the token logo
         },
       },
