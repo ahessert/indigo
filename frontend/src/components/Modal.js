@@ -34,6 +34,9 @@ const LoadingModal = ({ isLoading, setIsLoading, href, message }) => {
         target="_blank"
         color="text.primary"
         variant={'h6'}
+        style={{
+          pointerEvents: href ? 'auto' : 'none',
+        }}
       >
         {message} {href && <BiLinkExternal size={11} />}
       </Link>
@@ -44,10 +47,7 @@ const LoadingModal = ({ isLoading, setIsLoading, href, message }) => {
 const SuccessModal = ({ isOpen, setIsOpen, href, message }) => {
   return (
     <GenericModal isOpen={isOpen} setIsOpen={setIsOpen}>
-      <Box
-        display="flex"
-        justifyContent="center"
-      >
+      <Box display="flex" justifyContent="center">
         <FaRegCheckCircle size={40} />
       </Box>
       <Link
