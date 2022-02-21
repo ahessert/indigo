@@ -128,6 +128,7 @@ const ModelPreview = () => {
   }
 
   async function handleRedeem() {
+    setTxUrl('');
     setIsLoading(true);
     try {
       let receipt = await getReceipt(id);
