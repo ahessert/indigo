@@ -62,7 +62,7 @@ function useContract(provider: any, signer: any) {
   ) {
     await changeNetwork();
     const data = await fetch(
-      `${url}/api/get-data?modelName=${modelName}&paymentReceipt=${paymentReceipt}`,
+      `${url}/Prod/api/get-data?modelName=${modelName}&paymentReceipt=${paymentReceipt}`,
     );
     return data;
   }
