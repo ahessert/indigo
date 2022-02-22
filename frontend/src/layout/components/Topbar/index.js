@@ -10,17 +10,17 @@ import IndigoLogo from 'svg/illustrations/IndigoLogo';
 import IndigoIcon from 'svg/illustrations/IndigoIcon';
 import { WalletButton } from 'components';
 import { useContract } from 'hooks';
-import { IoMdPulse } from 'react-icons/io';
 import { AppContext } from 'context/AppContext';
 import { CHAIN_ID } from 'utils/constants';
 import { SingleNavItem } from './components/NavItem';
 import { useNavigate } from 'react-router-dom';
+import { NetworkIcon } from 'components';
 
 const Topbar = ({ onSidebarOpen, pages, colorInvert = false }) => {
   const theme = useTheme();
   const { provider } = useContext(AppContext);
   const [isAurora, setIsAurora] = useState(false);
-  const { addToMetamask, changeNetwork } = useContract(provider);
+  const { addToMetamask } = useContract(provider);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -80,17 +80,7 @@ const Topbar = ({ onSidebarOpen, pages, colorInvert = false }) => {
         </Box>
       </Box>
       <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 2 }}>
-        <Tooltip arrow title="Connect to Aurora Network">
-          <IconButton
-            onClick={()=>changeNetwork()}
-            color={isAurora ? 'inherit' : 'warning'}
-            sx={{
-              background: `${theme.palette.primary.dark} !important`,
-            }}
-          >
-            <IoMdPulse size={30} />
-          </IconButton>
-        </Tooltip>
+        <NetworkIcon isAurora={isAurora} />
         <Tooltip arrow title="Add $INDG to Metamask">
           <IconButton
             onClick={addToMetamask}

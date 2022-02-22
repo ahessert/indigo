@@ -5,6 +5,7 @@ import HeroImage from './HeroImage';
 import Jobs from './Jobs';
 import {GenericModal, LoadingModal, SuccessModal} from './Modal';
 import ModelCard from './ModelCard';
+import NetworkIcon from './NetworkIcon';
 import Page from './Page';
 import SearchBar from './SearchBar';
 import ThemeModeToggler from './ThemeModeToggler';
@@ -21,6 +22,7 @@ export {
   Jobs,
   LoadingModal,
   ModelCard,
+  NetworkIcon,
   Page,
   SearchBar,
   SuccessModal,

@@ -12,6 +12,7 @@ const NetworkIcon = ({ isAurora = false, fullText = false }) => {
   const theme = useTheme();
   const { provider } = useContext(AppContext);
   const { changeNetwork } = useContract(provider);
+  const title = isAurora ? 'Connected' : 'Connect to Aurora Network';
 
   return (
     <>
@@ -25,10 +26,10 @@ const NetworkIcon = ({ isAurora = false, fullText = false }) => {
           sx={{ gap: 1 }}
         >
           <IoMdPulse size={30} />
-          Connect to Aurora
+          {title}
         </Button>
       ) : (
-        <Tooltip arrow title="Connect to Aurora Network">
+        <Tooltip arrow title={title}>
           <IconButton
             onClick={changeNetwork}
             color={isAurora ? 'inherit' : 'warning'}
