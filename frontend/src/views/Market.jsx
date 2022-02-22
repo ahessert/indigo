@@ -5,17 +5,22 @@ import { Jobs, ConnectPrompt } from 'components';
 import { Typography, Box } from '@mui/material';
 import { AppContext } from 'context/AppContext';
 import { useContract } from 'hooks';
+import { CHAIN_ID } from 'utils/constants';
 
 const JobListing = () => {
   const { provider, signer } = useContext(AppContext);
-  const { getAllModelDescriptions } = useContract(provider, signer);
+  const { getAllModelDescriptions, getChainId } = useContract(provider, signer);
   const [models, setModels] = useState([]);
+  const [chainId, setChainId] = useState('');
+  console.log(chainId, CHAIN_ID);
 
   useEffect(() => {
     (async () => {
       if (!provider) return;
       const newModels = await getAllModelDescriptions();
       setModels(newModels);
+      const newChainId = await getChainId();
+      setChainId(newChainId);
     })();
   }, [provider]);
 
@@ -41,7 +46,13 @@ const JobListing = () => {
             </Typography>
           </Box>
         </Box>
-        <Box>{provider ? <Jobs data={models} /> : <ConnectPrompt />}</Box>
+        <Box>
+          {provider && chainId === CHAIN_ID ? (
+            <Jobs data={models} />
+          ) : (
+            <ConnectPrompt provider={provider} chainID={chainId === CHAIN_ID} />
+          )}
+        </Box>
       </Container>
     </Layout>
   );

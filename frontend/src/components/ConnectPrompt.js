@@ -1,8 +1,10 @@
 import React from 'react';
-import {  WalletButton } from 'components';
+import { WalletButton } from 'components';
 import { Typography, Box } from '@mui/material';
+import PropTypes from 'prop-types';
+import NetworkIcon from './NetworkIcon';
 
-const ConnectPrompt = () => {
+const ConnectPrompt = ({ provider, chainId }) => {
 
   return (
     <Box
@@ -16,9 +18,15 @@ const ConnectPrompt = () => {
       <Typography variant="h5">
         Please connect wallet to view marketplace
       </Typography>
-      <WalletButton />
+      {!provider && <WalletButton />}
+      {!chainId && <NetworkIcon fullText />}
     </Box>
   );
+};
+
+ConnectPrompt.propTypes = {
+  provider: PropTypes.any,
+  chainId: PropTypes.bool,
 };
 
 export default ConnectPrompt;

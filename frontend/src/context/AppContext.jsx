@@ -19,6 +19,14 @@ export const ContextProvider = ({ children }) => {
       window.ethereum,
       'any',
     );
+
+    newProvider.on('network', (_, old) => {
+      console.log(_,old);
+      if (old) {
+        window.location.reload();
+      }
+    });
+
     const signer = newProvider.getSigner();
 
     setUserAddress(await signer.getAddress());

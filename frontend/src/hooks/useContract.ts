@@ -22,9 +22,14 @@ function useContract(provider: any, signer: any) {
     signer ?? provider,
   );
 
-  async function changeNetwork() {
+  async function getChainId(){
     const network = await provider.getNetwork();
-    if (network.chainId !== CHAIN_ID) {
+    return network.chainId;
+  }
+
+  async function changeNetwork() {
+    const chainId = await getChainId();
+    if (chainId !== CHAIN_ID) {
       await window.ethereum.request({
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: CHAIN_ID_0x }],
@@ -34,7 +39,6 @@ function useContract(provider: any, signer: any) {
   }
 
   async function getAllModelDescriptions(): Promise<any> {
-    await changeNetwork();
     const publishModelFilter = indigoContract.filters.PublishModel();
     const publishedModels = await indigoContract.queryFilter(
       publishModelFilter,
@@ -45,7 +49,6 @@ function useContract(provider: any, signer: any) {
   }
 
   async function getSingleModelDescription(modelNameHash: string) {
-    await changeNetwork();
     const filter = indigoContract.filters.PublishModel(modelNameHash);
     const model = await indigoContract.queryFilter(filter);
     return formatModelDescription(model[0]);
@@ -61,7 +64,6 @@ function useContract(provider: any, signer: any) {
     modelName: string,
     paymentReceipt: string,
   ) {
-    await changeNetwork();
     const data = await fetch(
       `${url}/Prod/api/get-data?modelName=${modelName}&paymentReceipt=${paymentReceipt}`,
     );
@@ -80,13 +82,10 @@ function useContract(provider: any, signer: any) {
   }
 
   async function getReceipt(modelId: string): Promise<any> {
-    await changeNetwork();
     return await indigoContract.getReceipt(modelId);
   }
 
   async function addToMetamask() {
-    console.log(indigoAddress);
-    console.log(tokenAddress);
     await window.ethereum.request({
       method: 'wallet_watchAsset',
       params: {
@@ -104,6 +103,8 @@ function useContract(provider: any, signer: any) {
   return {
     indigoContract,
     addToMetamask,
+    changeNetwork,
+    getChainId,
     getAllModelDescriptions,
     getData,
     getReceipt,

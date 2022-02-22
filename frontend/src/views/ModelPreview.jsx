@@ -15,6 +15,7 @@ import { BiDownload } from 'react-icons/bi';
 import { useContract } from 'hooks';
 import { InstructionCard, InstructionRow } from 'components/InstructionCard';
 import { getTransactionUrl } from 'utils/constants';
+import { useNavigate } from 'react-router';
 
 const IconBox = styled(Box)`
   display: flex;
@@ -43,6 +44,7 @@ const ModelPreview = () => {
     'Confirming transaction',
   );
   const interval = useRef();
+  const navigate = useNavigate();
 
   const [modelDetails, setModelDetails] = useState({
     modelName: '',
@@ -109,7 +111,8 @@ const ModelPreview = () => {
     interval.current = setInterval(async () => {
       let receipt;
       setLoadingMessage(
-        'Confirming receipt, this could take up to a minute' + '.'.repeat(count % 3),
+        'Confirming receipt, this could take up to a minute' +
+          '.'.repeat(count % 3),
       );
       count += 1;
 
@@ -169,9 +172,15 @@ const ModelPreview = () => {
         message={loadingMessage}
       />
       <GenericModal isOpen={showUnavailable}>
-        <Typography variant="h6">
-          This model is not available, please choose another model
-        </Typography>
+        <Typography variant="h6">This model is not available</Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          size="large"
+          onClick={() => navigate('/')}
+        >
+          Go back to marketplace
+        </Button>
       </GenericModal>
       <InstructionCard title="Purchase Model">
         <Box
