@@ -1,16 +1,14 @@
-# How to deploy
+# Introduction
 
-Get gas following this (tutorial)[https://doc.aurora.dev/bridge/rainbow-bridge#bridging-eth-balances]
-rainbow bridge uses Goerli testnet eth
+Indigo is an Open Source decentralized marketplace for refined data models on the NEAR blockchain.
 
-After bridging over a balance, run 
-```
-npm run deploy:test
-```
-or
-```
-npm run deploy:main
-```
+# Repo structure
 
-the contract address should be printed in the console and abis in the /artifacts directory
+There are three key components to the Indigo dApp.
 
+1. Indigo Contract ([contracts/README.md](https://github.com/ahessert/indigo/blob/contracts/README.md))
+   - The key uncensorable element that gaurantees ownership and payments for data models. It is deployed on the NEAR blockchain using Aurora. 
+2. Database Node ([db-node/README.md](https://github.com/ahessert/indigo/blob/db-node/README.md))
+   - The application the removes the data infrastructure burden and automates the data pipeline for developers. It builds the data models and serves them to the customers. 
+3. Client ([frontend/README.md](https://github.com/ahessert/indigo/blob/frontend/README.md))
+   - The browser application that makes it simple for customers to access the marketplace communicating with both the Indigo Contract and Database Nodes. 
