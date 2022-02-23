@@ -10,7 +10,7 @@ const mock = [
     dapps: ['sushiswap'],
     address: '0x12345',
     description:
-      'locavore tbh health goth street art tumblr 3 wolf moon single-origin coffee vexillologist +1 skateboard taxidermy copper mug master cleanse hexagon kitsch.',
+      'SushiSwap is a software running on Ethereum that seeks to incentivize a network of users to operate a platform where users can buy and sell crypto assets. ',
     feeTotal: '7',
     url:'312'
   },
@@ -19,7 +19,7 @@ const mock = [
     dapps: ['sushiswap', 'near'],
     address: '0x12345',
     description:
-      'locavore tbh health goth street art tumblr 3 wolf moon single-origin coffee vexillologist +1 skateboard taxidermy copper mug master cleanse hexagon kitsch.',
+      'Near Protocol, a smart contract-enabled blockchain just like Ethereum, was launched in 2020 to incentivise developers to create and launch more decentralised applications.',
     feeTotal: '7',
     url:'312'
   },
@@ -28,7 +28,7 @@ const mock = [
     dapps: ['aurora', 'curve'],
     address: '0x12345',
     description:
-      'locavore tbh health goth street art tumblr 3 wolf moon single-origin coffee vexillologist +1 skateboard taxidermy copper mug master cleanse hexagon kitsch.',
+      'Curve is a exchange protocol based on Ethereum, providing stablecoin transactions with low slippage.',
     feeTotal: '7',
     url:'312'
   },
@@ -37,7 +37,7 @@ const mock = [
     dapps: ['sushiswap', 'twitter', 'curve', 'chainlink'],
     address: '0x12345',
     description:
-      'locavore tbh health goth street art tumblr 3 wolf moon single-origin coffee vexillologist +1 skateboard taxidermy copper mug master cleanse hexagon kitsch.',
+      'Chainlink is a decentralized oracle network that provides real-world data to smart contracts on the blockchain.',
     feeTotal: '7',
     url:'312'
   },
@@ -46,7 +46,7 @@ const mock = [
     dapps: ['twitter', 'chainlink', 'near', 'terra', 'curve'],
     address: '0x12345',
     description:
-      'locavore tbh health goth street art tumblr 3 wolf moon single-origin coffee vexillologist +1 skateboard taxidermy copper mug master cleanse hexagon kitsch.',
+      'Terra is an open-source blockchain platform for algorithmic stablecoins, that are pegged against traditional fiat.',
     feeTotal: '7',
     url:'312'
   },

@@ -20,7 +20,8 @@ import {
 } from 'components/InstructionCard';
 import { useContract } from 'hooks';
 import { AppContext } from 'context/AppContext';
-import { getTransactionUrl } from 'utils/constants';
+import { getTransactionUrl, developerDocUrl } from 'utils/constants';
+import { useTheme } from '@mui/material/styles';
 
 const Mint = () => {
   const { provider, signer } = useContext(AppContext);
@@ -30,6 +31,7 @@ const Mint = () => {
   const [githubUrl, setGithubUrl] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [txUrl, setTxUrl] = useState('');
+  const theme = useTheme();
 
   useEffect(() => {
     setIsLoading(false);
@@ -37,11 +39,6 @@ const Mint = () => {
 
   const airdropDescription = {
     modelName: 'Upload Data Model',
-    description: `Use this page to upload your data models that will be placed on the 
-      Indigo Marketplace. Currently the price is set, but custom pricing will
-      become available in the NEAR future. For detailed steps on how simple it
-      is to create and mint these data models, please see our developer documentation
-  `,
     dapps: ['default'],
   };
 
@@ -74,7 +71,15 @@ const Mint = () => {
       />
       <InstructionCard title={'Mint Model'}>
         <Box display="flex">
-          <ModelCardContent item={airdropDescription} hasLink={false} />
+          <ModelCardContent item={airdropDescription} hasLink={false}>
+            Use this page to upload your data models that will be placed on the
+            Indigo Marketplace. Currently the price is set, but custom pricing
+            will become available in the NEAR future. For detailed steps on how
+            simple it is to create and mint these data models, please see our{' '}
+            <a href={developerDocUrl} style={{ color: theme.palette.text.primary }}>
+              developer documentation.
+            </a>
+          </ModelCardContent>
           <CardMedia
             sx={{
               maxWidth: '250px',

@@ -109,9 +109,9 @@ const ModelCardMedia = ({ dapps, itemsShown = 4 }) => {
   );
 };
 
-const ModelCardContent = ({ item, hasLink = true }) => {
+const ModelCardContent = ({ item, hasLink = true, children }) => {
   const navigate = useNavigate();
-  const { description, address, modelName, feeTotal } = item;
+  const { description, address, modelName, feeTotal, url } = item;
 
   return (
     <CardContent
@@ -133,8 +133,23 @@ const ModelCardContent = ({ item, hasLink = true }) => {
         <Typography variant={'subtitle2'} color="text.secondary">
           {description}
         </Typography>
+        {children}
       </Box>
-      {feeTotal && hasLink && (
+      {feeTotal && url === '312' && (
+        <Button
+          variant={'outlined'}
+          color="secondary"
+          disabled
+          fullWidth
+          size="large"
+        >
+          <Typography variant={'h6'} fontWeight="bold">
+            Coming Soon
+          </Typography>
+        </Button>
+      )}
+
+      {feeTotal && hasLink && url !== '312' && (
         <Button
           variant={'outlined'}
           size="large"
@@ -147,7 +162,7 @@ const ModelCardContent = ({ item, hasLink = true }) => {
           </Typography>
         </Button>
       )}
-      {feeTotal && !hasLink ? (
+      {feeTotal && !hasLink && url !== '312' ? (
         <Typography variant={'h6'} color="secondary" fontWeight="bold">
           Access: {feeTotal} $INDG
         </Typography>
@@ -228,6 +243,7 @@ ModelCardContent.propTypes = {
     feeTotal: PropTypes.string,
   }).isRequired,
   hasLink: PropTypes.bool,
+  children: PropTypes.node,
 };
 
 export { ModelCardContent, ModelCardMedia };

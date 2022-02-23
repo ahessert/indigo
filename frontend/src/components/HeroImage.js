@@ -11,8 +11,8 @@ const HeroImage = ({ hidden, height, cropped=false }) => {
         backgroundColor: '#000',
         display: hidden ? 'none' : 'block',
       }}
-      height={height ?? '45vh'}
-      minHeight={height ??'45vh'}
+      height={height ?? '40vh'}
+      minHeight={height ??'40vh'}
       width="100vw"
     >
       <Box

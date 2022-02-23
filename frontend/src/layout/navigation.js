@@ -1,11 +1,15 @@
 const pages = {
   market: {
-    title: 'Market',
+    title: 'Marketplace',
     href: '/'
   },
   airdrop: {
     title: 'Airdrop',
     href: '/airdrop'
+  },
+  instructions: {
+    title: 'Instructions',
+    href: 'https://indigodapp.com/instructions/'
   },
 };
 

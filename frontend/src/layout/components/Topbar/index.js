@@ -80,6 +80,18 @@ const Topbar = ({ onSidebarOpen, pages, colorInvert = false }) => {
         </Box>
       </Box>
       <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 2 }}>
+        <Button
+          variant="contained"
+          sx={{
+            color: theme.palette.text.primary,
+            background: `linear-gradient( to right, ${theme.palette.secondary.main}, ${theme.palette.secondary.dark})`,
+            fontWeight: 'bold',
+          }}
+          onClick={() => navigate('/mint')}
+        >
+          Mint NFT Model
+        </Button>
+        <WalletButton />
         <NetworkIcon isAurora={isAurora} />
         <Tooltip arrow title="Add $INDG to Metamask">
           <IconButton
@@ -94,18 +106,6 @@ const Topbar = ({ onSidebarOpen, pages, colorInvert = false }) => {
             />
           </IconButton>
         </Tooltip>
-        <Button
-          variant="contained"
-          sx={{
-            color: theme.palette.text.primary,
-            background: `linear-gradient( to right, ${theme.palette.secondary.main}, ${theme.palette.secondary.dark})`,
-            fontWeight: 'bold',
-          }}
-          onClick={() => navigate('/mint')}
-        >
-          Mint NFT Model
-        </Button>
-        <WalletButton />
       </Box>
       <Box sx={{ display: { xs: 'block', md: 'none' } }} alignItems={'center'}>
         <Button
