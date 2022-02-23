@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Layout from 'layout';
 import Container from 'components/Container';
-import { Jobs, ConnectPrompt } from 'components';
+import { Jobs } from 'components';
 import { Typography, Box } from '@mui/material';
 import { AppContext } from 'context/AppContext';
 import { useContract } from 'hooks';
@@ -16,9 +16,9 @@ const JobListing = () => {
 
   useEffect(() => {
     (async () => {
-      if (!provider) return;
       const newModels = await getAllModelDescriptions();
       setModels(newModels);
+      if (!provider) return;
       const newChainId = await getChainId();
       setChainId(newChainId);
     })();
@@ -47,11 +47,7 @@ const JobListing = () => {
           </Box>
         </Box>
         <Box>
-          {provider && chainId === CHAIN_ID ? (
-            <Jobs data={models} />
-          ) : (
-            <ConnectPrompt provider={provider} chainID={chainId === CHAIN_ID} />
-          )}
+          <Jobs data={models} />
         </Box>
       </Container>
     </Layout>
