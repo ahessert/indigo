@@ -1,4 +1,4 @@
-import { ethers } from 'ethers';
+import { ethers, getDefaultProvider } from 'ethers';
 import indigoAbi from 'utils/abi.json';
 import formatModelDescription from '../utils/formatModelDescription';
 import { CHAIN_ID, CHAIN_ID_0x } from 'utils/constants';
@@ -6,6 +6,7 @@ declare let window: any;
 
 const indigoAddress = '0xcB67767c819e8fC4Bd2b7BF6c2EFE03472D39676';
 const tokenAddress = '0x169aD4fe902087b916E72917AB9b811BE29b2022';
+const networkUrl = 'https://testnet.aurora.dev';
 
 // type PublishedModel = {
 //   modelName: string; // this is a hash .. need to add readable field
@@ -21,6 +22,15 @@ function useContract(provider: any, signer: any) {
     indigoAbi,
     signer ?? provider,
   );
+
+  function unsignedContract() : ethers.Contract {
+    const provider = getDefaultProvider(networkUrl);
+    return new ethers.Contract(
+      indigoAddress,
+      indigoAbi,
+      provider,
+    );
+  }
 
   async function getChainId(){
     const network = await provider.getNetwork();
@@ -39,8 +49,9 @@ function useContract(provider: any, signer: any) {
   }
 
   async function getAllModelDescriptions(): Promise<any> {
-    const publishModelFilter = indigoContract.filters.PublishModel();
-    const publishedModels = await indigoContract.queryFilter(
+    const unsignedIndigo = unsignedContract();
+    const publishModelFilter = unsignedIndigo.filters.PublishModel();
+    const publishedModels = await unsignedIndigo.queryFilter(
       publishModelFilter,
     );
     return publishedModels.map((data) => {
@@ -48,9 +59,10 @@ function useContract(provider: any, signer: any) {
     });
   }
 
-  async function getSingleModelDescription(modelNameHash: string) {
-    const filter = indigoContract.filters.PublishModel(modelNameHash);
-    const model = await indigoContract.queryFilter(filter);
+  async function getSingleModelDescription(modelName: string) {
+    const unsignedIndigo = unsignedContract();
+    const filter = unsignedIndigo.filters.PublishModel(modelName);
+    const model = await unsignedIndigo.queryFilter(filter);
     return formatModelDescription(model[0]);
   }
 
