@@ -5,22 +5,16 @@ import { Jobs } from 'components';
 import { Typography, Box } from '@mui/material';
 import { AppContext } from 'context/AppContext';
 import { useContract } from 'hooks';
-import { CHAIN_ID } from 'utils/constants';
 
 const JobListing = () => {
   const { provider, signer } = useContext(AppContext);
-  const { getAllModelDescriptions, getChainId } = useContract(provider, signer);
+  const { getAllModelDescriptions } = useContract(provider, signer);
   const [models, setModels] = useState([]);
-  const [chainId, setChainId] = useState('');
-  console.log(chainId, CHAIN_ID);
 
   useEffect(() => {
     (async () => {
       const newModels = await getAllModelDescriptions();
       setModels(newModels);
-      if (!provider) return;
-      const newChainId = await getChainId();
-      setChainId(newChainId);
     })();
   }, [provider]);
 

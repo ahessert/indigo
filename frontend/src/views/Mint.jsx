@@ -24,7 +24,7 @@ import { getTransactionUrl, developerDocUrl } from 'utils/constants';
 import { useTheme } from '@mui/material/styles';
 
 const Mint = () => {
-  const { provider, signer } = useContext(AppContext);
+  const { provider, signer, connect } = useContext(AppContext);
   const { mintModel } = useContract(provider, signer);
   const [isLoading, setIsLoading] = useState(false);
   const [modelName, setModelName] = useState('');
@@ -34,7 +34,7 @@ const Mint = () => {
   const theme = useTheme();
 
   useEffect(() => {
-    setIsLoading(false);
+    connect();
   }, []);
 
   const airdropDescription = {

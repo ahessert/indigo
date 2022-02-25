@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import Layout from 'layout';
 import { AppContext } from 'context/AppContext';
 import { WalletButton, LoadingModal } from 'components';
@@ -25,7 +25,7 @@ const siteKey = '6Lc-MYIeAAAAAO-XhXh9oqjIxWXptrxSP4eO3L_W';
 
 const Airdrop = () => {
   const theme = useTheme();
-  const { provider, signer } = useContext(AppContext);
+  const { provider, signer, connect } = useContext(AppContext);
   const { mintFreeTrialCoins, addToMetamask } = useContract(provider, signer);
   const [isLoading, setIsLoading] = useState(false);
   const [completedCaptcha, setCompletedCaptcha] = useState(false);
@@ -39,6 +39,10 @@ const Airdrop = () => {
       '$INDG is the native token of the Indigo ecosystem. We provide a small amount of free $INDG to test and experience Indigo. Follow the steps below to claim a one-time airdrop of $INDG.',
     dapps: ['default'],
   };
+
+  useEffect(() => {
+    connect();
+  });
 
   async function handleTransaction() {
     setIsLoading(true);

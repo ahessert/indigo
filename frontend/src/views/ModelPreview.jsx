@@ -30,7 +30,7 @@ const StandardButton = styled(Button)`
 
 const ModelPreview = () => {
   const theme = useTheme();
-  const { provider, signer } = useContext(AppContext);
+  const { provider, signer, connect } = useContext(AppContext);
   const { getSingleModelDescription, purchaseModel, getData, getReceipt } =
     useContract(provider, signer);
   const { id } = useParams();
@@ -51,6 +51,10 @@ const ModelPreview = () => {
     dapps: [],
     description: '',
     url: '',
+  });
+
+  useEffect(()=>{
+    connect();
   });
 
   useEffect(() => {
