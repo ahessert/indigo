@@ -13,6 +13,7 @@ const NetworkIcon = ({ isAurora = false, fullText = false }) => {
   const { provider } = useContext(AppContext);
   const { changeNetwork } = useContract(provider);
   const title = isAurora ? 'Connected' : 'Connect to Aurora Network';
+  if(!provider) return null;
 
   return (
     <>

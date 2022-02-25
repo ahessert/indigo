@@ -7,7 +7,7 @@ import { AppContext } from 'context/AppContext';
 import { useContract } from 'hooks';
 
 const JobListing = () => {
-  const { provider, signer } = useContext(AppContext);
+  const { provider, signer, connectOnLoad } = useContext(AppContext);
   const { getAllModelDescriptions } = useContract(provider, signer);
   const [models, setModels] = useState([]);
 
@@ -17,6 +17,10 @@ const JobListing = () => {
       setModels(newModels);
     })();
   }, [provider]);
+
+  useEffect(()=>{
+    connectOnLoad();
+  },[]);
 
   return (
     <Layout>

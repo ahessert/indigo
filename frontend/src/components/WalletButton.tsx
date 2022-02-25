@@ -27,15 +27,18 @@ function WalletButton({
           variant="contained"
           size="large"
           onClick={disconnect}
-          disabled
+          disableElevation
           sx={{
-            '&:disabled': {
+            backgroundColor: theme.palette.success.dark,
+            color: theme.palette.text.primary,
+            '&:hover': {
               backgroundColor: theme.palette.success.dark,
               color: theme.palette.text.primary,
             },
+
             display: 'flex',
             gap: '10px',
-            ...sx
+            ...sx,
           }}
           {...props}
         >

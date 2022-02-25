@@ -30,7 +30,7 @@ const StandardButton = styled(Button)`
 
 const ModelPreview = () => {
   const theme = useTheme();
-  const { provider, signer, connect } = useContext(AppContext);
+  const { provider, signer, connectOnLoad } = useContext(AppContext);
   const { getSingleModelDescription, purchaseModel, getData, getReceipt } =
     useContract(provider, signer);
   const { id } = useParams();
@@ -54,8 +54,8 @@ const ModelPreview = () => {
   });
 
   useEffect(()=>{
-    connect();
-  });
+    connectOnLoad();
+  },[]);
 
   useEffect(() => {
     (async () => {

@@ -10,7 +10,15 @@ export const ContextProvider = ({ children }) => {
   const [userAddress, setUserAddress] = useState();
   const [signer, setSigner] = useState();
 
+  async function connectOnLoad() {
+    const acc = window.localStorage.getItem('accounts');
+    if (acc) {
+      connect();
+    }
+  }
+
   async function connect() {
+    //set up an elemnt in local storage that we use to hold the connected account
     await window.ethereum.request({ method: 'eth_requestAccounts' });
     const newProvider = new ethers.providers.Web3Provider(
       window.ethereum,
@@ -24,8 +32,13 @@ export const ContextProvider = ({ children }) => {
     });
 
     const network = await newProvider.getNetwork();
+    console.log('accounts');
+    window.localStorage.setItem(
+      'accounts',
+      JSON.stringify(await newProvider.listAccounts()),
+    );
 
-    if(network.chainId !== CHAIN_ID){
+    if (network.chainId !== CHAIN_ID) {
       await window.ethereum.request({
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: CHAIN_ID_0x }],
@@ -40,16 +53,15 @@ export const ContextProvider = ({ children }) => {
 
   async function disconnect() {
     // Prompt user for account connections
-    const signer = await provider.getSigner();
-    console.log('Account:', await signer.getAddress());
-    console.log(await signer.getBalance());
-    console.log(await provider.getNetwork());
+    window.localStorage.setItem('accounts', undefined);
+    window.location.reload();
   }
 
   const value = {
     provider,
     signer,
     connect,
+    connectOnLoad,
     disconnect,
     userAddress,
   };

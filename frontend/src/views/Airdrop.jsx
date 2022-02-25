@@ -25,7 +25,7 @@ const siteKey = '6Lc-MYIeAAAAAO-XhXh9oqjIxWXptrxSP4eO3L_W';
 
 const Airdrop = () => {
   const theme = useTheme();
-  const { provider, signer, connect } = useContext(AppContext);
+  const { provider, signer, connectOnLoad } = useContext(AppContext);
   const { mintFreeTrialCoins, addToMetamask } = useContract(provider, signer);
   const [isLoading, setIsLoading] = useState(false);
   const [completedCaptcha, setCompletedCaptcha] = useState(false);
@@ -41,8 +41,8 @@ const Airdrop = () => {
   };
 
   useEffect(() => {
-    connect();
-  });
+    connectOnLoad();
+  },[]);
 
   async function handleTransaction() {
     setIsLoading(true);
