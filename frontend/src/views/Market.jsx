@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Layout from 'layout';
 import Container from 'components/Container';
-import { Jobs } from 'components';
+import { Jobs, LoadingModal } from 'components';
 import { Typography, Box } from '@mui/material';
 import { AppContext } from 'context/AppContext';
 import { useContract } from 'hooks';
@@ -10,11 +10,14 @@ const JobListing = () => {
   const { provider, signer, connectOnLoad } = useContext(AppContext);
   const { getAllModelDescriptions } = useContract(provider, signer);
   const [models, setModels] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     (async () => {
+      setIsLoading(true);
       const newModels = await getAllModelDescriptions();
       setModels(newModels);
+      setIsLoading(false);
     })();
   }, [provider]);
 
@@ -24,6 +27,10 @@ const JobListing = () => {
 
   return (
     <Layout>
+      <LoadingModal
+        isLoading={isLoading}
+        message="Loading Data Models..."
+      />
       <Container style={{ position: 'relative' }}>
         <Box
           display="flex"
@@ -44,9 +51,11 @@ const JobListing = () => {
             </Typography>
           </Box>
         </Box>
-        <Box>
-          <Jobs data={models} />
-        </Box>
+        {!isLoading ? (
+          <Box>
+            <Jobs data={models} />
+          </Box>
+        ) : <></>}
       </Container>
     </Layout>
   );
