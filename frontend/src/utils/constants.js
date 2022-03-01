@@ -6,7 +6,7 @@ export const CHAIN_ID_0x = '0x4e454153';
 // export const CHAIN_ID_0x = '1';
 
 
-export const blockExplorerUrl = 'https://explorer.testnet.aurora.dev/';
+export const blockExplorerUrl = 'https://testnet.aurorascan.dev';
 export const developerDocUrl =
   'https://github.com/ahessert/indigo_developer_template';
 export const githubUrl = 'https://github.com/ahessert/indigo';
