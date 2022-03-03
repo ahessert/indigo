@@ -101,10 +101,10 @@ const ModelPreview = () => {
     } catch (e) {
       setIsLoading(false);
       console.log(e.message);
-      if (e.code === -32603) {
-        alert('need more $INDG');
+      if (e.data.code === 3) {
+        alert('Insufficient funds. Need more $INDG');
       } else {
-        alert(e.message);
+        alert('Aurora Testnet is unresponsive. Try again in a few minutes.');
       }
     }
   }
