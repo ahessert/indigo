@@ -2,6 +2,7 @@ import React, { useState, createContext } from 'react';
 import PropTypes from 'prop-types';
 import { ethers } from 'ethers';
 import { CHAIN_ID, CHAIN_ID_0x } from 'utils/constants';
+import { blockExplorerUrl } from '../utils/constants';
 
 export const AppContext = createContext(null);
 
@@ -38,11 +39,32 @@ export const ContextProvider = ({ children }) => {
       JSON.stringify(await newProvider.listAccounts()),
     );
 
+    // todo this will need to be updated to handle prod
     if (network.chainId !== CHAIN_ID) {
-      await window.ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: CHAIN_ID_0x }],
-      });
+      try {
+        await window.ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [
+            {
+              chainId: CHAIN_ID_0x,
+              chainName: 'Aurora Testnet',
+              nativeCurrency: {
+                name: 'ethereum',
+                symbol: 'aETH',
+                decimals: 18,
+              },
+              rpcUrls: ['https://testnet.aurora.dev/'],
+              blockExplorerUrls: [blockExplorerUrl],
+            },
+          ],
+        });
+        await window.ethereum.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: CHAIN_ID_0x }],
+        });
+      } catch (e) {
+        alert(e.message);
+      }
     }
 
     const signer = newProvider.getSigner();

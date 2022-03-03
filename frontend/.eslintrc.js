@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 module.exports = {
   'env': {
     'browser': true,
@@ -25,6 +24,7 @@ module.exports = {
     'react',
   ],
   'rules': {
+    'no-undef': 0,
     'indent': [
       'error',
       2,

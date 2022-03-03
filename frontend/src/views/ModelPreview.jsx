@@ -16,6 +16,7 @@ import { useContract } from 'hooks';
 import { InstructionCard, InstructionRow } from 'components/InstructionCard';
 import { getTransactionUrl } from 'utils/constants';
 import { useNavigate } from 'react-router';
+import getMetamaskErrorMessage from '../utils/getMetamaskErrorMessage';
 
 const IconBox = styled(Box)`
   display: flex;
@@ -53,9 +54,9 @@ const ModelPreview = () => {
     url: '',
   });
 
-  useEffect(()=>{
+  useEffect(() => {
     connectOnLoad();
-  },[]);
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -100,12 +101,7 @@ const ModelPreview = () => {
       pollReceipt(id);
     } catch (e) {
       setIsLoading(false);
-      console.log(e.message);
-      if (e.code === -32603) {
-        alert('need more $INDG');
-      } else {
-        alert(e.message);
-      }
+      alert(getMetamaskErrorMessage(e));
     }
   }
 
