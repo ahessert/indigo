@@ -11,7 +11,7 @@ import Tooltip from '@mui/material/Tooltip';
 import PropTypes from 'prop-types';
 import Ellipses from 'svg/illustrations/Ellipses';
 import { useNavigate } from 'react-router-dom';
-import capitalizeFirstLetter from 'utils/capitalizeFirstLetter';
+import formatModelName from 'utils/formatModelName';
 
 const imageMappings = {
   near: 'near.svg',
@@ -122,7 +122,7 @@ const ModelCardContent = ({ item, hasLink = true, children }) => {
       }}
     >
       <Typography variant={'h4'} sx={{ fontWeight: 'bold' }}>
-        {capitalizeFirstLetter(modelName)}
+        {formatModelName(modelName)}
       </Typography>
       {address && (
         <Typography variant={'h6'} sx={{ fontWeight: 500 }}>
